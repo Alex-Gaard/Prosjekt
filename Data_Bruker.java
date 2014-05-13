@@ -15,7 +15,7 @@ public class Data_Bruker extends Database {
 	final static String TABLE_BRUKER = "Bruker";
 	final static String TABLE_SØKER = "Boligsøker";
 	final static String TABLE_UTLEIER = "Utleier";
-	final static String TABLE_PASSORD_REGISTER = "Bruker_passordregister";
+	final static String TABLE_PASSORD_REGISTER = "Bruker_PassordRegister";
 	final static String TABLE_BEHANDLER = "Kundebehandler";
 
 	// Kolonner

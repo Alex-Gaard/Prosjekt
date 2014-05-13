@@ -13,9 +13,9 @@ import java.sql.SQLException;
 public class Data_Statistikk extends Database {
 
 	// Tabeller
-	final static String TABLE_BOLIG = "bolig";
-	final static String TABLE_LEIEKONTRAKT_FORESPØRSEL = "leiekontrakt_forespørsel";
-	final static String TABLE_BRUKER = "bruker";
+	final static String TABLE_BOLIG = "Bolig";
+	final static String TABLE_LEIEKONTRAKT_FORESPØRSEL = "Leiekontrakt_forespørsel";
+	final static String TABLE_BRUKER = "Bruker";
 
 	// Kolonner
 	final static String COLUMN_AVERTERT = "Avertert";
