@@ -1,4 +1,4 @@
-package boligformidling;
+package testprosjekt;
 
 //Petter
 //SubPanel_KundeProfil
