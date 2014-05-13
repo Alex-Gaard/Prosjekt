@@ -526,16 +526,22 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
         
         add(cards,BorderLayout.CENTER);
     }
-    
+    /**
+     * Bytter card i cards panelet.
+     * <p> Når man har trykket på en bruker, vil denne metoden bli kalt. 
+     * Metoden har til hensikt å bytte ut søkepanelet med et resultat panel, henholdsvis kalt card1 og card2,
+     * I tillegg til å populere disse nylig synlige feltene.
+     * 
+     * @param PersNr 
+     */
     private void byttecard(String PersNr) //bytter til card2, samt sender med informasjonen som lå på den raden(aka personnummeret).
     {
-    	BoxLayout box2 = new BoxLayout(card2,BoxLayout.Y_AXIS);
-        card2.setLayout(box2);
+    	//BoxLayout box2 = new BoxLayout(card2,BoxLayout.Y_AXIS); what fuck is?
+        //card2.setLayout(box2);
         try
         {
             String test;
-            this.
-            søkrs.beforeFirst();
+            søkrs = querykonstruktør();
             while (søkrs.next())//finner den raden i resultatsettet som matcher PersNr;
             {
                 test = søkrs.getString("Personnummer");
@@ -639,7 +645,14 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
         }
         
     }
-    
+    /**
+     * Hjelpemetode.
+     * <p>Lager en string array basert på det medsendte resultatsettets verdier.
+     * <p>Metoden traverserer ikke resultatsettet på egenhånd. Dette må gjøres
+     * manuelt.
+     * @param rs
+     * @return 
+     */
     private String[] lagrow(ResultSet rs) 
     {
         String[] array = null;
@@ -692,8 +705,6 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
         } 
         else if (e.getSource() == card2avsluttcard2)
         {
-            card1søk.doClick();
-
             cardLayout.next(cards);
         }
         else if (e.getSource() == card2gjørendringer) //lagrer endringer gjort av kundebehandler.
@@ -705,7 +716,8 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
     /**
      * Lagrer samtlige felt.
      * <p>
-     * Feltene må ha representative verdier, dvs boligår må nesten være et boligår, hvis ikke får du en feilmelding via showMessageDialog.
+     * Feltene må ha representative verdier, dvs boligår må være en int, hvis ikke får du en feilmelding via showMessageDialog. 
+     * Ellers kan brukeren taste inn så mye tall han og/eller hun måtte ønske.
      * @author Petter S.W Gjerstad
      */
     private void lagre()
