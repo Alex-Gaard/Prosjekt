@@ -74,6 +74,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
             public void actionPerformed(ActionEvent e) {
                 if(editImagesPanel.getImages().length < 1){
                     JOptionPane.showMessageDialog(null, "Man må ha minst 1 bilde");
+                    return;
                 }
                 if (!userInputCheckFieldsNotEmpty(new JTextComponent[]{adresse, postadresse, areal, rom, byggår, beskrivelse, etasje, pris}) || !userInputCheckFieldNumber(new JTextComponent[]{postadresse, areal, rom, byggår, etasje, pris})) {
                     JOptionPane.showMessageDialog(null, "Vennligst se til at alle felter er gyldige");
@@ -92,6 +93,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
             public void actionPerformed(ActionEvent e) {
                 if(editImagesPanel.getImages().length < 1){
                     JOptionPane.showMessageDialog(null, "Man må ha minst 1 bilde");
+                    return;
                 }
                 if (!userInputCheckFieldsNotEmpty(new JTextComponent[]{adresse, postadresse, areal, rom, byggår, beskrivelse, etasjer, total_areal, pris}) || !userInputCheckFieldNumber(new JTextComponent[]{postadresse, areal, rom, byggår, etasjer, total_areal, pris})) {
                     JOptionPane.showMessageDialog(null, "Vennligst se til at alle felter er gyldige");
