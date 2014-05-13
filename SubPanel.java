@@ -96,27 +96,58 @@ abstract class SubPanel extends JPanel {
         private JComboBox JCBdStart, JCBmStart, JCByStart;
         private JComboBox JCBdEnd, JCBmEnd, JCByEnd;
 
-        private final int[] DayMonthRelation = getDaysForEachMonth(Calendar.getInstance().get(Calendar.YEAR));
+        private int[] DayMonthRelation = getDaysForEachMonth(Calendar.getInstance().get(Calendar.YEAR));
 
         public dateChooser(String tittel) {
             Calendar nå = Calendar.getInstance();
             JCBdStart = new JComboBox(getNumberArray(1, DayMonthRelation[nå.get(Calendar.MONTH)]));
             JCBmStart = new JComboBox(getNumberArray(1, 12));
-            JCByStart = new JComboBox(getNumberArray(2014, 2034));
-
+            JCByStart = new JComboBox(getNumberArray(2014, 2064));
+            
             JCBmStart.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    JCBdStart = new JComboBox(getNumberArray(1, DayMonthRelation[JCBmStart.getSelectedIndex()]));
+                    JCBdStart.removeAllItems();
+                    int days = DayMonthRelation[JCBmStart.getSelectedIndex()];
+                    for(int i=0;i<days;i++){
+                        JCBdStart.addItem(i+1+"");
+                    }
+                    revalidate();
                 }
             });
-
+            JCByStart.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    DayMonthRelation = getDaysForEachMonth(getNumberFromJCB(JCByStart));
+                    JCBdStart.removeAllItems();
+                    int days = DayMonthRelation[JCBmStart.getSelectedIndex()];
+                    for(int i=0;i<days;i++){
+                        JCBdStart.addItem(i+1+"");
+                    }
+                    revalidate();
+                }
+            });
             JCBdEnd = new JComboBox(getNumberArray(1, DayMonthRelation[nå.get(Calendar.MONTH)]));
             JCBmEnd = new JComboBox(getNumberArray(1, 12));
-            JCByEnd = new JComboBox(getNumberArray(2014, 2034));
+            JCByEnd = new JComboBox(getNumberArray(2014, 2064));
 
             JCBmEnd.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    JCBdEnd = new JComboBox(getNumberArray(1, DayMonthRelation[JCBmEnd.getSelectedIndex()]));
+                    JCBdEnd.removeAllItems();
+                    int days = DayMonthRelation[JCBmEnd.getSelectedIndex()];
+                    for(int i=0;i<days;i++){
+                        JCBdEnd.addItem(i+1+"");
+                    }
+                    revalidate();
+                }
+            });
+            JCByEnd.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    DayMonthRelation = getDaysForEachMonth(getNumberFromJCB(JCByEnd));
+                    JCBdEnd.removeAllItems();
+                    int days = DayMonthRelation[JCBmEnd.getSelectedIndex()];
+                    for(int i=0;i<days;i++){
+                        JCBdEnd.addItem(i+1+"");
+                    }
+                    revalidate();
                 }
             });
             enabled(false);
@@ -203,8 +234,8 @@ abstract class SubPanel extends JPanel {
          * @return array med tallene ifra start til slutt
          */
         private String[] getNumberArray(int start, int end) {
-            String[] output = new String[end - start];
-            for (int i = 0; i < output.length; i++) {
+            String[] output = new String[end - start + 1];
+            for(int i=0;i<output.length;i++){
                 output[i] = start + "";
                 start++;
             }
