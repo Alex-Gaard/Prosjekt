@@ -283,8 +283,7 @@ abstract class SubPanel extends JPanel {
         private JTextField inputLow, inputHigh;
         private JLabel seperator;
 
-        public userInputRange(int width, String Title) {
-            setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        public userInputRange(int width, String Title){
             title = new JLabel(Title);
             inputLow = new JTextField(width);
             inputHigh = new JTextField(width);

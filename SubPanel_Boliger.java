@@ -63,8 +63,6 @@ public class SubPanel_Boliger extends SubPanel {
         opptatt = new userInputAlternativeCheckbox("Forespurt eller opptatt");
         avertert = new dateChooser("Avertert Dato");
 
-        JLenebolig = new JLabel("--- Enebolig ---");
-        JLleilighet = new JLabel("--- Leilighet");
         eneboligSok = new JButton("Søk");
         eneboligSok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
