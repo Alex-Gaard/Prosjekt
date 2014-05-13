@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 /**
  * Klassen har ansvar for å starte opp applikasjonen.

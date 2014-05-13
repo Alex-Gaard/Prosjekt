@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;

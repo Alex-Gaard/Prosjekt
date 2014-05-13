@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

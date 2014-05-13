@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 /**
  * Representerer en Enebolig i databasen.
  * @author Arlen Syver Wasserman, s193956, IT 1 år

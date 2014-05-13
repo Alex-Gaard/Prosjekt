@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

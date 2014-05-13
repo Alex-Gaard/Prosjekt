@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 //Petter
 //SubPanel_Kunder

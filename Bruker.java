@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 /**
  * Representereren bruker ifra database.
  * @author Arlen Syver Wasserman, s193956, IT 1 år

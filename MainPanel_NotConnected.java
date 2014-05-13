@@ -1,4 +1,4 @@
-package Boligformidling;
+package boligformidling;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
