@@ -132,7 +132,7 @@ public class Data_Boliger extends Database {
             return DataBasedigestKeys.size();
         }
         /**
-         * Gir tilbake 1 bilde ifra databasen med spesifisert index
+         * Gir tilbake 1 bilde ifra databasen med spesifisert index. (ifra boligen som er nevnt i konstruktøren)
          * @param index Hvilket bilde som skal returneres
          * @return Gir alltid tilbake et bilde uansett index
          */

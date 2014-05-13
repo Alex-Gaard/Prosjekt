@@ -27,11 +27,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 /**
- * Abstrakt klasse som kan bli arvet. Innehar flere funksjoner som gjør seg nyttig i sine arvinger.
+ * Abstrakt GUI klasse som kan bli arvet.
+ * Innehar flere funksjoner som gjør seg nyttig i sine arvinger.
  * @
  */
 abstract class SubPanel extends JPanel {
@@ -95,7 +98,7 @@ abstract class SubPanel extends JPanel {
     
         private JComboBox JCBdStart, JCBmStart, JCByStart;
         private JComboBox JCBdEnd, JCBmEnd, JCByEnd;
-
+        //Får antall dager i månedene mht skuddår
         private int[] DayMonthRelation = getDaysForEachMonth(Calendar.getInstance().get(Calendar.YEAR));
 
         public dateChooser(String tittel) {
@@ -103,7 +106,7 @@ abstract class SubPanel extends JPanel {
             JCBdStart = new JComboBox(getNumberArray(1, DayMonthRelation[nå.get(Calendar.MONTH)]));
             JCBmStart = new JComboBox(getNumberArray(1, 12));
             JCByStart = new JComboBox(getNumberArray(2014, 2064));
-            
+            //Lytter til måneds boxen, forandrer dags boksen til riktig antall dager/måned 
             JCBmStart.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     JCBdStart.removeAllItems();
@@ -114,6 +117,7 @@ abstract class SubPanel extends JPanel {
                     revalidate();
                 }
             });
+            //Lytter til års boxen, forandrer dags boksen til riktig antall dager/måned
             JCByStart.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     DayMonthRelation = getDaysForEachMonth(getNumberFromJCB(JCByStart));
@@ -128,7 +132,7 @@ abstract class SubPanel extends JPanel {
             JCBdEnd = new JComboBox(getNumberArray(1, DayMonthRelation[nå.get(Calendar.MONTH)]));
             JCBmEnd = new JComboBox(getNumberArray(1, 12));
             JCByEnd = new JComboBox(getNumberArray(2014, 2064));
-
+            //Lytter til måneds boxen, forandrer dags boksen til riktig antall dager/måned
             JCBmEnd.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     JCBdEnd.removeAllItems();
@@ -139,6 +143,7 @@ abstract class SubPanel extends JPanel {
                     revalidate();
                 }
             });
+            //Lytter til års boxen, forandrer dags boksen til riktig antall dager/måned
             JCByEnd.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     DayMonthRelation = getDaysForEachMonth(getNumberFromJCB(JCByEnd));
@@ -152,7 +157,7 @@ abstract class SubPanel extends JPanel {
             });
             enabled(false);
             enabledBox = new JCheckBox("", false);
-
+            //Har muligheten til å 'disable' hele elementet
             enabledBox.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                    enabled(enabledBox.isSelected());
@@ -262,15 +267,12 @@ abstract class SubPanel extends JPanel {
             if (year % 4 != 0) {
                 return false;
             }
-
             if (year % 100 != 0) {
                 return true;
             }
-
             if (year % 400 == 0) {
                 return true;
             }
-
             return false;
         }//end of isLeapYear          
     }//end of class dateChooser
@@ -369,7 +371,7 @@ abstract class SubPanel extends JPanel {
      * GUI komponent som gir brukeren i praksis tre valg mulige valg med checkbokser.
      * 1. ignorer, 2. false, 3. true. Nyttig for bruk i søke muligheter for brukereren
      */
-    class userInputAlternativeCheckbox extends JPanel {
+    class userInputAlternativeCheckbox extends JPanel{
         JCheckBox enabled, value;
         String title;
         public userInputAlternativeCheckbox(String Title) {
@@ -418,7 +420,7 @@ abstract class SubPanel extends JPanel {
             }
         }
         /**
-         * Setter verdien komponenten har
+         * Setter verdien komponenten skal ha
          * @param state 0 til 2, 0 ignorer, 1 false, 2 true
          */
         void setState(int state){
@@ -465,8 +467,7 @@ abstract class SubPanel extends JPanel {
     /**
      * GUI komponent for å vise Bolig objekter i en JTable. 
      */
-    class BoligTabellModel extends AbstractTableModel {
-
+    class BoligTabellModel extends AbstractTableModel{
         private String[] kolloner;
         private Bolig[] boliger;
 
@@ -478,7 +479,7 @@ abstract class SubPanel extends JPanel {
             return boliger[row];
         }
         @Override
-        public int getColumnCount() {
+        public int getColumnCount(){
             return kolloner.length;
         }
         @Override
@@ -559,6 +560,10 @@ abstract class SubPanel extends JPanel {
         }
 			
     }//end of isNUm
+    /**
+     * Klassen fungerer som et bilde editerings panel. 
+     * Kan vise bilder som er valgt, man kan fjerne de og få tilbake den endelige listen med bilder
+     */
     class EditImages extends JPanel{
         private Bolig bolig;
         
@@ -611,6 +616,11 @@ abstract class SubPanel extends JPanel {
             add(addImageButton);
             add(imagePanel);
         }
+        /**
+         * Legger angitt bilde til for visning i GUI og i array listen. 
+         * Bilder som blir dobbelt klikket kan bli fjernet. 
+         * @param Bilde Bilde som skal bli lagt til i GUI og liste
+         */
         private void addImage(Image Bilde){
             final Image bilde = Bilde;
             if(bilde != null){
@@ -652,5 +662,5 @@ abstract class SubPanel extends JPanel {
         Image[] getImages(){
             return bildeListe.toArray(new Image[bildeListe.size()]);
         }
-    }
-}
+    }//End class EditImages
+}//End class SubPanel
