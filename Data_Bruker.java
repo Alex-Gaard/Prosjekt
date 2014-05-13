@@ -12,11 +12,11 @@ import java.sql.SQLException;
 public class Data_Bruker extends Database {
 
 	// Tabeller
-	final static String TABLE_BRUKER = "bruker";
-	final static String TABLE_SØKER = "boligsøker";
-	final static String TABLE_UTLEIER = "utleier";
-	final static String TABLE_PASSORD_REGISTER = "bruker_passordregister";
-	final static String TABLE_BEHANDLER = "kundebehandler";
+	final static String TABLE_BRUKER = "Bruker";
+	final static String TABLE_SØKER = "Boligsøker";
+	final static String TABLE_UTLEIER = "Utleier";
+	final static String TABLE_PASSORD_REGISTER = "Bruker_passordregister";
+	final static String TABLE_BEHANDLER = "Kundebehandler";
 
 	// Kolonner
 	final static String COLUMN_PERSONNUMMER = "Personnummer";

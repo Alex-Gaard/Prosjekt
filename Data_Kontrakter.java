@@ -17,9 +17,9 @@ import javax.swing.table.DefaultTableModel;
 public class Data_Kontrakter extends Database {
 
 	// Tabeller
-	final static String TABLE_LEIEKONTRAKT = "leiekontrakt";
-	final static String TABLE_BOLIG = "bolig";
-	final static String TABLE_LEIEKONTRAKT_FORESPØRSEL = "leiekontrakt_forespørsel";
+	final static String TABLE_LEIEKONTRAKT = "Leiekontrakt";
+	final static String TABLE_BOLIG = "Bolig";
+	final static String TABLE_LEIEKONTRAKT_FORESPØRSEL = "Leiekontrakt_forespørsel";
 
 	// Kolonner
 	final static String COLUMN_BOLIG_BOLIG_ID = "Bolig_BoligID";
