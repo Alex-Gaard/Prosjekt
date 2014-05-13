@@ -132,6 +132,7 @@ public class SubPanel_Boligeier extends SubPanel {
      * Private metode bruk innad for å fjerne editerings visningen
      */
     private void clearEditPanel(){
+        System.out.println("remove called");
         editPanel.removeAll();
         revalidate();
     }//End clearEditPanel
@@ -355,6 +356,7 @@ public class SubPanel_Boligeier extends SubPanel {
                     if(checkBoligFields() && userInputCheckFieldsNotEmpty(new JTextComponent[]{etasjer, total_areal}) && userInputCheckFieldNumber(new JTextComponent[]{etasjer, total_areal})) {
                         Data_Boliger.updateBolig(new Enebolig(bolig.getId(), bolig.getEier(), getAdresse(), getPostadresse(), getAreal(), getRom(), getByggår(), getBesk(), null, getPris(), getEtasjer(), getKjeller(), getTotalAreal()), getEditImages().getImages());
                         updateCallback();
+                        JOptionPane.showMessageDialog(null, "Oppdatering vellykket");
                     }
                 }
             });
@@ -432,6 +434,7 @@ public class SubPanel_Boligeier extends SubPanel {
                     if(checkBoligFields() && userInputCheckFieldsNotEmpty(new JTextComponent[]{etasje}) && userInputCheckFieldNumber(new JTextComponent[]{etasje})) {
                         Data_Boliger.updateBolig(new Leilighet(bolig.getId(), bolig.getEier(), getAdresse(), getPostadresse(), getAreal(), getRom(), getByggår(),getBesk(), null, getPris(), getEtasje(), getHeis(), getBalkong(), getGarasje(), getFellesvask()), getEditImages().getImages());
                         updateCallback();
+                        JOptionPane.showMessageDialog(null, "Oppdatering vellykket");
                     }
                 }
             });
@@ -482,4 +485,4 @@ public class SubPanel_Boligeier extends SubPanel {
             return fellesvask.getState();
         }
     }//End class editLeilighet
-}
+}//End clas Boligeier
