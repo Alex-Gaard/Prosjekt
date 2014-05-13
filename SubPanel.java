@@ -130,6 +130,8 @@ abstract class SubPanel extends JPanel {
             
             add(new JLabel(tittel));
 
+            add(enabledBox);
+            
             add(JCBdStart);
             add(JCBmStart);
             add(JCByStart);
