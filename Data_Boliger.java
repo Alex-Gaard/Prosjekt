@@ -26,16 +26,16 @@ public class Data_Boliger extends Database {
 
     //T for table, C for collum
     //Boligsøker
-    public static final String T_BS_NAME = "boligsøker";
+    public static final String T_BS_NAME = "Boligsøker";
     public static final String T_BS_C_ID = "Bruker_Personnummer";
 
     //Boligeier
-    public static final String T_BE_NAME = "utleier";
+    public static final String T_BE_NAME = "Utleier";
     public static final String T_BE_C_ID = "Bruker_Personnummer";
     public static final String T_BE_C_FIRMA = "Firma";
 
     //Bolig Tabell Felter
-    public static final String T_B_NAME = "bolig";
+    public static final String T_B_NAME = "Bolig";
     public static final String T_B_C_ID = "BoligID";
     public static final String T_B_C_EIER = "Utleier_Bruker_Personnummer";
     public static final String T_B_C_ADRESSE = "Adresse";
@@ -46,63 +46,29 @@ public class Data_Boliger extends Database {
     public static final String T_B_C_BESKRIVELSE = "Beskrivelse";
     public static final String T_B_C_AVERTERT = "Avertert";
     public static final String T_B_C_PRIS = "Utleie_pris";
-
-    public static final String T_B_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + T_B_NAME
-            + " ("
-            + T_B_C_ID + " INT, "
-            + T_B_C_EIER + " INt, "
-            + T_B_C_ADRESSE + " VARCHAR(45), "
-            + T_B_C_POSTADRESSE + " INT, "
-            + T_B_C_BOAREAL + " INT, "
-            + T_B_C_ANTROM + " INT, "
-            + T_B_C_BYGGÅR + " INT, "
-            + T_B_C_BESKRIVELSE + " VARHCAR(145)"
-            + T_B_C_PRIS + " DATE, "
-            + T_B_C_AVERTERT + " INT"
-            + ")";
+    
     //Enebolig tabell
-    public static final String T_EB_NAME = "enebolig_og_rekkehus";
+    public static final String T_EB_NAME = "Enebolig_og_rekkehus";
     public static final String T_EB_C_ID = "Bolig_BoligID";
     public static final String T_EB_C_ETASJER = "Antall_etasjer";
     public static final String T_EB_C_KJELLER = "Kjeller";
     public static final String T_EB_C_TAREAL = "Tomt_areal";
-    public static final String T_EB_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + T_EB_NAME
-            + " ("
-            + T_EB_C_ID + " INT, "
-            + T_EB_C_ETASJER + " INT, "
-            + T_EB_C_KJELLER + " BOOLEAN, "
-            + T_EB_C_TAREAL + " INT"
-            + ")";
-
+   
     //Leilighet Tabell Felter
-    public static final String T_L_NAME = "leilighet";
+    public static final String T_L_NAME = "Leilighet";
     public static final String T_L_C_ID = "Bolig_BoligID";
     public static final String T_L_C_ETASJE = "Etasje";
     public static final String T_L_C_HEIS = "Heis";
     public static final String T_L_C_BALKONG = "Balkong";
     public static final String T_L_C_GARASJE = "Garasje";
     public static final String T_L_C_FELLESVASK = "Fellesvaskeri";
-    public static final String T_L_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + T_L_NAME
-            + "("
-            + T_L_C_ID + " INT, "
-            + T_L_C_ETASJE + " VARCHAR(255), "
-            + T_L_C_HEIS + " BOOLEAN, "
-            + T_L_C_BALKONG + " BOOLEAN, "
-            + T_L_C_GARASJE + " BOOLEAN, "
-            + T_L_C_FELLESVASK + " BOOLEAN"
-            + ")";
+   
     //Bilde Tabell Felter
-    public static final String T_BILD_NAME = "bolig_bilde";
+    public static final String T_BILD_NAME = "Bolig_bilde";
     public static final  String T_BILD_C_ID = "Bolig_BoligID";
     public static final  String T_BILD_C_BILDE = "Bilde";
     public static final  String T_BILD_C_DIGEST = "Digest";
-    public static final  String T_BILD_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + T_BILD_NAME
-            + "("
-            + T_BILD_C_ID + " INT, "
-            + T_BILD_C_BILDE + "LONGBLOB, "
-            + T_BILD_C_DIGEST + "VARCHAR(255)"
-            + ")";
-
+   
     /**
      * Inneholder objekter hvor de igjen inneholder bilder for hvert nedlastet bilde  for hver bolig.
      * I et forsøk på å minske belastningen på databasen, blir bildene mellomlagret i programmet. Hvis bilder blir oppdatert
