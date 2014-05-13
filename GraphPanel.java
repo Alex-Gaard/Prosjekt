@@ -55,7 +55,7 @@ public class GraphPanel {
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 
-				File f = new File("C:\\Users\\Alex\\Desktop\\gut.png");
+				File f = new File("grafBilde" + File.separator + "graf.png");
 				Image img = null;
 
 				try {
@@ -112,7 +112,7 @@ public class GraphPanel {
 	 *            Høyeste verdi som grafen kan ha.
 	 * @return Y kordinat for bar.
 	 */
-	public int getBarHeight(int yValue, int roundedHighest) {
+	private int getBarHeight(int yValue, int roundedHighest) {
 
 		double yCord = (yValue * 100) / roundedHighest;
 		yCord = Math.ceil((yCord * -3.25));
@@ -127,7 +127,7 @@ public class GraphPanel {
 	 *            Int array.
 	 * @return Høyeste element.
 	 */
-	public int getHighestCount(int[] counts) {
+	private int getHighestCount(int[] counts) {
 		int highest = -1;
 		for (int i : counts) {
 			if (i > highest) {
@@ -145,7 +145,7 @@ public class GraphPanel {
 	 *            Arrayet som skal bli reversert.
 	 * @return Reversert array.
 	 */
-	public String[] reverse(String[] arr) {
+	private String[] reverse(String[] arr) {
 		List<String> list = Arrays.asList(arr);
 		Collections.reverse(list);
 		return (String[]) list.toArray();
@@ -166,7 +166,7 @@ public class GraphPanel {
 	 *            være av type Date.
 	 * @return Array med antall forekomster.
 	 */
-	public int[] getCountForYear(String year, String table, String column) {
+	private int[] getCountForYear(String year, String table, String column) {
 
 		int[] counts = new int[12];
 
@@ -187,7 +187,7 @@ public class GraphPanel {
 	 *            Høyeste verdi som forekommer i grafen.
 	 * @return Skaleringn til grafen.
 	 */
-	public int getGraphMagnitude(int highest) {
+	private int getGraphMagnitude(int highest) {
 		int endMagnitude = GRAPH_START;
 
 		do {
@@ -211,7 +211,7 @@ public class GraphPanel {
 	 *            Høyeste verdi i grafen.
 	 * @return Array med tekst.
 	 */
-	public String[] getGraphLables(int highest) {
+	private String[] getGraphLables(int highest) {
 
 		int graphLabels = 5;
 
@@ -237,7 +237,7 @@ public class GraphPanel {
 	 *            Avrund til.
 	 * @return Avrundet tall.
 	 */
-	public int getRoundedToNearest(int num, int nearest) {
+	private int getRoundedToNearest(int num, int nearest) {
 
 		int rounded = num + (nearest - (num % nearest));
 		return rounded;

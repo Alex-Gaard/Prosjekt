@@ -4,8 +4,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -47,7 +51,19 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 		passord = new JPasswordField(15);
 
 		login.addActionListener(this);
-
+		
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+	    manager.addKeyEventDispatcher(new KeyEventDispatcher(){
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent e) {
+            	if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            		logIn();
+            	}    
+				return false;
+			}
+	    	
+	    });
+		   
 		JPanel outerJp = new JPanel();
 		outerJp.setLayout(new BoxLayout(outerJp, BoxLayout.PAGE_AXIS));
 
@@ -99,7 +115,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	 * 
 	 * @return true/false.
 	 */
-	public boolean loggInnBruker() {
+	private boolean loggInnBruker() {
 
 		if (!checkFields()) {
 			passord.setText("");
@@ -110,36 +126,23 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 		String id = this.personnummerField.getText();
 		String password = String.valueOf(passord.getPassword());
 
-		if (Data_Login.userMatchesPassword(id, password)) {
-			System.out.println("Fant bruker");
-		} else {
-			System.out.println("Fant ingen bruker");
+		if (!Data_Login.userMatchesPassword(id, password)) {
 			passord.setText("");
 			displayMessage("Personnummeret eller passordet som ble oppgitt var feil!");
 			return false;
 		}
 
 		if (Data_Login.userExists(Data_Login.TABLE_UTLEIER, id)) {
-			System.out.println("Fant utleier");
 			utleier = true;
-		} else {
-			System.out.println("Fant ingen utleier");
-
-		}
-
+		} 
+		
 		if (Data_Login.userExists(Data_Login.TABLE_SØKER, id)) {
-			System.out.println("Fant søker");
 			søker = true;
-		} else {
-			System.out.println("Fant ingen søkere");
-		}
+		} 
 
 		if (Data_Login.userExists(Data_Login.TABLE_BEHANDLER, id)) {
-			System.out.println("Fant behandler");
 			kundebehandler = true;
-		} else {
-			System.out.println("Fant ingen behandler");
-		}
+		} 
 
 		if (søker || utleier || kundebehandler) {
 			return true;
@@ -155,7 +158,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	 * 
 	 * @return true/false.
 	 */
-	public boolean checkFields() {
+	private boolean checkFields() {
 
 		if (personnummerField.getText().equals("")
 				|| String.valueOf(passord.getPassword()).equals("")) {
@@ -176,7 +179,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	 *            IDen til brukeren.
 	 * @return Bruker objekt.
 	 */
-	public Bruker getBrukerInfo(String id) {
+	private Bruker getBrukerInfo(String id) {
 
 		String brukerID = "";
 		String navn = "";
@@ -223,6 +226,41 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 
 		return null;
 	}// end of getBruker
+	
+	/**
+	 * Logger en bruker inn i applikasjonen.
+	 */
+	private void logIn(){
+		
+		Bruker b = null;
+		String id = personnummerField.getText();
+
+		if (loggInnBruker()) {
+			b = getBrukerInfo(id);
+		}
+
+		if (b == null) {
+			søker = false;
+			utleier = false;
+			kundebehandler = false;
+			return;
+		}
+
+		if (kundebehandler) {
+			parent.getRoot().swap(
+					new MainPanel_Kundebehandler(parent.getRoot(), b));
+		} else if (søker || utleier) {
+			parent.getRoot().swap(new MainPanel_Kunde(parent.getRoot(), b));
+		} else {
+			passord.setText("");
+			displayMessage("Personnummeret eller passordet som ble oppgitt var feil!");
+		}
+
+		søker = false;
+		utleier = false;
+		kundebehandler = false;
+
+	}//end of logIn
 
 	@Override
 	/**
@@ -230,36 +268,10 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == login) {
-			Bruker b = null;
-			String id = personnummerField.getText();
-
-			if (loggInnBruker()) {
-				b = getBrukerInfo(id);
-			}
-
-			if (b == null) {
-				søker = false;
-				utleier = false;
-				kundebehandler = false;
-				return;
-			}
-
-			if (kundebehandler) {
-				parent.getRoot().swap(
-						new MainPanel_Kundebehandler(parent.getRoot(), b));
-			} else if (søker || utleier) {
-				parent.getRoot().swap(new MainPanel_Kunde(parent.getRoot(), b));
-			} else {
-				passord.setText("");
-				displayMessage("Personnummeret eller passordet som ble oppgitt var feil!");
-			}
-
-			søker = false;
-			utleier = false;
-			kundebehandler = false;
-
+			
+			logIn();
 		}
 
 	}// end of actionPerformed
-
+	
 }// end of class SubPanel_Login
