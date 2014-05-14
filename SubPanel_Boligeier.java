@@ -29,12 +29,13 @@ public class SubPanel_Boligeier extends SubPanel {
     //Visning av boliger
     private JTable tabell;
     private BoligTabellModel tabellModel;
-    private JPanel editPanel;
+    
+    private editBolig boligPanel;
     
     private JButton oppdater;
     
     private TableUpdateCallback callback;
-    int t = 0;
+
 
     /**
      *
@@ -45,25 +46,29 @@ public class SubPanel_Boligeier extends SubPanel {
         
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
+        boligPanel = null;
+        
         tabell = new JTable();        
         tabell.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    editPanel.removeAll();
+                if (e.getClickCount() == 1) {
+                    if(boligPanel != null){
+                        remove(boligPanel);
+                    }
                     Bolig bolig = tabellModel.getBolig(tabell.getSelectedRow());
                     if (bolig instanceof Leilighet) {
-                        editPanel.add(new editLeilighet((Leilighet) bolig, callback));
+                        System.out.println("leil");
+                        boligPanel = new editLeilighet((Leilighet) bolig, callback);
+                        add(boligPanel);
+                        add(boligPanel);
                     } else if (bolig instanceof Enebolig) {
-                        editPanel.add(new editEnebolig((Enebolig) bolig, callback));
+                        boligPanel = new editEnebolig((Enebolig) bolig, callback);
+                        add(boligPanel);
                     }
-                    revalidate();
-                    editPanel.revalidate();
-                    editPanel.revalidate();
-                    editPanel.repaint();
+                        revalidate();
                 }
             }
-        });
-        editPanel = new JPanel();
+        });        
         oppdater = new JButton("Oppdater");
         oppdater.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -92,11 +97,6 @@ public class SubPanel_Boligeier extends SubPanel {
         invisPanel2.add(new JScrollPane(tabell));
         invisPanel2.add(Box.createVerticalGlue());
         add(invisPanel2);
-        
-        JPanel invisPanel3 = new JPanel();
-        invisPanel3.add(editPanel);
-        invisPanel3.add(Box.createVerticalGlue());
-        add(invisPanel3);
     }//End constructor
     /**
      * Private metode brukt innad for å oppdatere tabellen med boliger
@@ -123,11 +123,11 @@ public class SubPanel_Boligeier extends SubPanel {
      * @param bolig boligen som skal bli vist
      */
     private void resetEditPanel(Bolig bolig){
-        editPanel.removeAll();
+        remove(boligPanel);
             if (bolig instanceof Enebolig) {
-                editPanel.add(new editEnebolig((Enebolig) bolig, callback));
+                add(new editEnebolig((Enebolig) bolig, callback));
             } else if (bolig instanceof Leilighet) {
-                editPanel.add(new editLeilighet((Leilighet) bolig, callback));
+                add(new editLeilighet((Leilighet) bolig, callback));
             }
             revalidate();
     }//End resetEditPanel
@@ -135,9 +135,7 @@ public class SubPanel_Boligeier extends SubPanel {
      * Private metode bruk innad for å fjerne editerings visningen
      */
     private void clearEditPanel(){
-        System.out.println("clearEditPanel called but not working");
-        editPanel.removeAll();
-        editPanel.add(new JLabel(""));
+        remove(boligPanel);
         revalidate();
     }//End clearEditPanel
     /**
@@ -201,23 +199,22 @@ public class SubPanel_Boligeier extends SubPanel {
             JLpris = new JLabel("Pris");
 
             //Populate kontrakt table
-            kontraktModell = new DefaultTableModel(null, new String[]{"Period"});
+            /*kontraktModell = new DefaultTableModel(null, new String[]{"Period"});
             kontrakter = Data_Kontrakter.getKontrakterForBoligID(Bolig.getId()+"");
             for(int i=0;i<kontrakter.size();i++){
                 String[] row = new String[]{kontrakter.get(i).displayThePeriod()};
                 kontraktModell.addRow(row);
             }
             kontraktTable = new JTable(kontraktModell);
+            */
             
-            editPanel = new JPanel();
-            
-            oppdater = new JButton("Oppdater");
+            /*oppdater = new JButton("Oppdater");
             oppdater.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         updateList();
                     }
                 });
-            
+            */
             infoPanel = new JPanel();
             infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
             infoPanel.setBorder(
@@ -252,7 +249,6 @@ public class SubPanel_Boligeier extends SubPanel {
             
             imagePanel.add(editImages);
             
-            
             //add(kontraktTable);
             add(infoPanel);
             add(imagePanel);
@@ -263,7 +259,6 @@ public class SubPanel_Boligeier extends SubPanel {
         int getPostadresse(){
             return valueOf(postadresse.getText());
         }
-
         /**
          *
          * @return
@@ -271,7 +266,6 @@ public class SubPanel_Boligeier extends SubPanel {
         protected int getAreal(){
             return valueOf(areal.getText());
         }
-
         /**
          *
          * @return
