@@ -5,6 +5,7 @@ package boligformidling;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -121,6 +123,11 @@ public class SubPanel_KundeProfil extends SubPanel
     private final JButton slettprofilknapp;
     private JButton bliboligsøkerknapp;
     
+    //tilbakemeldingsvindu, del av lowerpanl
+    private final JLabel tilbakemeldingerL;
+    private final JTextArea tilbakemeldinger;
+    private int linjeteller;
+
     //tabell relaterte variabler.
     private JTable vistreff;
     private ResultSet søkerinfors;
@@ -149,6 +156,7 @@ public class SubPanel_KundeProfil extends SubPanel
         centerpanel = new JPanel();
         centerpanel.setLayout(new BorderLayout());
         lowerpanel = new JPanel();
+        lowerpanel.setLayout(new BorderLayout());
         
         add(upperpanel,BorderLayout.NORTH);
         add(centerpanel,BorderLayout.CENTER);
@@ -202,11 +210,19 @@ public class SubPanel_KundeProfil extends SubPanel
         centerpanelsub.setBorder(BorderFactory.createBevelBorder(1));
         centerpanelsub.add(tablepanel,BorderLayout.CENTER);
         centerpanel.add(centerpanelsub);
-       
-        lowerpanel.add(knapperpanel);
+        
+        //legger et tilbakemeldingsvindu til lowerpane
+        linjeteller = 0;
+        tilbakemeldinger = new JTextArea(4,1);
+        tilbakemeldinger.setEditable(false);
+        tilbakemeldinger.setBorder(BorderFactory.createEtchedBorder());
+        tilbakemeldingerL = new JLabel("Tilbakemeldinger:");
+        lowerpanel.add(tilbakemeldingerL,BorderLayout.NORTH);
+        lowerpanel.add(new JScrollPane(tilbakemeldinger),BorderLayout.CENTER);
+        lowerpanel.add(knapperpanel,BorderLayout.SOUTH);
         
         //Last brukerdata, blir gjort uavhengig av eventuelle brukersubtyper.
-        String sql = "SELECT * from bruker where Personnummer=" + personnummer + ";";
+        String sql = "SELECT * from Bruker where Personnummer=" + personnummer + ";";
         ResultSet rs = Data_Boliger.execQuery(sql);
         rs.next();
         
@@ -266,12 +282,15 @@ public class SubPanel_KundeProfil extends SubPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                int svar = JOptionPane.showConfirmDialog(null, "Advarsel! Svarer du ja vil din profil bli fullstendig slettet fra vårt system.");
+                String advarsel = "Advarsel! Svarer du ja vil din profil bli fullstendig slettet fra vårt system.";
+                int svar = JOptionPane.showConfirmDialog(null, advarsel);
+                tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+svar+")\n");
+
                 if (svar == 0)
                 {
                     if (utleiertest)
                     {
-                        String sql = "delete from utleier where Bruker_Personnummer="+personnummer+";";
+                        String sql = "delete from Utleier where Bruker_Personnummer="+personnummer+";";
                         try
                         {
                             Data_Boliger.execUpdate(sql);
@@ -284,13 +303,13 @@ public class SubPanel_KundeProfil extends SubPanel
                     if (boligsøkertest)
                     {
                         try {
-                            String sql = "delete from søkerinfo where Boligsøker_Bruker_Personnummer="+personnummer+";";
+                            String sql = "delete from SøkerInfo where Boligsøker_Bruker_Personnummer="+personnummer+";";
                             Data_Boliger.execUpdate(sql);
-                            sql = "delete from søkerkrav where Boligsøker_Bruker_Personnummer="+personnummer+";";
+                            sql = "delete from SøkerKrav where Boligsøker_Bruker_Personnummer="+personnummer+";";
                             Data_Boliger.execUpdate(sql);
-                            sql = "delete from boligsøker where Bruker_Personnummer="+personnummer+";";
+                            sql = "delete from Boligsøker where Bruker_Personnummer="+personnummer+";";
                             Data_Boliger.execUpdate(sql);
-                            sql = "delete from bruker where Personnummer="+personnummer+";";
+                            sql = "delete from Bruker where Personnummer="+personnummer+";";
                             Data_Boliger.execUpdate(sql);
                         } 
                         catch (SQLException ex) 
@@ -310,10 +329,11 @@ public class SubPanel_KundeProfil extends SubPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                JOptionPane.showMessageDialog(null, "OBS: Omstart er nødvendig for at endringene skal ta effekt.");
+                String obs = "OBS: Omstart er nødvendig for at endringene skal ta effekt.";
+                tilbakemeldinger.append("["+linjeteller++ + "] "+obs+"\n");
                 try
                 {
-                    Data_Boliger.execUpdate("delete from viste_boliger where bruker_Personnummer="+personnummer+";");
+                    Data_Boliger.execUpdate("delete from Viste_Boliger where bruker_Personnummer="+personnummer+";");
                 } 
                 catch (SQLException ex)
                 {
@@ -332,7 +352,7 @@ public class SubPanel_KundeProfil extends SubPanel
      */
     private void erboligsøker() throws SQLException
     {
-        String sql = "select * from boligsøker where Bruker_Personnummer="+personnummer+";";
+        String sql = "select * from Boligsøker where Bruker_Personnummer="+personnummer+";";
         ResultSet rs = Data_Boliger.execQuery(sql);
         rs.first();
         boligsøkertest = rs.first(); // if true: brukers personnummer er representert i boligs�ker
@@ -355,6 +375,7 @@ public class SubPanel_KundeProfil extends SubPanel
                     String advarsel = "Aksepterer du vil du bli underlagt norsk lov om boligsøker virksomhet.";
                     samling.add(new JLabel(advarsel) );
                     int bekreft = JOptionPane.showConfirmDialog(null,samling,"er du sikker på at du vil bli utleier?",2);
+                    tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+bekreft+")\n");
                     if (bekreft == 0)
                     {
                         slettblibliboligsøkerknappogbliboligsøker();
@@ -368,7 +389,7 @@ public class SubPanel_KundeProfil extends SubPanel
         knapperpanel.remove(bliboligsøkerknapp);
         try
         {
-            String sql = "insert into boligsøker VALUES('"+personnummer+"');";
+            String sql = "insert into Boligsøker (Bruker_Personnummer) VALUES('"+personnummer+"');";
             Data_Boliger.execUpdate(sql);
             populatesøkerinfo();
             
@@ -381,7 +402,7 @@ public class SubPanel_KundeProfil extends SubPanel
     
     private void populatesøkerinfo() throws SQLException
     {
-        String sql = "select * from søkerinfo where Boligsøker_Bruker_Personnummer='"+personnummer+"';";
+        String sql = "select * from SøkerInfo where Boligsøker_Bruker_Personnummer='"+personnummer+"';";
         søkerinfors = Data_Boliger.execQuery(sql);
         
         String noReg= "Ingen registrerte data.";
@@ -444,7 +465,7 @@ public class SubPanel_KundeProfil extends SubPanel
     
     private void populatesøkerkravinfo() throws SQLException
     {
-        String sql = "select * from søkerkrav where Boligsøker_Bruker_Personnummer='"+personnummer+"';";
+        String sql = "select * from SøkerKrav where Boligsøker_Bruker_Personnummer='"+personnummer+"';";
         søkerkravrs = Data_Boliger.execQuery(sql);
         søkerkravrs.first();
         
@@ -522,7 +543,7 @@ public class SubPanel_KundeProfil extends SubPanel
 
     private void erutleier() throws SQLException 
     {
-        String sql = "select * from utleier where Bruker_Personnummer="+personnummer+";";
+        String sql = "select * from Utleier where Bruker_Personnummer="+personnummer+";";
         ResultSet rs = Data_Boliger.execQuery(sql);
         utleiertest = rs.first(); // if true: brukers personnummer er representert i boligs�ker, ogs� til � sjekke om utleierdata skal oppdateres.
         
@@ -547,7 +568,8 @@ public class SubPanel_KundeProfil extends SubPanel
                     samling.add(new JLabel(advarsel) );
                     samling.add(firmanavn);
                     int bekreft = JOptionPane.showConfirmDialog(null,samling,"er du sikker på at du vil bli utleier?",2);
-                    
+                    tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+bekreft+")\n");
+
                     if (bekreft == 0)
                     {
                         String firmanavnString = firmanavn.getText();
@@ -563,7 +585,7 @@ public class SubPanel_KundeProfil extends SubPanel
         knapperpanel.remove(bliutleierknapp);
         try 
         {
-            String sql = "Insert into utleier VALUES('"+personnummer+"','"+firmanavn+"'); ";
+            String sql = "Insert into Utleier (Bruker_Personnumer,Firma) VALUES('"+personnummer+"','"+firmanavn+"'); ";
             Data_Boliger.execUpdate(sql);
             populateutleierdata();
         } catch (SQLException ex) 
@@ -574,7 +596,7 @@ public class SubPanel_KundeProfil extends SubPanel
     
     private void populateutleierdata() throws SQLException
     {
-        String sql = "select * from utleier where Bruker_Personnummer='"+personnummer+"';";
+        String sql = "select * from Utleier where Bruker_Personnummer='"+personnummer+"';";
         ResultSet utleierrs = Data_Boliger.execQuery(sql);
         
         utleierinfoL = new JLabel("Informasjon om deg som utleier:");
@@ -630,7 +652,7 @@ public class SubPanel_KundeProfil extends SubPanel
             Bolig[] array = Data_Boliger.getBoliger(null, null, areal, null, antallrom, byggår, null, pris, " order by Avertert desc ", 0);
 
             //fjern det som matcher boligID OG brukerID
-            String sql = "select * from viste_boliger where bruker_Personnummer='" + personnummer + "';";
+            String sql = "select * from Viste_Boliger where Bruker_Personnummer='" + personnummer + "';";
             ResultSet sett = Data_Boliger.execQuery(sql);
             List liste = new ArrayList();
             while (sett.next())
@@ -680,7 +702,7 @@ public class SubPanel_KundeProfil extends SubPanel
                 {
                     int rad = vistreff.getSelectedRow();
                     int BoligID = (int) model.getValueAt(rad, 0);
-
+                    tilbakemeldinger.append("["+linjeteller++ + "] "+"Bolig med ID:"+BoligID +" Er nå merket som sett før."+ "\n");
                     //psudo update visteboligerTabell i db.
                     model.removeRow(rad);
                     updatevisteboliger(BoligID);
@@ -707,7 +729,7 @@ public class SubPanel_KundeProfil extends SubPanel
     
     private void updatevisteboliger(int BoligID)
     {
-        String sql = "Insert into viste_boliger VALUES('"+personnummer+"','"+BoligID+"'); ";
+        String sql = "Insert into Viste_Boliger (Bolig_BoligID,Bruker_Personnummer) VALUES("+BoligID+","+personnummer+"); ";
         try
         {
             Data_Boliger.execUpdate(sql);
@@ -736,25 +758,29 @@ public class SubPanel_KundeProfil extends SubPanel
             }
             
         }
-        JOptionPane.showMessageDialog(null, "Feil, intet visbolig objekt er lagt til JTabbedPane.");
+        String error = "Feil!!\n Intet SubPanel_Boliger objekt er lagt til JTabbedPane.";
+        tilbakemeldinger.append("["+linjeteller++ + "] "+error + "\n");
+        JOptionPane.showMessageDialog(null, error+"\n");
         
     }
     
     private void lagre() //lagrer profil endringer i database tabellene
     {
+        boolean errors = false;
         String navnstring = Navn.getText();
         String adressestring = Adresse.getText();
         String emailstring = Email.getText();
         String tlfstring = Telefon.getText();
 
-        String sql = "UPDATE bruker "
+        String sql = "UPDATE Bruker "
                 + "SET "
                 + "Navn='" + navnstring + "', Adresse='" + adressestring + "', Email='" + emailstring + "', Telefon='" + tlfstring + "' "
                 + "WHERE Personnummer='" + personnummer + "';";
         try
         {
             Data_Boliger.execUpdate(sql);
-        } catch (SQLException ex)
+        } 
+        catch (SQLException ex)
         {
             Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -789,6 +815,44 @@ public class SubPanel_KundeProfil extends SubPanel
                 if (røyker.isSelected()) røykerint = 1; else røykerint = 0;
                 husdyrint = Integer.parseInt(husdyr.getText());
 
+                //fortsatt ingen garanti for at personnummeret er registrert i søkerinfo og søkerkrav, må derfor sjekke om kunden har spesifisert noe enda.
+                try
+                {
+
+                    sql = "select * from SøkerInfo WHERE Boligsøker_Bruker_Personnummer='" + personnummer + "';";
+                    ResultSet testrs = Data_Boliger.execQuery(sql); //brukes for å finne ut om personnummer er representert i søkerinfo;
+
+                    if (testrs.next()) //dvs personnummer er representert i søkerinfo;
+                    {
+                        sql = "UPDATE SøkerInfo "
+                                + "SET "
+                                + "Antall_personer='" + ant_persint + "', Sivilstatus='" + sivilstatusstring + "', Yrke='" + yrkestring + "'"
+                                + ",Røyker='" + røykerint + "', Husdyr='" + husdyrint + "' "
+                                + "WHERE Boligsøker_Bruker_Personnummer='" + personnummer + "';";
+                    }
+                    else//personnummeret er ikke representert i søkerinfo, da må vi legge til framfor å oppdatere.
+                    {
+                        sql = "Insert into SøkerInfo (Boligsøker_Bruker_Personnummer.Antall_personer,Sivilstatus,Yrke,Røyker,Husdyr) "
+                                + "VALUES('" + personnummer + "','" + ant_persint + "','"
+                                + sivilstatusstring + "','" + yrkestring + "'," + røykerint + ",'" + husdyrint + "');";
+                    }
+                    Data_Boliger.execUpdate(sql);
+                } catch (SQLException ex)
+                {
+                    Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            catch (NumberFormatException e) //ints må nesten vå være ints. bemerk at mysqls tinyints er bogus, 
+            //de blir behandlet akkurat som vanlige ints du kan fint sette en tinyint(1) til 30.
+            {
+                String error = "Feltene relatert til brukerens søkerinformasjon er angitt med ulovlige tegn, disse feltene ble ikke lagret.";
+                tilbakemeldinger.append("["+linjeteller++ + "] "+error+"\n");
+                errors = true;
+            }
+                    
+            try
+            {//inputtesting
                 //søkerkrav
                 minarealint = Integer.parseInt(minBoareal.getText());
                 maxarealint = Integer.parseInt(maxBoareal.getText());
@@ -798,68 +862,39 @@ public class SubPanel_KundeProfil extends SubPanel
                 maxprisint = Integer.parseInt(maxPris.getText());
                 peisint = Peis.getSelectedIndex();
                 parkeringint = Parkering.getSelectedIndex();
-                
-                
-            } catch (NumberFormatException e) //ints må nesten vå være ints. bemerk at mysqls tinyints er bogus, 
-                                               //de blir behandlet akkurat som vanlige ints du kan fint sette en tinyint(1) til 30.
-            {
-                JOptionPane.showMessageDialog(null, "Feltene har ikke gyldige verdier, ingenting vil bli lagret.");
-                return;
-            }
+                try //igjen må vi sjekke om søkerkrav allerede er angitt, eller ikke
+                {
 
-            //fortsatt ingen garanti for at personnummeret er registrert i søkerinfo og søkerkrav, må derfor sjekke om kunden har spesifisert noe enda.
-            try
-            {
+                    sql = "select * from SøkerKrav where Boligsøker_Bruker_Personnummer='" + personnummer + "';";
+                    ResultSet testrs = Data_Boliger.execQuery(sql); //brukes for å finne ut om personnummer er representert i søkerkrav;
+                    if (testrs.next())
+                    {
+                        sql = "UPDATE SøkerKrav "
+                                + "SET "
+                                + "Min_Areal='" + minarealint + "',Max_Areal='" + maxarealint + "',Min_Soverom='" + antsoveromint + "',"
+                                + "Min_Byggår='" + byggårint + "',Min_Pris='" + minprisint + "',Max_Pris='"
+                                + maxprisint + "',Peis='" + peisint + "',Parkering='" + parkeringint + "' "
+                                + "WHERE Boligsøker_Bruker_Personnummer='" + personnummer + "';";
+                    }
+                    else
+                    {
+                        sql = "Insert into SøkerKrav (Boligsøker_Bruker_Personnummer,Min_Areal,Max_Areal,Min_Soverom,Min_Byggår,Min_Pris,Max_Pris,Peis,Parkering) "
+                                + "VALUES('" + personnummer + "'," + minarealint + "," + maxarealint + "," + antsoveromint + ","
+                                + byggårint + "," + minprisint + "," + maxprisint + "," + peisint + "," + parkeringint + "); ";
 
-                sql = "select * from søkerinfo WHERE Boligsøker_Bruker_Personnummer='" + personnummer + "';";
-                ResultSet testrs = Data_Boliger.execQuery(sql); //brukes for å finne ut om personnummer er representert i søkerinfo;
-
-                if (testrs.next()) //dvs personnummer er representert i søkerinfo;
+                    }
+                    Data_Boliger.execUpdate(sql);
+                } catch (SQLException ex)
                 {
-                    sql = "UPDATE søkerinfo "
-                            + "SET "
-                            + "Antall_personer='" + ant_persint + "', Sivilstatus='" + sivilstatusstring + "', Yrke='" + yrkestring + "'"
-                            + ",Røyker='" + røykerint + "', Husdyr='" + husdyrint + "' "
-                            + "WHERE Boligsøker_Bruker_Personnummer='" + personnummer + "';";
+                    Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                else
-                {
-                    sql = "Insert into søkerinfo "
-                            + "VALUES('" + personnummer + "','" + ant_persint + "','" + 
-                            sivilstatusstring + "','" + yrkestring + "'," + røykerint + ",'" + husdyrint + "');";
-                }
-                Data_Boliger.execUpdate(sql);
-            } catch (SQLException ex)
+            } catch (NumberFormatException e)
             {
-                Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
+                String error = "Feltene relatert til brukerens boligkrav er angitt med ulovlige tegn, disse feltene ble ikke lagret.";
+                tilbakemeldinger.append("["+linjeteller++ + "] "+error + "\n");
+                errors = true;
             }
-            
-            try //kan egentlig lagt sammen denne try-catch blokken med den over, gjort for å få lettere debugging.
-            {
-                
-                sql = "select * from søkerkrav where Boligsøker_Bruker_Personnummer='" + personnummer + "';";
-                ResultSet testrs = Data_Boliger.execQuery(sql); //brukes for å finne ut om personnummer er representert i søkerkrav;
-                if (testrs.next())
-                {
-                    sql = "UPDATE søkerkrav "
-                        + "SET "
-                        + "Min_Areal='" + minarealint + "',Max_Areal='" + maxarealint + "',Min_Soverom='" + antsoveromint + "',"
-                        + "Min_Byggår='" + byggårint + "',Min_Pris='" + minprisint + "',Max_Pris='" 
-                            + maxprisint + "',Peis='" + peisint + "',Parkering='" + parkeringint + "' "
-                        + "WHERE Boligsøker_Bruker_Personnummer='" + personnummer + "';";
-                }
-                else
-                {
-                    sql = "Insert into søkerkrav "
-                    + "VALUES('" + personnummer + "',"+minarealint+","+maxarealint+","+antsoveromint+","
-                    + byggårint+","+0+","+minprisint+","+maxprisint+","+peisint+","+parkeringint+"); ";
-                     
-                }
-                Data_Boliger.execUpdate(sql);
-            } catch (SQLException ex)
-            {
-                Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
-            }
+ 
         }
         
         if (utleiertest)
@@ -867,7 +902,7 @@ public class SubPanel_KundeProfil extends SubPanel
             String firmastring = firma.getText();
             try
             {
-                sql = "UPDATE utleier "
+                sql = "UPDATE Utleier "
                         + "SET "
                         + "Firma='" + firmastring + "' "
                         + "WHERE Bruker_Personnummer=" + personnummer + ";";
@@ -879,5 +914,15 @@ public class SubPanel_KundeProfil extends SubPanel
                 Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        String sluttmelding;
+        if (errors == false)//ingen feil
+        {
+            sluttmelding = "Operasjonen var vellykket, alle felt ble lagret.";
+        }
+        else
+        {
+            sluttmelding = "Operasjonen var ikke helt vellykket, noen eller ingen felt ble lagret.";
+        }
+        tilbakemeldinger.append("["+linjeteller++ + "] "+sluttmelding + "\n");
     }
 }
