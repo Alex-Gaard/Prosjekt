@@ -34,7 +34,12 @@ public class SubPanel_Boligeier extends SubPanel {
     private JButton oppdater;
     
     private TableUpdateCallback callback;
-    
+    int t = 0;
+
+    /**
+     *
+     * @param parent
+     */
     public SubPanel_Boligeier(MainPanel parent){
         super(parent);
         
@@ -44,7 +49,6 @@ public class SubPanel_Boligeier extends SubPanel {
         tabell.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    //Fill in fields
                     editPanel.removeAll();
                     Bolig bolig = tabellModel.getBolig(tabell.getSelectedRow());
                     if (bolig instanceof Leilighet) {
@@ -54,6 +58,8 @@ public class SubPanel_Boligeier extends SubPanel {
                     }
                     revalidate();
                     editPanel.revalidate();
+                    editPanel.revalidate();
+                    editPanel.repaint();
                 }
             }
         });
@@ -75,7 +81,6 @@ public class SubPanel_Boligeier extends SubPanel {
                 clearEditPanel();
             }
         };
-        
         updateList();
         
         JPanel invisPanel1 = new JPanel();
@@ -132,7 +137,7 @@ public class SubPanel_Boligeier extends SubPanel {
     private void clearEditPanel(){
         System.out.println("clearEditPanel called but not working");
         editPanel.removeAll();
-        editPanel.add(new JLabel());
+        editPanel.add(new JLabel(""));
         revalidate();
     }//End clearEditPanel
     /**
@@ -163,6 +168,11 @@ public class SubPanel_Boligeier extends SubPanel {
         
         private JPanel infoPanel;
         
+        /**
+         *
+         * @param Bolig
+         * @param c
+         */
         public editBolig(Bolig Bolig, TableUpdateCallback c) {
             bolig = Bolig;
             callback = c;
@@ -253,24 +263,49 @@ public class SubPanel_Boligeier extends SubPanel {
         int getPostadresse(){
             return valueOf(postadresse.getText());
         }
+
+        /**
+         *
+         * @return
+         */
         protected int getAreal(){
             return valueOf(areal.getText());
         }
+
+        /**
+         *
+         * @return
+         */
         protected int getRom(){
             return valueOf(rom.getText());
         }
+
+        /**
+         *
+         * @return
+         */
         protected int getByggår(){
             return valueOf(byggår.getText());
         }
+
+        /**
+         *
+         * @return
+         */
         protected String getBesk(){
             return beskrivelse.getText();
         }
+
+        /**
+         *
+         * @return
+         */
         protected int getPris(){
             return valueOf(pris.getText());
         }
         /**
          * Sjekker om feltene i denne klassen er riktige før en før en insetting/oppdatering av databasen
-         * @return 
+         * @return true hvis ingen var tomme
          */
         boolean checkBoligFields() {
             return userInputCheckFieldsNotEmpty(new JTextComponent[]{adresse, postadresse, areal, rom, byggår, beskrivelse, pris}) && userInputCheckFieldNumber(new JTextComponent[]{postadresse, areal, rom, byggår, pris});
@@ -284,14 +319,14 @@ public class SubPanel_Boligeier extends SubPanel {
         }
         /**
          * Gir tilbake JPanel'et som har ansvar for å vise bildene knyttet til boligen og editere dem. Bruket av sine arvinger.
-         * @return 
+         * @return gir panelet som vise bildene, til sine arviger
          */
         EditImages getEditImages(){
             return editImages; 
         }
         /**
          * Gir tilbake JPanel'et som har ansvar for å vise informasjonen knyttet til boligen. Brukt av sine arvinger
-         * @return 
+         * @return til sine arvinger, returnerer info panelet som de bruker til å legget til mer ting
          */
         JPanel getInfoPanel(){
             return infoPanel;

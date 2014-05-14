@@ -30,7 +30,12 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
     private JButton eneboligKnapp, leilighetKnapp, selectBilde;
 
     private EditImages editImagesPanel;
+    private JPanel editImagesPanelHolder;
     
+    /**
+     *
+     * @param parent
+     */
     public SubPanel_RegistrerBoliger(MainPanel parent){
         super(parent);
         
@@ -65,8 +70,14 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         JLbeskrivelse = new JLabel("Beskrivelse");
         JLtotal_areal = new JLabel("Total areal");
         
+        //Panelet som viser bilde henting/sletting. EditImages klassen er i SubPanel
+        editImagesPanelHolder = new JPanel();
+        editImagesPanel = new EditImages(null);
+        editImagesPanelHolder.add(editImagesPanel);
+        
         leilighetKnapp = new JButton("Sett Inn en Leilighet");
         eneboligKnapp = new JButton("Sett Inn en Enebolig");
+        //"Legg til Leilighet" Knapp. Sjekker at nødvendige felter gydlige
         leilighetKnapp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(editImagesPanel.getImages().length < 1){
@@ -86,6 +97,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
                 }
             }
         });
+        //"Legg til Enebolig" Knapp. Sjekker at nødvendige felter gydlige
         eneboligKnapp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(editImagesPanel.getImages().length < 1){
@@ -105,6 +117,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
                 }
             }
         });
+        //GUI komponering
         JPanel boligPanel = new JPanel();
         boligPanel.setLayout(new BoxLayout(boligPanel, BoxLayout.PAGE_AXIS));
         boligPanel.setBorder(
@@ -155,10 +168,8 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         leilighetPanel.add(fellesvask);
         leilighetPanel.add(leilighetKnapp);
         
-        editImagesPanel = new EditImages(null);
-        
         JPanel invisPanel1 = new JPanel();
-        invisPanel1.add(editImagesPanel);
+        invisPanel1.add(editImagesPanelHolder);
         invisPanel1.add(Box.createVerticalGlue());
         add(invisPanel1);
         
@@ -186,8 +197,9 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         for(int i=0;i<checkBoxList.length;i++){
             checkBoxList[i].setState(false);
         }
+        editImagesPanelHolder.removeAll();
         editImagesPanel = new EditImages(null);
-        editImagesPanel.revalidate();    
+        editImagesPanelHolder.add(editImagesPanel);
         revalidate();
     }//End reset
 }//End class SubPanel_RegistrerBoliger
