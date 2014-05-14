@@ -119,7 +119,7 @@ public class SubPanel_RegistrerBehandler extends SubPanel implements
 	 * 
 	 * @return true/false
 	 */
-	public boolean checkFields() {
+	private boolean checkFields() {
 
 		if (personnummerField.getText().equals("")
 				|| navnField.getText().equals("")
@@ -193,7 +193,7 @@ public class SubPanel_RegistrerBehandler extends SubPanel implements
 	 * Registrerer en kundebehandler utifra informasjonen som er fyllt inn i
 	 * feltene.
 	 */
-	public void registrerBehandler() {
+	private void registrerBehandler() {
 
 		if (!checkFields())
 			return;
@@ -253,7 +253,7 @@ public class SubPanel_RegistrerBehandler extends SubPanel implements
 	/**
 	 * Nuller ut alle tekstfeltene i GUIen.
 	 */
-	public void resetFields() {
+	private void resetFields() {
 
 		personnummerField.setText("");
 		navnField.setText("");

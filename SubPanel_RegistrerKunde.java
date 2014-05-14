@@ -171,7 +171,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	/**
 	 * Registrerer en utleier(setter en ny utleier inn i databasen).
 	 */
-	public void registrerUtleier() {
+	private void registrerUtleier() {
 
 		if (!checkFields("utleier")) {
 			return;
@@ -208,8 +208,11 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 			Data_Bruker.getConnection().commit();
 			displayMessage("Ny utleier ble registrert");
 			cleanFields();
-		} catch (SQLException ex) {
-			System.out.println("Feil under innsetting: " + ex);
+		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ex){
+			
+			displayMessage("En bruker med dette personnummeret eksisterer allerede!");
+		}catch (SQLException ex) {
+			displayMessage("En feil oppstod, brukeren ble ikke registrert!");
 		}
 
 	}// end of registrerUtleier
@@ -217,7 +220,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	/**
 	 * Registrerer en søker(setter en ny søker inn i databasen).
 	 */
-	public void registrerSøker() {
+	private void registrerSøker() {
 
 		if (!checkFields("søker")) {
 			return;
@@ -278,7 +281,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	/**
 	 * Nuller ut alle tekstfeltene i GUIen.
 	 */
-	public void cleanFields() {
+	private void cleanFields() {
 
 		personnummerField.setText("");
 		navnField.setText("");
@@ -303,7 +306,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	 *            kunden tilhører.
 	 * @return true/false.
 	 */
-	public boolean checkFields(String gruppe) {
+	private boolean checkFields(String gruppe) {
 
 		if (personnummerField.getText().equals("")
 				|| navnField.getText().equals("")

@@ -227,7 +227,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * Tar backup av databasen utifra informasjonen som er blitt fyllt ut i
 	 * tekstfeltene Dataen vil bli lagret lokalt på maskinen
 	 */
-	public void backup() {
+	private void backup() {
 
 		if (!checkBackupFields()) {
 			displayMessage("Fyll inn alle de nødvendige feltene\n");
@@ -239,18 +239,31 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 		ResultSet rs = null;
 
 		String databasePath = backupDatabaseField.getText();
-		String path = backupSqlField.getText();
+		String sqlPath = backupSqlField.getText();
+		String imagePath = backupImageField.getText();
+
 		int end = databasePath.lastIndexOf("/") + 1;
 		String databaseName = databasePath.substring(end);
 		String databaseUserName = backupUserNameField.getText();
-		String databasePassord = String.valueOf(backupPasswordField.getPassword());
+		String databasePassord = String.valueOf(backupPasswordField
+				.getPassword());
+
+		if (!checkFilePath(sqlPath)) {
+			displayMessage("Filstien til SQL lagringsplassen er ikke korrekt");
+			return;
+		}
+
+		if (!checkFilePath(imagePath)) {
+			displayMessage("Filstien til bilde lagringsplassen er ikke korrekt");
+			return;
+		}
 
 		ArrayList<Table> table = new ArrayList<Table>();
 		PrintWriter out = null;
 
 		try {
 
-			out = new PrintWriter(new BufferedWriter(new FileWriter(path
+			out = new PrintWriter(new BufferedWriter(new FileWriter(sqlPath
 					+ File.separator + "backup.sql", true)));
 
 			Class.forName("com.mysql.jdbc.Driver");
@@ -352,9 +365,6 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 		} catch (SQLException ex) {
 			displayMessage("En feil oppstod under koblingen til databasen,\n "
 					+ "sjekk om alle feltene er fyllt inn med riktig informasjon");
-		} catch (FileNotFoundException ex) {
-			displayMessage("En av filstiene er ikke gyldig");
-
 		} catch (Exception ex) {
 			System.out.println("Feil i backup: " + ex);
 			displayMessage("Backup var mislykket\n");
@@ -380,6 +390,19 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	}// end of backup
 
 	/**
+	 * Sjekker om en filsti eksisterer på maskinen.
+	 * Utifra om en gyldig filsti ble funnet eller ikke, vil metoden returnere true/false;
+	 * 
+	 * @param absoluteFilePath Filstien som skal sjekkes.
+	 * @return true/false;
+	 */
+	private boolean checkFilePath(String absoluteFilePath) {
+		File f = new File(absoluteFilePath);
+		return f.exists();
+
+	}// end of checkFilePath
+
+	/**
 	 * Laster ned et bilde og lagrer det lokalt på maskinen.
 	 * 
 	 * @param is
@@ -387,7 +410,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * @param name
 	 *            Navnet til bildet.
 	 */
-	public void downloadImage(InputStream is, String name) {
+	private void downloadImage(InputStream is, String name) {
 
 		String path = backupImageField.getText();
 
@@ -421,7 +444,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * Gjenoppretter en database fra innholdet til en spesifisert SQL fil, og
 	 * mappe med bilder.
 	 */
-	public void restore() {
+	private void restore() {
 
 		if (!checkRestoreFields()) {
 			displayMessage("Fyll inn alle de nødvendige feltene\n");
@@ -438,9 +461,18 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 		String databaseUserName = restoreUserNameField.getText();
 		String databasePassord = String.valueOf(restorePasswordField
 				.getPassword());
-		File sqlData = new File(sqlPath);
-		
-		try(BufferedReader br = new BufferedReader(new FileReader(sqlData));){
+
+		if (!checkFilePath(sqlPath)) {
+			displayMessage("Filstien til SQL lagringsplassen er ikke korrekt");
+			return;
+		}
+
+		if (!checkFilePath(imagePath)) {
+			displayMessage("Filstien til bilde lagringsplassen er ikke korrekt");
+			return;
+		}
+
+		try (BufferedReader br = new BufferedReader(new FileReader(sqlPath));) {
 
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://"
@@ -465,7 +497,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 			ArrayList<Table> table = new ArrayList<Table>();
 
 			statement = connect.createStatement();
-
+            //Lagrer info om tabeller i Table objekter
 			for (int i = 0; i < queries.size(); i++) {
 
 				if (queries.get(i).indexOf("insert into") >= 0) {
@@ -473,7 +505,6 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 					boolean exists = false;
 					int index = 0;
 					for (int c = 0; c < table.size(); c++) {
-						// prøv og teste med equals() istedenfor indexOf
 						if (table.get(c).getTableName().indexOf(tableName) >= 0) {
 							exists = true;
 							index = c;
@@ -513,7 +544,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 
 			}// end of for
 
-			// Setter opp alle referanser
+			// Setter opp alle referanser til tabellene i databasen
 			for (int i = 0; i < table.size(); i++) {
 				table.get(i).setReferences(table.get(i).getCreateTableString());
 			}
@@ -525,9 +556,9 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 				}
 
 			}
-
+            
+			//Skriver ut SQL setninger til databasen
 			while (table.size() > 0) {
-
 				for (int i = 0; i < table.size(); i++) {
 					if (table.get(i).readyForInsert(createdTables)) {
 						statement.execute(table.get(i).getCreateTableString());
@@ -545,7 +576,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 				}// end of for
 			}// end of while
 
-			// Laster opp bilder
+			// Laster opp bilder til databasen
 			File f = new File(imagePath);
 			File[] bilder = null;
 			if (f.exists()) {
@@ -598,9 +629,6 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 			displayMessage("En feil oppstod under koblingen til databasen,\n "
 					+ "sjekk om alle feltene er fyllt inn med riktig informasjon");
 
-		} catch (FileNotFoundException ex) {
-			displayMessage("En av filstiene er ikke gyldig");
-
 		} catch (Exception ex) {
 			System.out.println("Feil i restore: " + ex);
 			displayMessage("Feil under gjenoppretting av database\n");
@@ -614,7 +642,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 			try {
 				connect.close();
 			} catch (Exception e) {};
-			
+
 		}
 
 	}// end of restore
@@ -626,7 +654,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 *            Tabellstrukturen.
 	 * @return Navnet til tabellen.
 	 */
-	public String parseCreateTable(String createTableString) {
+	private String parseCreateTable(String createTableString) {
 		String start = createTableString.replace("CREATE TABLE IF NOT EXISTS ",
 				"");
 		int end = start.indexOf("(");
@@ -642,7 +670,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 *            INSERT setning.
 	 * @return Navnet til tabellen.
 	 */
-	public String parseInsert(String insertString) {
+	private String parseInsert(String insertString) {
 
 		String start = insertString.replace("insert into ", "");
 		int end = start.indexOf(" (");
@@ -653,7 +681,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	/**
 	 * Setter stien hvor SQL koden til databasen vil bli lagret.
 	 */
-	public void setBackupPath() {
+	private void setBackupPath() {
 
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -672,7 +700,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	/**
 	 * Setter stien hvor bildene fra databasen vil bli lagret.
 	 */
-	public void setImagePath() {
+	private void setImagePath() {
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		jfc.setCurrentDirectory(new File("."));
@@ -691,7 +719,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * Setter stien hvor SQL koden vil bli hentet fra under gjenopprettingen av
 	 * databasen.
 	 */
-	public void findBackupPath() {
+	private void findBackupPath() {
 
 		JFileChooser jfc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -713,7 +741,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * Setter stien hvor bildene vil bli hentet fra under gjenopprettingen av
 	 * databasen.
 	 */
-	public void findImagePath() {
+	private void findImagePath() {
 
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -735,7 +763,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * 
 	 * @return true/false.
 	 */
-	public boolean checkBackupFields() {
+	private boolean checkBackupFields() {
 		if (backupSqlField.getText().equals("")
 				|| backupImageField.getText().equals("")
 				|| backupDatabaseField.getText().equals("")
@@ -752,7 +780,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * 
 	 * @return true/false.
 	 */
-	public boolean checkRestoreFields() {
+	private boolean checkRestoreFields() {
 
 		if (restoreSqlField.getText().equals("")
 				|| restoreImageField.getText().equals("")

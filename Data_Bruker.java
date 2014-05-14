@@ -31,8 +31,8 @@ public class Data_Bruker extends Database {
 	final static String COLUMN_PASSORD = "Passord";
 
 	/**
-	 * Setter inn en ny bruker i databasen. Utifra om innsettingen var vellykket
-	 * eller ikke, vil metoden returnere true/false.
+	 * Setter inn en ny bruker i databasen. Hvis innsettingen var vellykket vil metoden returnere true.
+	 * Hvis en feil skulle oppstå vil metoden throwe en SQLException.
 	 * 
 	 * @param personnummer
 	 *            Personnummeret til brukeren.
@@ -46,10 +46,13 @@ public class Data_Bruker extends Database {
 	 *            Telefonnummeret til brukeren.
 	 * @param postnummer
 	 *            Postnummeret til brukeren.
-	 * @return true/false.
+	 * @throws SQLException Hvis en feil skulle oppstå under innsettingen.
+	 * @return true/throw SQLException.
+	 *
 	 */
 	public static boolean insertBruker(String personnummer, String navn,
-			String adresse, String email, String telefon, String postnummer) {
+			String adresse, String email, String telefon, String postnummer) throws SQLException{
+		
 		String sql = "insert into " + TABLE_BRUKER + "(" + COLUMN_PERSONNUMMER
 				+ "," + COLUMN_NAVN + "," + COLUMN_ADRESSE + "," + COLUMN_EMAIL
 				+ "," + COLUMN_TELEFON + "," + COLUMN_POSTNUMMER + ","
@@ -62,7 +65,7 @@ public class Data_Bruker extends Database {
 			return true;
 		} catch (SQLException ex) {
 			System.out.println("Feil i insertBruker: " + ex);
-			return false;
+			throw ex;	
 		}
 
 	}// End of insertBruker
