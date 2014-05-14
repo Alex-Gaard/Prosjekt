@@ -130,7 +130,7 @@ public class SubPanel_KontraktForespørsler extends SubPanel implements
 	/**
 	 * Viser forespørsler som ikke har blitt påtatt.
 	 */
-	public void showRequests() {
+	private void showRequests() {
 
 		while (forespørselModel.getRowCount() > 0) {
 			forespørselModel.removeRow(0);
@@ -143,7 +143,7 @@ public class SubPanel_KontraktForespørsler extends SubPanel implements
 	/**
 	 * Påtar en forespørsel for kundebehandleren.
 	 */
-	public void takeOnRequest() {
+	private void takeOnRequest() {
 
 		int rad = forespørselTable.getSelectedRow();
 		if (rad == -1) {
@@ -172,7 +172,7 @@ public class SubPanel_KontraktForespørsler extends SubPanel implements
 	/**
 	 * Viser forespørsler som kundebehandler har påtatt seg.
 	 */
-	public void showUndertakenRequests() {
+	private void showUndertakenRequests() {
 
 		while (påtattModel.getRowCount() > 0) {
 			påtattModel.removeRow(0);
@@ -187,7 +187,7 @@ public class SubPanel_KontraktForespørsler extends SubPanel implements
 	/**
 	 * Fjerner en forespørsel som kundebehandler har påtatt seg.
 	 */
-	public void fjernPåtattKontrakt() {
+	private void fjernPåtattKontrakt() {
 
 		int rad = påtattTable.getSelectedRow();
 		if (rad == -1) {

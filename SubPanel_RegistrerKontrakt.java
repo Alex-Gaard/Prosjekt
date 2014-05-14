@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -151,7 +152,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 		outerJp.add(regButtonJp);
 		add(outerJp);
-
+		
 	}// end of constructor
 
 	/**
@@ -166,7 +167,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 *            Året i datoen.
 	 * @return true/false.
 	 */
-	public boolean checkDate(String dag, String Måned, String år) {
+	private boolean checkDate(String dag, String Måned, String år) {
 		String date = dag + "-" + Måned + "-" + år;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
@@ -187,7 +188,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 *            Personnummmeret til utleieren.
 	 * @return true/false.
 	 */
-	public boolean checkUtleierPersonnummer(String utleierPersonnummer) {
+	private boolean checkUtleierPersonnummer(String utleierPersonnummer) {
 
 		return Data_Login.userExists(Data_Login.TABLE_UTLEIER,
 				utleierPersonnummer);
@@ -202,7 +203,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 *            Personnummmeret til boligsøkeren.
 	 * @return true/false.
 	 */
-	public boolean checkBoligsøkerPersonnummer(String boligsøkerPersonnummer) {
+	private boolean checkBoligsøkerPersonnummer(String boligsøkerPersonnummer) {
 
 		return Data_Login.userExists(Data_Login.TABLE_SØKER,
 				boligsøkerPersonnummer);
@@ -217,7 +218,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 *            Personnummmeret til behandleren.
 	 * @return true/false.
 	 */
-	public boolean checkBehandlerPersonnummer(String behandlerPersonnummer) {
+	private boolean checkBehandlerPersonnummer(String behandlerPersonnummer) {
 
 		return Data_Login.userExists(Data_Login.TABLE_BEHANDLER,
 				behandlerPersonnummer);
@@ -232,7 +233,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 *            IDen til boligen.
 	 * @return true/false.
 	 */
-	public boolean checkBoligID(String boligID) {
+	private boolean checkBoligID(String boligID) {
 
 		return Data_Kontrakter.boligExists(boligID);
 
@@ -246,7 +247,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 *            IDen til boligen.
 	 * @return true/false.
 	 */
-	public boolean checkKontrakt(String boligID) {
+	private boolean checkKontrakt(String boligID) {
 
 		return !Data_Kontrakter.aktivKontraktExists(boligID);
 
@@ -258,7 +259,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 * 
 	 * @return true/false.
 	 */
-	public boolean checkFields() {
+	private boolean checkFields() {
 		String behandlerPersonnummer = this.behandlerID.getText();
 		String boligID = this.boligID.getText();
 		String utleierPersonnummer = this.utleierID.getText();
@@ -318,9 +319,9 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 		String startDag = (String) avtaleStartDag.getSelectedItem();
 		String startMåned = (String) avtaleStartMåned.getSelectedItem();
-		String StartÅr = (String) avtaleStartÅr.getSelectedItem();
+		String startÅr = (String) avtaleStartÅr.getSelectedItem();
 
-		if (!checkDate(startDag, startMåned, StartÅr)) {
+		if (!checkDate(startDag, startMåned, startÅr)) {
 			displayMessage("Start datoen var ikke gyldig\n");
 			return false;
 		}
@@ -332,8 +333,19 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 		if (!checkDate(sluttDag, sluttMåned, sluttÅr)) {
 			displayMessage("Slutt datoen var ikke gyldig\n");
 			return false;
-		}
+		}		
+		
+		Calendar startDato = Calendar.getInstance();
+		startDato.set(Integer.parseInt(startÅr), Integer.parseInt(startMåned),Integer.parseInt(startDag));
+		
+		Calendar sluttDato = Calendar.getInstance();
+		sluttDato.set(Integer.parseInt(sluttÅr), Integer.parseInt(sluttMåned),Integer.parseInt(sluttDag));
 
+		if(!startDato.before(sluttDato)){
+			displayMessage("Slutt datoen må være etter start datoen!");
+			return false;
+		}
+		
 		if (!checkKontrakt(boligID)) {
 			displayMessage("Kontrakten for bolig ID " + boligID
 					+ " er fortsatt aktiv");
@@ -346,7 +358,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	/**
 	 * Setter alle feltene i GUIen tilbake til sin opprinnelige verdi.
 	 */
-	public void resetFields() {
+	private void resetFields() {
 
 		behandlerID.setText("");
 		boligID.setText("");
@@ -371,7 +383,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 * 
 	 * @return true/false.
 	 */
-	public boolean registrerKontrakt() {
+	private boolean registrerKontrakt() {
 
 		String behandlerPersonnummer = this.behandlerID.getText();
 		int boligID = Integer.parseInt(this.boligID.getText());

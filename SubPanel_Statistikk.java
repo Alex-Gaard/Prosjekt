@@ -80,7 +80,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	 * Tegner en ny graf på SubPanel_Statistikk utifra informasjonen som er
 	 * fyllt inn i feltene.
 	 */
-	public void drawGraph() {
+	private void drawGraph() {
 
 		String år = yearField.getText();
 		String forslag = (String) jcb.getItemAt(jcb.getSelectedIndex());
@@ -108,7 +108,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	 * @param graphPanel
 	 *            Det nye graf panelet.
 	 */
-	public void swapGraph(JPanel graphPanel) {
+	private void swapGraph(JPanel graphPanel) {
 
 		graphJp.removeAll();
 		graphJp.add(graphPanel, BorderLayout.CENTER);
@@ -120,7 +120,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	/**
 	 * Henter ut info om databasen og skriver det ut på skjermen.
 	 */
-	public void getInfo() {
+	private void getInfo() {
 
 		infoJp.removeAll();
 
@@ -139,7 +139,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	 * 
 	 * @return Dette året.
 	 */
-	public String getThisYear() {
+	private String getThisYear() {
 
 		return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
 
@@ -154,7 +154,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	 *            Tabellen som blir brukt.
 	 * @return Tekst som beskriver en tabell.
 	 */
-	public String getTableInfo(String text, String tableName) {
+	private String getTableInfo(String text, String tableName) {
 
 		int count = Data_Statistikk.getTableCount(tableName);
 
@@ -171,7 +171,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	 * 
 	 * @return Gjennomsnittlig boligpris.
 	 */
-	public String getAvgBoligPrisInfo() {
+	private String getAvgBoligPrisInfo() {
 
 		int avg = Data_Statistikk.getAvgUtleiePris();
 

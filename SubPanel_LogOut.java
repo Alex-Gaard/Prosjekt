@@ -41,7 +41,7 @@ public class SubPanel_LogOut extends SubPanel implements ActionListener {
 	/**
 	 * Logger brukeren ut av programmet.
 	 */
-	public void logOut() {
+	private void logOut() {
 		bruker = null;
 		getMainPanel().getRoot().swap(
 				new MainPanel_LogIn(getMainPanel().getRoot(), bruker));

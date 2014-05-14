@@ -143,7 +143,7 @@ public class SubPanel_VisKontrakter extends SubPanel implements ActionListener {
 	/**
 	 * Viser fram kontrakter hvor personnummeret som er oppgitt inngår i GUIen.
 	 */
-	public void displayKontraktForPersonnummer() {
+	private void displayKontraktForPersonnummer() {
 
 		String personnummer = this.personnummerField.getText();
 		kontrakter = new ArrayList<Leiekontrakt>();
@@ -186,7 +186,7 @@ public class SubPanel_VisKontrakter extends SubPanel implements ActionListener {
 	/**
 	 * Viser fram kontrakter for bolig IDen som er fyllt inn i GUIen.
 	 */
-	public void displayKontraktForID() {
+	private void displayKontraktForID() {
 
 		String id = this.idField.getText();
 		kontrakter = new ArrayList<Leiekontrakt>();

@@ -19,10 +19,17 @@ public abstract class Database {
 	private static Statement statement = null;
 
 	// Databasekobling variabler
+	private final static String server = "localhost";
+	private final static String database = "mydb";
+	private final static String brukernavn = "root";
+	private final static String passord = "";
+	
+	/*
 	private final static String server = "student.cs.hioa.no";
 	private final static String database = "s193956";
 	private final static String brukernavn = "s193956";
 	private final static String passord = "passord";
+	 */
 
 	// Vindu
 	private static Vindu_Main vindu = null;
