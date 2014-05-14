@@ -73,7 +73,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         leilighetKnapp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(editImagesPanel.getImages().length < 1){
-                    JOptionPane.showMessageDialog(null, "Man må ha minst 1 bilde");
+                    JOptionPane.showMessageDialog(null, "Man må ha minst 1 jpg bilde");
                     return;
                 }
                 if (!userInputCheckFieldsNotEmpty(new JTextComponent[]{adresse, postadresse, areal, rom, byggår, beskrivelse, etasje, pris}) || !userInputCheckFieldNumber(new JTextComponent[]{postadresse, areal, rom, byggår, etasje, pris})) {
@@ -92,7 +92,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         eneboligKnapp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(editImagesPanel.getImages().length < 1){
-                    JOptionPane.showMessageDialog(null, "Man må ha minst 1 bilde");
+                    JOptionPane.showMessageDialog(null, "Man må ha minst 1 jpg bilde");
                     return;
                 }
                 if (!userInputCheckFieldsNotEmpty(new JTextComponent[]{adresse, postadresse, areal, rom, byggår, beskrivelse, etasjer, total_areal, pris}) || !userInputCheckFieldNumber(new JTextComponent[]{postadresse, areal, rom, byggår, etasjer, total_areal, pris})) {
@@ -192,6 +192,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
             checkBoxList[i].setState(false);
         }
         editImagesPanel = new EditImages(null);
+        editImagesPanel.revalidate();
         revalidate();
     }//End reset
 }//End class SubPanel_RegistrerBoliger

@@ -584,7 +584,7 @@ abstract class SubPanel extends JPanel {
                     addImage(bolig.getBilde(i));
                 }
             }
-            addImageButton = new JButton("Legg til bilde");
+            addImageButton = new JButton("Legg til bilde (jpg)");
             addImageButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                     JFileChooser jfc = new JFileChooser();
