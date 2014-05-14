@@ -48,10 +48,8 @@ public class SubPanel_Boligeier extends SubPanel {
                     editPanel.removeAll();
                     Bolig bolig = tabellModel.getBolig(tabell.getSelectedRow());
                     if (bolig instanceof Leilighet) {
-                        System.out.println("is leilighet");
                         editPanel.add(new editLeilighet((Leilighet) bolig, callback));
                     } else if (bolig instanceof Enebolig) {
-                        System.out.println("is enebolig");
                         editPanel.add(new editEnebolig((Enebolig) bolig, callback));
                     }
                     revalidate();
@@ -132,8 +130,9 @@ public class SubPanel_Boligeier extends SubPanel {
      * Private metode bruk innad for å fjerne editerings visningen
      */
     private void clearEditPanel(){
-        System.out.println("remove called");
+        System.out.println("clearEditPanel called but not working");
         editPanel.removeAll();
+        editPanel.add(new JLabel());
         revalidate();
     }//End clearEditPanel
     /**
@@ -201,6 +200,7 @@ public class SubPanel_Boligeier extends SubPanel {
             kontraktTable = new JTable(kontraktModell);
             
             editPanel = new JPanel();
+            
             oppdater = new JButton("Oppdater");
             oppdater.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -371,9 +371,9 @@ public class SubPanel_Boligeier extends SubPanel {
                 public void actionPerformed(ActionEvent e) {
                     if(JOptionPane.showConfirmDialog(null, "Er du sikkert på at du vil slette boligen?", "Slett Bolig", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                         if(Data_Boliger.removeBolig(bolig)){
+                            JOptionPane.showMessageDialog(null, "Boligen er slettet");
                             updateList();
                             removeCallback();
-                            JOptionPane.showMessageDialog(null, "Boligen er slettet");
                         }else{
                             JOptionPane.showMessageDialog(null, "Ikke slettet, ta kontakt med en kundebehandler hvis dette fortsetter.");
                         }
@@ -449,9 +449,9 @@ public class SubPanel_Boligeier extends SubPanel {
                 public void actionPerformed(ActionEvent e) {
                     if(JOptionPane.showConfirmDialog(null, "Er du sikkert på at du vil slette boligen?", "Slett Bolig", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                         if(Data_Boliger.removeBolig(bolig)){
+                            JOptionPane.showMessageDialog(null, "Boligen er slettet");
                             updateList();
                             removeCallback();
-                            JOptionPane.showMessageDialog(null, "Boligen er slettet");
                         }else{
                             JOptionPane.showMessageDialog(null, "Ikke slettet, ta kontakt med en kundebehandler hvis dette fortsetter.");
                         }

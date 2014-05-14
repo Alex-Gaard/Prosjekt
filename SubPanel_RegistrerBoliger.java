@@ -27,7 +27,6 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
 
     private JLabel JLadresse, JLpostadresse, JLareal, JLrom, JLbyggår, JLpris, JLetasje, JLetasjer, JLbeskrivelse, JLtotal_areal;
 
-    private JLabel enebolig, leilighet;
     private JButton eneboligKnapp, leilighetKnapp, selectBilde;
 
     private EditImages editImagesPanel;
@@ -52,7 +51,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         kjeller = new Checkbox("Kjeller");
         heis = new Checkbox("Heis");
         balkong = new Checkbox("Balkong");
-        garasje = new Checkbox("Balkong");
+        garasje = new Checkbox("Garasje");
         fellesvask = new Checkbox("Fellesvask");
 
         JLadresse = new JLabel("Adresse");
@@ -66,8 +65,6 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         JLbeskrivelse = new JLabel("Beskrivelse");
         JLtotal_areal = new JLabel("Total areal");
         
-        enebolig = new JLabel("--- Enebolig ---");
-        leilighet = new JLabel("--- Leilighet");
         leilighetKnapp = new JButton("Sett Inn en Leilighet");
         eneboligKnapp = new JButton("Sett Inn en Enebolig");
         leilighetKnapp.addActionListener(new ActionListener() {
@@ -137,8 +134,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         JPanel eneboligPanel = new JPanel();
         eneboligPanel.setLayout(new BoxLayout(eneboligPanel, BoxLayout.PAGE_AXIS));
         eneboligPanel.setBorder(
-            BorderFactory.createTitledBorder("Registrer Bolig"));        
-        eneboligPanel.add(enebolig);
+            BorderFactory.createTitledBorder("Registrer Enebolig"));        
         eneboligPanel.add(JLetasjer);
         eneboligPanel.add(etasjer);
         eneboligPanel.add(kjeller);
@@ -150,8 +146,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         JPanel leilighetPanel = new JPanel();
         leilighetPanel.setLayout(new BoxLayout(leilighetPanel, BoxLayout.PAGE_AXIS));
         leilighetPanel.setBorder(
-            BorderFactory.createTitledBorder("Registrer Bolig"));
-        leilighetPanel.add(leilighet);
+            BorderFactory.createTitledBorder("Registrer Leilighet"));
         leilighetPanel.add(JLetasje);
         leilighetPanel.add(etasje);
         leilighetPanel.add(heis);
@@ -192,7 +187,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
             checkBoxList[i].setState(false);
         }
         editImagesPanel = new EditImages(null);
-        editImagesPanel.revalidate();
+        editImagesPanel.revalidate();    
         revalidate();
     }//End reset
 }//End class SubPanel_RegistrerBoliger
