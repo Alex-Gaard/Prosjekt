@@ -2,7 +2,7 @@ package boligformidling;
 
 //Petter S.W Gjerstad
 //SubPanel_KundeProfil
-//Siste versjon kl 18:00 15.05.2014
+//Siste versjon kl 16:20 15.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -445,6 +445,7 @@ public class SubPanel_KundeProfil extends SubPanel
         {
             Data_boligsøker.insertspecintoboligsøker(personnummer);
             populatesøkerinfo();
+            getRootPane().revalidate();
             
         }
         catch (SQLException ex)
@@ -686,6 +687,7 @@ public class SubPanel_KundeProfil extends SubPanel
                 firmanavn ="Ingen registrerte data.";
             Data_utleier.insertspecintoutleier(personnummer, firmanavn);
             populateutleierdata();
+            getRootPane().revalidate();
         } catch (SQLException ex) 
         {
             Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
@@ -720,6 +722,7 @@ public class SubPanel_KundeProfil extends SubPanel
             
             firmaL = new JLabel("Firmaets navn:");
             firma = new JTextField(10);
+            utleierrs.first();
             if (utleierrs.next() == false) //dvs er utleier men ingen data er registrert.
             {
                 String noReg= "Ingen registrerte data.";
@@ -1012,7 +1015,8 @@ public class SubPanel_KundeProfil extends SubPanel
                 {
                     Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (NumberFormatException e)
+            } 
+            catch (NumberFormatException e)
             {
                 String error = "Feltene relatert til brukerens boligkrav er angitt med ulovlige tegn, disse feltene ble ikke lagret.";
                 tilbakemeldinger.append("["+linjeteller++ + "] "+error + "\n");
@@ -1027,7 +1031,9 @@ public class SubPanel_KundeProfil extends SubPanel
             {
                 String firmastring = firma.getText();
                 Data_utleier.updateutleier(firmastring, personnummer);
-            } catch (SQLException ex) {
+            } 
+            catch (SQLException ex) 
+            {
                 Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
