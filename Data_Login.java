@@ -30,7 +30,7 @@ public class Data_Login extends Database {
 	final static String COLUMN_POSTNUMMER = "Postnummer";
 
 	/**
-	 * Sjekker om en bruker med gitt id matcher gitt passord. Utifra om en
+	 * Sjekker om en bruker med gitt id matcher gitt passord. Ut ifra om en
 	 * bruker ble funnet eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param id
@@ -65,7 +65,7 @@ public class Data_Login extends Database {
 	}// end of userMatchesPassword
 
 	/**
-	 * Sjekker om bruker med gitt id finnes i gitt tabell. Utifra om en bruker
+	 * Sjekker om bruker med gitt id finnes i gitt tabell. Ut ifra om en bruker
 	 * ble funnet eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param table
@@ -99,7 +99,7 @@ public class Data_Login extends Database {
 	}// end of userExists
 
 	/**
-	 * Returnerer et ResultSet som inneholder informasjon om en bruker utifra
+	 * Returnerer et ResultSet som inneholder informasjon om en bruker Ut ifra
 	 * spesifisert id.
 	 * 
 	 * @param id

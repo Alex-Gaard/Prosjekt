@@ -139,7 +139,7 @@ public class Data_Kontrakter extends Database {
 
 	/**
 	 * Sjekker om en bolig med den spesifiserte IDen eksisterer i databasen.
-	 * Utifra om en bolig ble funnet eller ikke vil metoden returnere
+	 * Ut ifra om en bolig ble funnet eller ikke vil metoden returnere
 	 * true/false.
 	 * 
 	 * @param id
@@ -173,7 +173,7 @@ public class Data_Kontrakter extends Database {
 
 	/**
 	 * Sjekker om det eksisterer en aktiv kontrakt for en bolig med den
-	 * spesifiserte bolig IDen. Utifra om en aktiv kontrakt ble funnet eller
+	 * spesifiserte bolig IDen. Ut ifra om en aktiv kontrakt ble funnet eller
 	 * ikke, vil metoden returnere true/false.
 	 * 
 	 * @param boligID
@@ -207,7 +207,7 @@ public class Data_Kontrakter extends Database {
 
 	/**
 	 * Setter inn en ny kontrakt i databasen med de spesifiserte parameterene.
-	 * Utifra om en ny kontrakt ble satt inn eller ikke, vil metoden returnere
+	 * Ut ifra om en ny kontrakt ble satt inn eller ikke, vil metoden returnere
 	 * true/false.
 	 * 
 	 * @param boligID
@@ -291,7 +291,7 @@ public class Data_Kontrakter extends Database {
 
 	/**
 	 * Setter inn påtatte kontrakter for et JTable gjennom en DefaultTableModel.
-	 * Kontrakene som blir satt inn er spesifisert av behandlerIDen. Utifra om
+	 * Kontrakene som blir satt inn er spesifisert av behandlerIDen. Ut ifra om
 	 * metoden fant noen kontrakter eller ikke, vil metoden returnere
 	 * true/false.
 	 * 
@@ -338,7 +338,7 @@ public class Data_Kontrakter extends Database {
 	/**
 	 * Kontrakten hvor de spesifiserte parameterene
 	 * søkerPersonnummer,opprettetDato og boligID inngår vil bli påtatt av
-	 * behandleren med personnummer lik behandlerPersonnummer. Utifra om
+	 * behandleren med personnummer lik behandlerPersonnummer. Ut ifra om
 	 * påtagelsen var vellykket eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param behandlerPersonnummer
@@ -375,7 +375,7 @@ public class Data_Kontrakter extends Database {
 
 	/**
 	 * Fjerner en forespørsel fra databasen hvor de spesifiserte parameterene
-	 * inngår. Utifra om fjerningen av forespørselen var vellykket eller ikke,
+	 * inngår. Ut ifra om fjerningen av forespørselen var vellykket eller ikke,
 	 * vil metoden returnere true/false.
 	 * 
 	 * @param behandlerPersonnummer
@@ -410,7 +410,7 @@ public class Data_Kontrakter extends Database {
 
 	/**
 	 * Sjekker om en forespørsel med den spesifiserte bolig IDen eksisterer i
-	 * databasen. Utifra om en forespørsel ble funnet eller ikke, vil metoden
+	 * databasen. Ut ifra om en forespørsel ble funnet eller ikke, vil metoden
 	 * returnere true/false.
 	 * 
 	 * @param boligID
@@ -437,7 +437,7 @@ public class Data_Kontrakter extends Database {
 	}// end of forespørselExists
 
 	/**
-	 * Setter inn en ny kontrakt forespørsel. Utifra om en ny forespørsel ble
+	 * Setter inn en ny kontrakt forespørsel. Ut ifra om en ny forespørsel ble
 	 * satt inn eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param bolig
@@ -471,7 +471,7 @@ public class Data_Kontrakter extends Database {
 	}// end of nyKontraktForespørsel
 
 	/**
-	 * Returnerer en liste med forespørsler utifra de spesifiserte parameterene.
+	 * Returnerer en liste med forespørsler Ut ifra de spesifiserte parameterene.
 	 * Hvis en feil skulle oppstå under hentingen av kontrakter vil metoden
 	 * returnere null.
 	 * 

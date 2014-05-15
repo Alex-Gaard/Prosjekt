@@ -39,7 +39,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	public SubPanel_LogIn(MainPanel parent) {
 		super(parent);
 		setLayout(new GridBagLayout());
-
+	
 		lblWelcomeText = new JLabel("Velkommen til boligformidling!");
 		lblWelcomeText.setFont(new Font("Plain", Font.BOLD, 18));
 
@@ -51,19 +51,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 		passord = new JPasswordField(15);
 
 		login.addActionListener(this);
-		
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-	    manager.addKeyEventDispatcher(new KeyEventDispatcher(){
-			@Override
-			public boolean dispatchKeyEvent(KeyEvent e) {
-            	if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            		logIn();
-            	}    
-				return false;
-			}
-	    	
-	    });
-		   
+				   
 		JPanel outerJp = new JPanel();
 		outerJp.setLayout(new BoxLayout(outerJp, BoxLayout.PAGE_AXIS));
 
@@ -153,7 +141,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	}// end of loggInnBruker
 
 	/**
-	 * Sjekker om feltene er fyllt ut med riktig informasjon. Utifra resultatet
+	 * Sjekker om feltene er fyllt ut med riktig informasjon. Ut ifra resultatet
 	 * vil metoden returnere true/false.
 	 * 
 	 * @return true/false.
@@ -172,7 +160,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 	}// end of checkFields
 
 	/**
-	 * Henter informasjon om en bruker utifra den spesifiserte IDen, og
+	 * Henter informasjon om en bruker Ut ifra den spesifiserte IDen, og
 	 * returnerer et bruker objekt som representerer brukeren.
 	 * 
 	 * @param id

@@ -71,7 +71,7 @@ public class Data_Bruker extends Database {
 	}// End of insertBruker
 
 	/**
-	 * Setter inn en ny utleier i databasen. Utifra om innsettingen var
+	 * Setter inn en ny utleier i databasen. Ut ifra om innsettingen var
 	 * vellykket eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param personnummer
@@ -96,7 +96,7 @@ public class Data_Bruker extends Database {
 	}// end of insertUtleier
 
 	/**
-	 * Setter inn en ny boligsøker i databasen. Utifra om innsettingen var
+	 * Setter inn en ny boligsøker i databasen. Ut ifra om innsettingen var
 	 * vellykket eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param personnummer
@@ -120,7 +120,7 @@ public class Data_Bruker extends Database {
 	}// end of insertSøker
 
 	/**
-	 * Setter inn en ny kundebehandler i databasen. Utifra om innsettingen var
+	 * Setter inn en ny kundebehandler i databasen. Ut ifra om innsettingen var
 	 * vellykket eller ikke, vil metoden returnere true/false.
 	 * 
 	 * @param personnummer
@@ -145,7 +145,7 @@ public class Data_Bruker extends Database {
 
 	/**
 	 * Setter inn et nytt passord og bruker inn i passord registeret i
-	 * databasen. Utifra om innsettingen var vellykket eller ikke, vil metoden
+	 * databasen. Ut ifra om innsettingen var vellykket eller ikke, vil metoden
 	 * returnere true/false.
 	 * 
 	 * @param personnummer

@@ -63,10 +63,10 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 		infoJp.setLayout(new BoxLayout(infoJp, BoxLayout.PAGE_AXIS));
 
 		graphJp = new JPanel(new BorderLayout());
-		TitledBorder title = BorderFactory.createTitledBorder("Graph/Info");
+		TitledBorder title = BorderFactory.createTitledBorder("Graf/Info");
 		graphJp.setBorder(title);
-		graphJp.setPreferredSize(new Dimension(550, 400));
-
+		graphJp.setPreferredSize(new Dimension(550, 420));
+		
 		add(lblYear);
 		add(yearField);
 		add(jcb);
@@ -77,7 +77,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 	}// end of constructor
 
 	/**
-	 * Tegner en ny graf på SubPanel_Statistikk utifra informasjonen som er
+	 * Tegner en ny graf på SubPanel_Statistikk Ut ifra informasjonen som er
 	 * fyllt inn i feltene.
 	 */
 	private void drawGraph() {
@@ -134,17 +134,7 @@ public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 
 	}// end of getInfo
 
-	/**
-	 * Returnerer en string som viser hvilket år det er.
-	 * 
-	 * @return Dette året.
-	 */
-	private String getThisYear() {
-
-		return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-
-	}// end of getThisYear
-
+	
 	/**
 	 * Returnerer en string med tekst som beskriver en tabell i databasen.
 	 * 

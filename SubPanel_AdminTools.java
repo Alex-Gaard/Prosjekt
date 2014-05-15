@@ -224,7 +224,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	}// end of constructor
 
 	/**
-	 * Tar backup av databasen utifra informasjonen som er blitt fyllt ut i
+	 * Tar backup av databasen Ut ifra informasjonen som er blitt fyllt ut i
 	 * tekstfeltene Dataen vil bli lagret lokalt på maskinen
 	 */
 	private void backup() {
@@ -391,7 +391,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 
 	/**
 	 * Sjekker om en filsti eksisterer på maskinen.
-	 * Utifra om en gyldig filsti ble funnet eller ikke, vil metoden returnere true/false;
+	 * Ut ifra om en gyldig filsti ble funnet eller ikke, vil metoden returnere true/false;
 	 * 
 	 * @param absoluteFilePath Filstien som skal sjekkes.
 	 * @return true/false;
@@ -758,7 +758,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	}// end of findImagePath
 
 	/**
-	 * Sjekker om feltene for sikkerhetskopieing-funksjonen er gyldige, utifra
+	 * Sjekker om feltene for sikkerhetskopieing-funksjonen er gyldige, Ut ifra
 	 * resultatet vil metoden returnere true/false.
 	 * 
 	 * @return true/false.
@@ -775,7 +775,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	}// end of checkBackupFields
 
 	/**
-	 * Sjekker om feltene for gjenopprettings-funksjonen er gyldige, utifra
+	 * Sjekker om feltene for gjenopprettings-funksjonen er gyldige, Ut ifra
 	 * resultatet vil metoden returnere true/false.
 	 * 
 	 * @return true/false.

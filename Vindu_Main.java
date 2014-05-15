@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * @version 1.00, 14 Mai 2014
  */
 public class Vindu_Main extends JFrame{
-	
+
     public Vindu_Main(){
     	super("Boligformidling");
     	setLayout(new BorderLayout());
@@ -34,7 +34,6 @@ public class Vindu_Main extends JFrame{
             }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,700);
-        //setVisible(true);
         setLocationRelativeTo(null);
     }//end of constructor
     
@@ -92,7 +91,7 @@ public class Vindu_Main extends JFrame{
 		public void windowClosing(WindowEvent e){
     		Database.closeConnection();
 			System.exit(0);
-			
+
 		}//end of windowClosing
   		
 	}//end of class Vinduslytter

@@ -3,8 +3,8 @@ package boligformidling;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
- * Klassen tegner en graf utifra parameterene som blir oppgitt i konstruktøren.
+ * Klassen tegner en graf Ut ifra parameterene som blir oppgitt i konstruktøren.
  * 
  * @author Alexander Gård, s198585, 1. år IT
  * @version 1.00, 12 Mai 2014
@@ -55,7 +55,8 @@ public class GraphPanel {
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 
-				File f = new File("grafBilde" + File.separator + "graf.png");
+				URL f = getClass().getClassLoader().getResource(
+						"resources/graf.png");
 				Image img = null;
 
 				try {
@@ -64,7 +65,6 @@ public class GraphPanel {
 					System.out.println("feil i paintComponent: " + e);
 				}
 
-				img = img.getScaledInstance(500, 400, Image.SCALE_SMOOTH);
 				g.drawImage(img, 50, 0, null);
 
 				int[] counts = getCountForYear(year, table, column);

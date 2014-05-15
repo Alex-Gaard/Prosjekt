@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Klassen tar av seg alle koblinger og spørringer opp mot databasen.
+ * Klassen tar seg av alle koblinger og spørringer opp mot databasen.
  * 
  * @author Alexander Gård, s198585, 1. år IT
  * @version 1.00, 12 Mai 2014
@@ -35,7 +35,7 @@ public abstract class Database {
 	private static Vindu_Main vindu = null;
 
 	/**
-	 * Setter opp databasetilkobling, utifra resultatet vil metoden returnere
+	 * Setter opp databasetilkobling, Ut ifra resultatet vil metoden returnere
 	 * true/false. I tilfelle et problem skulle skje under koblingen vil metoden
 	 * ta imot et Vindu_Main objekt for å bruke dette senere til å bytte
 	 * MainPanel.
@@ -140,7 +140,7 @@ public abstract class Database {
 	}// end of closeConnection
 
 	/**
-	 * Sender en spørring til databasen for oppdatering av tabeller. Utifra
+	 * Sender en spørring til databasen for oppdatering av tabeller. Ut ifra
 	 * hvordan spørringen gikk vil metoden returnere true/false.
 	 */
 	protected static boolean execUpdate(String sql) throws SQLException {

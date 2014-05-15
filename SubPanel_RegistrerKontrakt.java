@@ -156,7 +156,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	}// end of constructor
 
 	/**
-	 * Sjekker om kombinasjonen av dag/måned/år er en gyldig dato. Utifra
+	 * Sjekker om kombinasjonen av dag/måned/år er en gyldig dato. Ut ifra
 	 * resultatet vil metoden returnere true/false.
 	 * 
 	 * @param dag
@@ -182,7 +182,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 	/**
 	 * Sjekker om en utleier med det spesifiserte personnummeret eksisterer i
-	 * databasen. Utifra resultatet vil metoden returnere true/false.
+	 * databasen. Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @param utleierPersonnummer
 	 *            Personnummmeret til utleieren.
@@ -197,7 +197,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 	/**
 	 * Sjekker om en boligsøker med det spesifiserte personnummeret eksisterer i
-	 * databasen. Utifra resultatet vil metoden returnere true/false.
+	 * databasen. Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @param boligsøkerPersonnummer
 	 *            Personnummmeret til boligsøkeren.
@@ -212,7 +212,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 	/**
 	 * Sjekker om en behandler med det spesifiserte personnummeret eksisterer i
-	 * databasen. Utifra resultatet vil metoden returnere true/false.
+	 * databasen. Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @param behandlerPersonnummer
 	 *            Personnummmeret til behandleren.
@@ -227,7 +227,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 	/**
 	 * Sjekker om en bolig med den spesifiserte IDen eksisterer i databasen.
-	 * Utifra resultatet vil metoden returnere true/false.
+	 * Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @param boligID
 	 *            IDen til boligen.
@@ -241,7 +241,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 	/**
 	 * Sjekker om det eksisterer en aktiv kontrakt for boligen med den
-	 * spesifiserte IDen. Utifra resultatet vil metoden returnere true/false.
+	 * spesifiserte IDen. Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @param boligID
 	 *            IDen til boligen.
@@ -255,7 +255,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 
 	/**
 	 * Sjekker om alle feltene i GUIen er fyll inn med riktig informasjon.
-	 * Utifra resultatet vil metoden returnere true/false.
+	 * Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @return true/false.
 	 */
@@ -378,7 +378,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	}// end of cleanFields
 
 	/**
-	 * Registrerer en kontrakt. Utifra om registreringen var vellykket eller
+	 * Registrerer en kontrakt. Ut ifra om registreringen var vellykket eller
 	 * mislykket, vil metoden returnere true/false.
 	 * 
 	 * @return true/false.
