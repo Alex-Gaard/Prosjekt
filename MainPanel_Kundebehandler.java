@@ -1,8 +1,6 @@
 package boligformidling;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
@@ -10,7 +8,7 @@ import javax.swing.JTabbedPane;
  * brukt av kundebehandleren.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 15 Mai 2014
  */
 public class MainPanel_Kundebehandler extends MainPanel {
 
