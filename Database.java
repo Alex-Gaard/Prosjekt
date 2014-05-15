@@ -23,6 +23,55 @@ public abstract class Database {
 	private final static String database = "s193956";
 	private final static String brukernavn = "s193956";
 	private final static String passord = "passord";
+	
+	// Tabeller
+	final static String TABLE_BRUKER = "Bruker";
+	final static String TABLE_UTLEIER = "Utleier";
+	final static String TABLE_BOLIGSØKER = "Boligsøker";
+
+	final static String TABLE_BRUKER_PASSORD_REGISTER = "Bruker_PassordRegister";
+	final static String TABLE_BEHANDLER = "Kundebehandler";
+	
+	final static String TABLE_BOLIG = "Bolig";
+	final static String TABLE_ENEBOLIG_OG_REKKEHUS = "Enebolig_og_Rekkehus";
+	final static String TABLE_LEILIGHET = "Leilighet";
+	final static String TABLE_VISTE_BOLIGER = "Viste_Boliger";
+	
+	final static String TABLE_LEIEKONTRAKT = "Leiekontrakt";
+	final static String TABLE_LEIEKONTRAKT_FORESPØRSEL = "Leiekontrakt_forespørsel";
+	
+	final static String TABLE_SØKERINFO = "SøkerInfo";
+	final static String TABLE_SØKERKRAV = "SøkerKrav";
+
+
+	// Kolonner
+	final static String COLUMN_PERSONNUMMER = "Personnummer";
+	final static String COLUMN_NAVN = "Navn";
+	final static String COLUMN_ADRESSE = "Adresse";
+	final static String COLUMN_EMAIL = "Email";
+	final static String COLUMN_TELEFON = "Telefon";
+	final static String COLUMN_POSTNUMMER = "Postnummer";
+	final static String COLUMN_OPPRETTET = "Opprettet";
+	final static String COLUMN_BRUKER_PERSONNUMMER = "Bruker_Personnummer";
+	final static String COLUMN_FIRMA = "Firma";
+	final static String COLUMN_PASSORD = "Passord";
+	
+	final static String COLUMN_BOLIG_BOLIG_ID = "Bolig_BoligID";
+	final static String COLUMN_UTLEIER_PERSONNUMMER = "Utleier_Bruker_Personnummer";
+	final static String COLUMN_BOLIGSØKER_PERSONNUMMER = "Boligsøker_Bruker_Personnummer";
+	final static String COLUMN_BEHANDLER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
+	final static String COLUMN_LEIEPRIS = "Leiepris_pr_måned";
+	final static String COLUMN_AVTALE_START = "Avtale_start";
+	final static String COLUMN_AVTALE_SLUTT = "Avtale_slutt";
+	
+	final static String COLUMN_OPPRETTET_DATO = "Opprettet_Dato";
+	final static String COLUMN_BEHANDLER_BRUKER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
+	final static String COLUMN_BOLIG_ID = "BoligID";
+	final static String COLUMN_PÅTATT = "Påtatt";
+	final static String COLUMN_AVERTERT = "Avertert";
+	final static String COLUMN_UTLEIE_PRIS = "Utleie_pris";
+
+
 
 	// Vindu
 	private static Vindu_Main vindu = null;
