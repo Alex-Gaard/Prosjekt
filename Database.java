@@ -35,7 +35,7 @@ public abstract class Database {
 	final static String TABLE_BEHANDLER = "Kundebehandler";
 	
 	final static String TABLE_BOLIG = "Bolig";
-	final static String TABLE_ENEBOLIG_OG_REKKEHUS = "Enebolig_og_Rekkehus";
+	final static String TABLE_ENEBOLIG_OG_REKKEHUS = "Enebolig_og_rekkehus";
 	final static String TABLE_LEILIGHET = "Leilighet";
 	final static String TABLE_VISTE_BOLIGER = "Viste_Boliger";
 	
