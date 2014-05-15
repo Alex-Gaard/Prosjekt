@@ -2,7 +2,7 @@ package boligformidling;
 
 //Petter S.W Gjerstad
 //SubPanel_KundeProfil
-//Siste versjon kl 16:08 15.05.2014
+//Siste versjon kl 18:00 15.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -682,6 +682,8 @@ public class SubPanel_KundeProfil extends SubPanel
         knapperpanel.remove(bliutleierknapp);
         try 
         {
+            if (firmanavn.equals(""))
+                firmanavn ="Ingen registrerte data.";
             Data_utleier.insertspecintoutleier(personnummer, firmanavn);
             populateutleierdata();
         } catch (SQLException ex) 
@@ -718,7 +720,7 @@ public class SubPanel_KundeProfil extends SubPanel
             
             firmaL = new JLabel("Firmaets navn:");
             firma = new JTextField(10);
-            if (utleierrs.next() == false) //dvs er utleier men ingen data er registret.
+            if (utleierrs.next() == false) //dvs er utleier men ingen data er registrert.
             {
                 String noReg= "Ingen registrerte data.";
                 firma.setText(noReg);
