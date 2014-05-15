@@ -12,17 +12,6 @@ import java.sql.SQLException;
  */
 public class Data_Statistikk extends Database {
 
-	// Tabeller
-	final static String TABLE_BOLIG = "Bolig";
-	final static String TABLE_LEIEKONTRAKT_FORESPØRSEL = "Leiekontrakt_forespørsel";
-	final static String TABLE_BRUKER = "Bruker";
-
-	// Kolonner
-	final static String COLUMN_AVERTERT = "Avertert";
-	final static String COLUMN_UTLEIE_PRIS = "Utleie_pris";
-	final static String COLUMN_OPPRETTET_DATO = "Opprettet_Dato";
-	final static String COLUMN_OPPRETTET = "Opprettet";
-
 	/**
 	 * Returnerer frekvens Ut ifra SQLen som blir gitt.
 	 * 
