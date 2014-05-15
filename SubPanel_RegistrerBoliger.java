@@ -60,7 +60,7 @@ public class SubPanel_RegistrerBoliger extends SubPanel {
         fellesvask = new Checkbox("Fellesvask");
 
         JLadresse = new JLabel("Adresse");
-        JLpostadresse = new JLabel("Postadresse");
+        JLpostadresse = new JLabel("Postnummer");
         JLareal = new JLabel("Areal i meter");
         JLrom = new JLabel("Antall rom");
         JLbyggår = new JLabel("Byggår");
