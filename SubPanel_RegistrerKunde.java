@@ -173,7 +173,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	 */
 	private void registrerUtleier() {
 
-		if (!checkFields("utleier")) {
+		if (!checkFields()) {
 			return;
 		}
 
@@ -222,7 +222,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	 */
 	private void registrerSøker() {
 
-		if (!checkFields("søker")) {
+		if (!checkFields()) {
 			return;
 		}
 
@@ -306,7 +306,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 	 *            kunden tilhører.
 	 * @return true/false.
 	 */
-	private boolean checkFields(String gruppe) {
+	private boolean checkFields() {
 
 		if (personnummerField.getText().equals("")
 				|| navnField.getText().equals("")
@@ -324,17 +324,11 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 			return false;
 		}
 
-		if (gruppe.equals("utleier")) {
-			if (firmaField.getText().equals("")) {
-				displayMessage("Firma er ikke fyllt ut\n");
-				return false;
-			}
+                if (firmaField.getText().length() > 45) {
+                        displayMessage("Firma kan ikke være lengere enn 45 tegn");
+                        return false;
+                }
 
-			if (firmaField.getText().length() > 45) {
-				displayMessage("Firma kan ikke være lengere enn 45 tegn");
-				return false;
-			}
-		}
 
 		if (!isNum(personnummerField.getText())
 				|| personnummerField.getText().length() != 11) {
