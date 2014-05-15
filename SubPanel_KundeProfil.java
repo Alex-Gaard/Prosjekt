@@ -2,7 +2,7 @@ package boligformidling;
 
 //Petter S.W Gjerstad
 //SubPanel_KundeProfil
-//Siste versjon kl 15:01 14.05.2014
+//Siste versjon kl 16:08 15.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -80,18 +80,18 @@ public class SubPanel_KundeProfil extends SubPanel
     
     //JLabels vil ha navn som ender på L, dette er å skille på variabelnavn tilhørende labels og textfields som logisk hører sammen.
     //Informasjon om brukerkonto
-    private final JLabel BrukerinfoL;
-    private final JLabel PersonnummerL;
-    private final JLabel NavnL;
-    private final JLabel AdresseL;
-    private final JLabel EmailL;
-    private final JLabel TelefonL;
+    private JLabel BrukerinfoL;
+    private JLabel PersonnummerL;
+    private JLabel NavnL;
+    private JLabel AdresseL;
+    private JLabel EmailL;
+    private JLabel TelefonL;
     
-    private final JTextField Personnummer;
-    private final JTextField Navn;
-    private final JTextField Adresse;
-    private final JTextField Email;
-    private final JTextField Telefon;
+    private JTextField Personnummer;
+    private JTextField Navn;
+    private JTextField Adresse;
+    private JTextField Email;
+    private JTextField Telefon;
     
     //Boligsøker felter (hvis tilgjengelig)
     private JLabel søkerinfoL;
@@ -175,9 +175,8 @@ public class SubPanel_KundeProfil extends SubPanel
      * <p>
      * Siden brukeren skal kunne utvide sin konto om nødvendig, må man ha et system som sjekker under oppstart hvilke subtyper den innloggede brukeren er(utleier/boligsøker).
      * og tegne grensesnittet deretter.
-     * @throws SQLException 
      */
-    public SubPanel_KundeProfil(MainPanel parent, String id) throws SQLException
+    public SubPanel_KundeProfil(MainPanel parent, String id)
     {
         super(parent);
         personnummer = id;
@@ -255,64 +254,63 @@ public class SubPanel_KundeProfil extends SubPanel
         lowerpanel.add(tilbakemeldingerL,BorderLayout.NORTH);
         lowerpanel.add(new JScrollPane(tilbakemeldinger),BorderLayout.CENTER);
         lowerpanel.add(knapperpanel,BorderLayout.SOUTH);
-        
+
         //Last brukerdata, blir gjort uavhengig av eventuelle brukersubtyper.
         String sql = "SELECT * from Bruker where Personnummer=" + personnummer + ";";
-        ResultSet rs = Data_Bruker.execQuery(sql);
-        rs.next();
-        
-        BrukerinfoL = new JLabel("Informasjon om din brukerkonto: ");
-        PersonnummerL = new JLabel("Personnummer:");
-        NavnL = new JLabel("Navn:");
-        AdresseL = new JLabel("Adresse:");
-        EmailL = new JLabel("Email:");
-        TelefonL = new JLabel("Telefon:");
+        try
+        {
+            ResultSet rs = Data_Bruker.execQuery(sql);
+            rs.next();
 
-        Personnummer = new JTextField(10);
-        Navn = new JTextField(10);
-        Adresse = new JTextField(10);
-        Email = new JTextField(10);
-        Telefon = new JTextField(10);
+            BrukerinfoL = new JLabel("Informasjon om din brukerkonto: ");
+            PersonnummerL = new JLabel("Personnummer:");
+            NavnL = new JLabel("Navn:");
+            AdresseL = new JLabel("Adresse:");
+            EmailL = new JLabel("Email:");
+            TelefonL = new JLabel("Telefon:");
 
-        Personnummer.setText(rs.getString("Personnummer"));
-        Personnummer.setEditable(false);
-        Navn.setText(rs.getString("Navn"));
-        Adresse.setText(rs.getString("Adresse"));
-        Email.setText(rs.getString("Email"));
-        Telefon.setText(rs.getString("Telefon"));
+            Personnummer = new JTextField(10);
+            Navn = new JTextField(10);
+            Adresse = new JTextField(10);
+            Email = new JTextField(10);
+            Telefon = new JTextField(10);
 
-        brukerpanel.add(Box.createVerticalStrut(5));
-        brukerpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        brukerpanel.add(Box.createVerticalStrut(5) );
-        brukerpanel.add(BrukerinfoL);
-        brukerpanel.add(Box.createVerticalStrut(5));
-        brukerpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        brukerpanel.add(Box.createVerticalStrut(5) );
-        brukerpanel.add(PersonnummerL);
-        brukerpanel.add(Personnummer);
-        brukerpanel.add(NavnL);
-        brukerpanel.add(Navn);
-        brukerpanel.add(AdresseL);
-        brukerpanel.add(Adresse);
-        brukerpanel.add(EmailL);
-        brukerpanel.add(Email);
-        brukerpanel.add(TelefonL);
-        brukerpanel.add(Telefon);
-        //ferdig med bruker
-        
+            Personnummer.setText(rs.getString("Personnummer"));
+            Personnummer.setEditable(false);
+            Navn.setText(rs.getString("Navn"));
+            Adresse.setText(rs.getString("Adresse"));
+            Email.setText(rs.getString("Email"));
+            Telefon.setText(rs.getString("Telefon"));
+
+            brukerpanel.add(Box.createVerticalStrut(5));
+            brukerpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            brukerpanel.add(Box.createVerticalStrut(5) );
+            brukerpanel.add(BrukerinfoL);
+            brukerpanel.add(Box.createVerticalStrut(5));
+            brukerpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            brukerpanel.add(Box.createVerticalStrut(5) );
+            brukerpanel.add(PersonnummerL);
+            brukerpanel.add(Personnummer);
+            brukerpanel.add(NavnL);
+            brukerpanel.add(Navn);
+            brukerpanel.add(AdresseL);
+            brukerpanel.add(Adresse);
+            brukerpanel.add(EmailL);
+            brukerpanel.add(Email);
+            brukerpanel.add(TelefonL);
+            brukerpanel.add(Telefon);
+            //ferdig med bruker
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
+        }
         lagreknapp = new JButton("Lagre endringer");
         lagreknapp.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    lagre();
-                } catch (SQLException ex)
-                {
-                    Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lagre();
             }
         });        
         knapperpanel.add(lagreknapp);
@@ -394,39 +392,44 @@ public class SubPanel_KundeProfil extends SubPanel
      * <p>Hvis ikke, må brukeren ha evnen til å bli en boligsøker, altså utvide sin konto.
      * Da legges likesågjerne til en ny knapp til lowerpanel som gjør brukeren istand til å utvide om ønskelig.
      * 
-     * @throws SQLException 
      */
-    private void erboligsøker() throws SQLException
+    private void erboligsøker()
     {
-        ResultSet rs = Data_boligsøker.selectspecRSfromboligsøker(personnummer);
-        rs.first();
-        boligsøkertest = rs.first(); // if true: brukers personnummer er representert i boligs�ker
-        if (boligsøkertest) //populerer, dvs oppretter og adder jcomponenter av ulike slag hvis boligs�ker. 
-            //men hvis boligsøker først nylig er opprettet, må dette fanges opp ipopulateboligsøkerinfo og da sette feltene til "Ikke registrert".
-            populatesøkerinfo();
-        else  //ikke boligsøker, må da kunne bli boligsøker
+        try
         {
-            bliboligsøkerknapp =  new JButton("Bli boligsøker");
-            knapperpanel.add(bliboligsøkerknapp);
-            bliboligsøkerknapp.addActionListener(new ActionListener() 
+            ResultSet rs = Data_boligsøker.selectspecRSfromboligsøker(personnummer);
+            rs.first();
+            boligsøkertest = rs.first(); // if true: brukers personnummer er representert i boligs�ker
+            if (boligsøkertest) //populerer, dvs oppretter og adder jcomponenter av ulike slag hvis boligs�ker.
+                //men hvis boligsøker først nylig er opprettet, må dette fanges opp ipopulateboligsøkerinfo og da sette feltene til "Ikke registrert".
+                populatesøkerinfo();
+            else  //ikke boligsøker, må da kunne bli boligsøker
             {
-
-                @Override
-                public void actionPerformed(ActionEvent e) 
+                bliboligsøkerknapp =  new JButton("Bli boligsøker");
+                knapperpanel.add(bliboligsøkerknapp);
+                bliboligsøkerknapp.addActionListener(new ActionListener() 
                 {
-                    //Execute when button is pressed
-                    samling = new JPanel();
-                    BoxLayout box=new BoxLayout(samling,BoxLayout.Y_AXIS);
-                    String advarsel = "Aksepterer du vil du bli underlagt norsk lov om boligsøker virksomhet.";
-                    samling.add(new JLabel(advarsel) );
-                    int bekreft = JOptionPane.showConfirmDialog(null,samling,"er du sikker på at du vil bli utleier?",2);
-                    tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+bekreft+")\n");
-                    if (bekreft == 0)
+                    
+                    @Override
+                    public void actionPerformed(ActionEvent e)
                     {
-                        slettblibliboligsøkerknappogbliboligsøker();
+                        //Execute when button is pressed
+                        samling = new JPanel();
+                        BoxLayout box=new BoxLayout(samling,BoxLayout.Y_AXIS);
+                        String advarsel = "Aksepterer du vil du bli underlagt norsk lov om boligsøker virksomhet.";
+                        samling.add(new JLabel(advarsel) );
+                        int bekreft = JOptionPane.showConfirmDialog(null,samling,"er du sikker på at du vil bli utleier?",2);
+                        tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+bekreft+")\n");
+                        if (bekreft == 0)
+                        {
+                            slettblibliboligsøkerknappogbliboligsøker();
+                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /**
@@ -456,151 +459,162 @@ public class SubPanel_KundeProfil extends SubPanel
      * <p>Metoden kalles enten som del av oppstartsprosedyren når klassen finner ut at brukeren er en boligsøker, eller senere når en utleier velger å utvide sin konto.
      * <p>Metoden sjekker også om subentiteten til boligsøker(kjent som søkerinfo) tabellen faktisk har data for gjeldende bruker, og populerer feltene deretter.
      * <p>Metoden har også ansvar for å gjøre kall på populatesøkerkrav og VisBoligVarsler.
-     * @throws SQLException 
      */
-    private void populatesøkerinfo() throws SQLException
+    private void populatesøkerinfo()
     {
-        søkerinfors = Data_boligsøker.selectspecRSfromsøkerinfo(personnummer);
-        
-        String noReg= "Ingen registrerte data.";
-        
-        søkerinfoL = new JLabel("Informasjon om deg som boligsøker:");
-        Antall_personerL = new JLabel("Antall personer:");
-        SivilstatusL = new JLabel("Sivilstatus:");
-        YrkeL = new JLabel("Yrke:");
-        RøykerL = new JLabel("Røyker:");
-        HusdyrL = new JLabel("Husdyr:");
-        antall_personer = new JTextField(7);
-        sivilstatus = new JTextField(7);
-        yrke = new JTextField(7);
-        røyker = new JCheckBox();
-        husdyr = new JTextField(1);
-        
-        if (søkerinfors.next() == false) //dvs bruker er boligsøker, men har ikke ennå registrert noen preferanser.
+        try
         {
-            antall_personer.setText(noReg);
-            sivilstatus.setText(noReg );
-            yrke.setText(noReg);
-            røyker.setSelected(false); //erstatt med int(valgt, ikke valgt og don't care)
-            husdyr.setText(noReg);
-        }
-        else
-        {
-
-            antall_personer.setText(søkerinfors.getString("antall_personer"));
-            sivilstatus.setText(søkerinfors.getString("Sivilstatus"));
-            yrke.setText(søkerinfors.getString("Yrke"));
-
-            int røykertemp = søkerinfors.getInt("Røyker");
-            if (røykertemp == 1)
+            søkerinfors = Data_boligsøker.selectspecRSfromsøkerinfo(personnummer);
+            
+            String noReg= "Ingen registrerte data.";
+            
+            søkerinfoL = new JLabel("Informasjon om deg som boligsøker:");
+            Antall_personerL = new JLabel("Antall personer:");
+            SivilstatusL = new JLabel("Sivilstatus:");
+            YrkeL = new JLabel("Yrke:");
+            RøykerL = new JLabel("Røyker:");
+            HusdyrL = new JLabel("Husdyr:");
+            antall_personer = new JTextField(7);
+            sivilstatus = new JTextField(7);
+            yrke = new JTextField(7);
+            røyker = new JCheckBox();
+            husdyr = new JTextField(1);
+            
+            if (søkerinfors.next() == false) //dvs bruker er boligsøker, men har ikke ennå registrert noen preferanser.
             {
-                røyker.setSelected(true);
+                antall_personer.setText(noReg);
+                sivilstatus.setText(noReg );
+                yrke.setText(noReg);
+                røyker.setSelected(false); //erstatt med int(valgt, ikke valgt og don't care)
+                husdyr.setText(noReg);
             }
-            husdyr.setText(søkerinfors.getString("Husdyr"));
+            else
+            {
+                
+                antall_personer.setText(søkerinfors.getString("antall_personer"));
+                sivilstatus.setText(søkerinfors.getString("Sivilstatus"));
+                yrke.setText(søkerinfors.getString("Yrke"));
+                
+                int røykertemp = søkerinfors.getInt("Røyker");
+                if (røykertemp == 1)
+                {
+                    røyker.setSelected(true);
+                }
+                husdyr.setText(søkerinfors.getString("Husdyr"));
+            }
+            søkerinfopanel.add(Box.createVerticalStrut(5));
+            søkerinfopanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            søkerinfopanel.add(Box.createVerticalStrut(5) );
+            søkerinfopanel.add(søkerinfoL);
+            søkerinfopanel.add(Box.createVerticalStrut(5));
+            søkerinfopanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            søkerinfopanel.add(Box.createVerticalStrut(5) );
+            søkerinfopanel.add(Antall_personerL);
+            søkerinfopanel.add(antall_personer);
+            søkerinfopanel.add(SivilstatusL);
+            søkerinfopanel.add(sivilstatus);
+            søkerinfopanel.add(YrkeL);
+            søkerinfopanel.add(yrke);
+            søkerinfopanel.add(RøykerL);
+            søkerinfopanel.add(røyker);
+            søkerinfopanel.add(HusdyrL);
+            søkerinfopanel.add(husdyr);
+            
+            populatesøkerkravinfo();
+            visBoligVarsler();
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
-        søkerinfopanel.add(Box.createVerticalStrut(5));
-        søkerinfopanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        søkerinfopanel.add(Box.createVerticalStrut(5) );
-        søkerinfopanel.add(søkerinfoL);
-        søkerinfopanel.add(Box.createVerticalStrut(5));
-        søkerinfopanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        søkerinfopanel.add(Box.createVerticalStrut(5) );
-        søkerinfopanel.add(Antall_personerL);
-        søkerinfopanel.add(antall_personer);
-        søkerinfopanel.add(SivilstatusL);
-        søkerinfopanel.add(sivilstatus);
-        søkerinfopanel.add(YrkeL);
-        søkerinfopanel.add(yrke);
-        søkerinfopanel.add(RøykerL);
-        søkerinfopanel.add(røyker);
-        søkerinfopanel.add(HusdyrL);
-        søkerinfopanel.add(husdyr);
-        
-        populatesøkerkravinfo();
-        visBoligVarsler();
     }
     
     /**
      * Populerer grensesnittet med felter relatert til subentiteten søkerkrav.
      * <p>Metoden kalles enten som del av oppstartsprosedyren når klassen finner ut at brukeren er en boligsøker,
      * eller senere når en utleier velger å utvide sin konto.
-     * * <p>Metoden sjekker også om subentiteten til boligsøkeren(kjent som søkerkrav) tabellen faktisk har data for gjeldende bruker, og populerer feltene deretter.
-     * @throws SQLException 
+     * * <p>Metoden sjekker også om subentiteten til boligsøkeren(kjent som søkerkrav) tabellen faktisk har data for gjeldende bruker, og populerer feltene deretter. 
      */
-    private void populatesøkerkravinfo() throws SQLException
+    private void populatesøkerkravinfo()
     {
-        søkerkravrs = Data_boligsøker.selectspecRSfromSøkerkrav(personnummer);
-        søkerkravrs.first();
-        
-        kravinfoL = new JLabel("Informasjon om dine boligkrav:");
-        minBoarealL  = new JLabel("Minimum Boareal:");
-        maxBoarealL  = new JLabel("Maximum Boareal:");
-        Antall_soveromL = new JLabel("Minimum Antall soverom:");
-        ByggårL = new JLabel("Eldste ønsket Byggår:");
-        minPrisL = new JLabel("Minimum Pris:");
-        maxPrisL = new JLabel("Maximum Pris:");
-        PeisL = new JLabel("Har Peis:");
-        ParkeringL = new JLabel("Har Parkering:");
-        
-        minBoareal = new JTextField(7);
-        maxBoareal = new JTextField(7);
-        Antall_soverom = new JTextField(7);
-        Byggår = new JTextField(7);
-        minPris = new JTextField(7);
-        maxPris = new JTextField(7);
-        String[] peismuligheter = {"Ingen preferanser","Vil ha Peis","Vil ikke ha peis"};
-        Peis = new JComboBox(peismuligheter);
-        String[] parkeringsmuligheter = {"Ingen preferanser","Vil ha Parkering","Vil ikke ha parkering"};
-        Parkering = new JComboBox(parkeringsmuligheter);
-        
-        if (søkerkravrs.first() == false) //dvs er boligsøker men krav er ikke registrert enda.
+        try
         {
-            String noReg= "Ingen registrerte data.";
-            minBoareal.setText(noReg);
-            maxBoareal.setText(noReg);
-            Antall_soverom.setText(noReg);
-            Byggår.setText(noReg);
-            minPris.setText(noReg);
-            maxPris.setText(noReg);
-            Peis.setSelectedIndex(0);
-            Parkering.setSelectedIndex(0);
-        }
-        else
+            søkerkravrs = Data_boligsøker.selectspecRSfromSøkerkrav(personnummer);
+            søkerkravrs.first();
+            
+            kravinfoL = new JLabel("Informasjon om dine boligkrav:");
+            minBoarealL  = new JLabel("Minimum Boareal:");
+            maxBoarealL  = new JLabel("Maximum Boareal:");
+            Antall_soveromL = new JLabel("Minimum Antall soverom:");
+            ByggårL = new JLabel("Eldste ønsket Byggår:");
+            minPrisL = new JLabel("Minimum Pris:");
+            maxPrisL = new JLabel("Maximum Pris:");
+            PeisL = new JLabel("Har Peis:");
+            ParkeringL = new JLabel("Har Parkering:");
+            
+            minBoareal = new JTextField(7);
+            maxBoareal = new JTextField(7);
+            Antall_soverom = new JTextField(7);
+            Byggår = new JTextField(7);
+            minPris = new JTextField(7);
+            maxPris = new JTextField(7);
+            String[] peismuligheter = {"Ingen preferanser","Vil ha Peis","Vil ikke ha peis"};
+            Peis = new JComboBox(peismuligheter);
+            String[] parkeringsmuligheter = {"Ingen preferanser","Vil ha Parkering","Vil ikke ha parkering"};
+            Parkering = new JComboBox(parkeringsmuligheter);
+            
+            if (søkerkravrs.first() == false) //dvs er boligsøker men krav er ikke registrert enda.
+            {
+                String noReg= "Ingen registrerte data.";
+                minBoareal.setText(noReg);
+                maxBoareal.setText(noReg);
+                Antall_soverom.setText(noReg);
+                Byggår.setText(noReg);
+                minPris.setText(noReg);
+                maxPris.setText(noReg);
+                Peis.setSelectedIndex(0);
+                Parkering.setSelectedIndex(0);
+            }
+            else
+            {
+                minBoareal.setText(søkerkravrs.getString("Min_Areal"));
+                maxBoareal.setText(søkerkravrs.getString("Max_Areal"));
+                Antall_soverom.setText(søkerkravrs.getString("Min_Soverom"));
+                Byggår.setText(søkerkravrs.getString("Min_Byggår"));
+                minPris.setText(søkerkravrs.getString("Min_Pris"));
+                maxPris.setText(søkerkravrs.getString("Max_Pris"));
+                Peis.setSelectedIndex(søkerkravrs.getInt("Peis"));
+                Parkering.setSelectedIndex(søkerkravrs.getInt("Parkering"));
+            }
+            
+            søkerkravpanel.add(Box.createVerticalStrut(5));
+            søkerkravpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            søkerkravpanel.add(Box.createVerticalStrut(5) );
+            søkerkravpanel.add(kravinfoL);
+            søkerkravpanel.add(Box.createVerticalStrut(5));
+            søkerkravpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            søkerkravpanel.add(Box.createVerticalStrut(5) );
+            søkerkravpanel.add(minBoarealL);
+            søkerkravpanel.add(minBoareal);
+            søkerkravpanel.add(maxBoarealL);
+            søkerkravpanel.add(maxBoareal);
+            søkerkravpanel.add(Antall_soveromL);
+            søkerkravpanel.add(Antall_soverom);
+            søkerkravpanel.add(ByggårL);
+            søkerkravpanel.add(Byggår);
+            søkerkravpanel.add(minPrisL);
+            søkerkravpanel.add(minPris);
+            søkerkravpanel.add(maxPrisL);
+            søkerkravpanel.add(maxPris);
+            søkerkravpanel.add(PeisL);
+            søkerkravpanel.add(Peis);
+            søkerkravpanel.add(ParkeringL);
+            søkerkravpanel.add(Parkering);
+            invalidate();
+            repaint();
+        } catch (SQLException ex)
         {
-            minBoareal.setText(søkerkravrs.getString("Min_Areal"));
-            maxBoareal.setText(søkerkravrs.getString("Max_Areal"));
-            Antall_soverom.setText(søkerkravrs.getString("Min_Soverom"));
-            Byggår.setText(søkerkravrs.getString("Min_Byggår"));
-            minPris.setText(søkerkravrs.getString("Min_Pris"));
-            maxPris.setText(søkerkravrs.getString("Max_Pris"));
-            Peis.setSelectedIndex(søkerkravrs.getInt("Peis"));
-            Parkering.setSelectedIndex(søkerkravrs.getInt("Parkering"));
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        søkerkravpanel.add(Box.createVerticalStrut(5));
-        søkerkravpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        søkerkravpanel.add(Box.createVerticalStrut(5) );
-        søkerkravpanel.add(kravinfoL);
-        søkerkravpanel.add(Box.createVerticalStrut(5));
-        søkerkravpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        søkerkravpanel.add(Box.createVerticalStrut(5) );
-        søkerkravpanel.add(minBoarealL);
-        søkerkravpanel.add(minBoareal);
-        søkerkravpanel.add(maxBoarealL);
-        søkerkravpanel.add(maxBoareal);
-        søkerkravpanel.add(Antall_soveromL);
-        søkerkravpanel.add(Antall_soverom);
-        søkerkravpanel.add(ByggårL);
-        søkerkravpanel.add(Byggår);
-        søkerkravpanel.add(minPrisL);
-        søkerkravpanel.add(minPris);
-        søkerkravpanel.add(maxPrisL);
-        søkerkravpanel.add(maxPris);
-        søkerkravpanel.add(PeisL);
-        søkerkravpanel.add(Peis);
-        søkerkravpanel.add(ParkeringL);
-        søkerkravpanel.add(Parkering);
-        repaint();
 
     }
 
@@ -615,40 +629,46 @@ public class SubPanel_KundeProfil extends SubPanel
      * 
      * @throws SQLException 
      */
-    private void erutleier() throws SQLException 
+    private void erutleier()
     {
-        ResultSet rs = Data_utleier.selectspecRSfromUtleier(personnummer);
-        utleiertest = rs.first(); // if true: brukers personnummer er representert i boligs�ker, ogs� til � sjekke om utleierdata skal oppdateres.
-        
-        if (utleiertest) //populerer utleierdata(firma tilh�righet)
-            populateutleierdata();
-        else  //ikke utleier, m� da kunne bli utleier
+        try
         {
-            bliutleierknapp =  new JButton("Bli utleier");
-            knapperpanel.add(bliutleierknapp);
-            bliutleierknapp.addActionListener(new ActionListener() 
+            ResultSet rs = Data_utleier.selectspecRSfromUtleier(personnummer);
+            utleiertest = rs.first(); // if true: brukers personnummer er representert i boligs�ker, ogs� til � sjekke om utleierdata skal oppdateres.
+ 
+            if (utleiertest) //populerer utleierdata(firma tilh�righet)
+                populateutleierdata();
+            else  //ikke utleier, m� da kunne bli utleier
             {
-                //ber brukeren bekrefte ønske om utvidelse, for så å oppdatere databasen.
-                @Override
-                public void actionPerformed(ActionEvent e) 
+                bliutleierknapp =  new JButton("Bli utleier");
+                knapperpanel.add(bliutleierknapp);
+                bliutleierknapp.addActionListener(new ActionListener() 
                 {
-                    samling = new JPanel();
-                    BoxLayout box=new BoxLayout(samling,BoxLayout.Y_AXIS);
-                    String advarsel = "Aksepterer du vil du bli underlagt norsk lov om utleievirksomhet.\nVidere vil du nå få mulighet til å legge ut boliger for leie."
-                            + "\nHusk å taste inn ditt firmanavn.\n";
-                    JTextField firmanavn = new JTextField(10);
-                    samling.add(new JLabel(advarsel) );
-                    samling.add(firmanavn);
-                    int bekreft = JOptionPane.showConfirmDialog(null,samling,"er du sikker på at du vil bli utleier?",2);
-                    tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+bekreft+")\n");
-
-                    if (bekreft == 0)
+                    //ber brukeren bekrefte ønske om utvidelse, for så å oppdatere databasen.
+                    @Override
+                    public void actionPerformed(ActionEvent e)
                     {
-                        String firmanavnString = firmanavn.getText();
-                        slettbliutleierknappoglastutleier(firmanavnString);
+                        samling = new JPanel();
+                        BoxLayout box=new BoxLayout(samling,BoxLayout.Y_AXIS);
+                        String advarsel = "Aksepterer du vil du bli underlagt norsk lov om utleievirksomhet. Videre vil du nå få mulighet til å legge ut boliger for leie."
+                                + "Husk å taste inn ditt firmanavn.";
+                        JTextField firmanavn = new JTextField(10);
+                        samling.add(new JLabel(advarsel) );
+                        samling.add(firmanavn);
+                        int bekreft = JOptionPane.showConfirmDialog(null,samling,"er du sikker på at du vil bli utleier?",2);
+                        tilbakemeldinger.append("["+linjeteller++ + "] "+advarsel+"(svar = "+bekreft+")\n");
+                        
+                        if (bekreft == 0)
+                        {
+                            String firmanavnString = firmanavn.getText();
+                            slettbliutleierknappoglastutleier(firmanavnString);
+                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /**
@@ -678,34 +698,40 @@ public class SubPanel_KundeProfil extends SubPanel
      * @throws
      * 
      */
-    private void populateutleierdata() throws SQLException
+    private void populateutleierdata()
     {
-        ResultSet utleierrs = Data_utleier.selectspecRSfromUtleier(personnummer);
-        
-        utleierinfoL = new JLabel("Informasjon om deg som utleier:");
-        
-        utleierpanel.add(Box.createVerticalStrut(5));
-        utleierpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        utleierpanel.add(Box.createVerticalStrut(5) );
-        
-        utleierpanel.add(utleierinfoL); 
-        
-        utleierpanel.add(Box.createVerticalStrut(5));
-        utleierpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        utleierpanel.add(Box.createVerticalStrut(5) );
-        
-        firmaL = new JLabel("Firmaets navn:");
-        firma = new JTextField(10);
-        if (utleierrs.next() == false) //dvs er utleier men ingen data er registret.
+        try
         {
-            String noReg= "Ingen registrerte data.";
-            firma.setText(noReg);
+            ResultSet utleierrs = Data_utleier.selectspecRSfromUtleier(personnummer);
+            
+            utleierinfoL = new JLabel("Informasjon om deg som utleier:");
+            
+            utleierpanel.add(Box.createVerticalStrut(5));
+            utleierpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            utleierpanel.add(Box.createVerticalStrut(5) );
+            
+            utleierpanel.add(utleierinfoL);
+            
+            utleierpanel.add(Box.createVerticalStrut(5));
+            utleierpanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            utleierpanel.add(Box.createVerticalStrut(5) );
+            
+            firmaL = new JLabel("Firmaets navn:");
+            firma = new JTextField(10);
+            if (utleierrs.next() == false) //dvs er utleier men ingen data er registret.
+            {
+                String noReg= "Ingen registrerte data.";
+                firma.setText(noReg);
+            }
+            else firma.setText(utleierrs.getString("firma"));
+            
+            utleierpanel.add(firmaL);
+            utleierpanel.add(firma);
+            repaint();
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else firma.setText(utleierrs.getString("firma"));
-
-        utleierpanel.add(firmaL);
-        utleierpanel.add(firma);
-        repaint();
     }
 /**
  * Viser boliger som matcher søkerens ønsker i et scrollbart JTable.
@@ -715,7 +741,7 @@ public class SubPanel_KundeProfil extends SubPanel
  * <p>Informasjonen som holder styr på akkurat hvilke boliger som allerede er sett på av hver individuelle bruker holdes i databasens "Viste_Boliger" tabell.
  * @throws SQLException 
  */
-    private void visBoligVarsler() throws SQLException //viser en JTable med enkel informasjon om boliger som matcher s�kekriteriene siden sist du logget inn. vises automatisk hvis du er en boligs�ker
+    private void visBoligVarsler() //viser en JTable med enkel informasjon om boliger som matcher s�kekriteriene siden sist du logget inn. vises automatisk hvis du er en boligs�ker
     {
         try
         {
@@ -822,6 +848,9 @@ public class SubPanel_KundeProfil extends SubPanel
         {
             tablepanel.setLayout(new BorderLayout());
             tablepanel.add(new JLabel("Data ikke tilgjengelig."));
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -879,7 +908,7 @@ public class SubPanel_KundeProfil extends SubPanel
      * <p>Metoden sjekker om relevante felt har ulovlige verdier, og gir brukeren beskjed om dette i tilbakemeldingspanelet.
      * <p> Til slutt sjekkes det om det var problemer meed lagringen, og gir beskjed om dette.
      */
-    private void lagre() throws SQLException //lagrer profil endringer i database tabellene
+    private void lagre() //lagrer profil endringer i database tabellene
     {
         boolean errors = false;
         String navnstring = Navn.getText();
@@ -992,8 +1021,13 @@ public class SubPanel_KundeProfil extends SubPanel
         
         if (utleiertest)
         {
-            String firmastring = firma.getText();
-            Data_utleier.updateutleier(firmastring, personnummer);
+            try 
+            {
+                String firmastring = firma.getText();
+                Data_utleier.updateutleier(firmastring, personnummer);
+            } catch (SQLException ex) {
+                Logger.getLogger(SubPanel_KundeProfil.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         String sluttmelding;
         if (errors == false)//ingen feil
