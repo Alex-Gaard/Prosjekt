@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,17 +22,17 @@ import javax.swing.border.TitledBorder;
  * databasen.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 15 Mai 2014
  */
 public class SubPanel_Statistikk extends SubPanel implements ActionListener {
 
-	private String[] tables = { "bolig", "enebolig_og_rekkehus", "leilighet",
-			"bruker", "utleier", "boligsøker", "leiekontrakt",
-			"leiekontrakt_forespørsel" };
+	private String[] tables = {Data_Statistikk.TABLE_BOLIG,Data_Statistikk.TABLE_ENEBOLIG_OG_REKKEHUS,
+		Data_Statistikk.TABLE_LEILIGHET,Data_Statistikk.TABLE_BRUKER,Data_Statistikk.TABLE_UTLEIER,
+		Data_Statistikk.TABLE_BOLIGSØKER,Data_Statistikk.TABLE_BEHANDLER, Data_Statistikk.TABLE_LEIEKONTRAKT,Data_Statistikk.TABLE_LEIEKONTRAKT_FORESPØRSEL};
 
 	private String[] info = { "Antall boliger: ", "Antall eneboliger: ",
-			"Antall leiligeheter: ", "Antall kunder: ", "Antall utleiere: ",
-			"Antall boligsøkere: ", "Leiekontrakter: ",
+			"Antall leiligeheter: ", "Antall brukere: ", "Antall utleiere: ",
+			"Antall boligsøkere: ","Antall behandlere: ", "Leiekontrakter: ",
 			"Kontrakt forespørsler: " };
 
 	private String[] forslag = { "Averterte boliger",
