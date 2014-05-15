@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * vil bli fjernet/lagt til med dette rammeverket som utgangspunkt.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 14 Mai 2014
  */
 public class Vindu_Main extends JFrame{
 	
@@ -23,7 +23,7 @@ public class Vindu_Main extends JFrame{
         addWindowListener(new Vinduslytter());
             
         if(Database.setupDatabaseConnection(this)){
-        	mainPanel =  new MainPanel_LogIn(this,null);
+            mainPanel =  new MainPanel_LogIn(this,null);
             add(mainPanel, BorderLayout.CENTER);
             revalidate();
         }else{
@@ -32,12 +32,10 @@ public class Vindu_Main extends JFrame{
             revalidate();
             checkForConnection();
             }
-     
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,700);
-        setVisible(true);
+        //setVisible(true);
         setLocationRelativeTo(null);
-    
     }//end of constructor
     
     /**
