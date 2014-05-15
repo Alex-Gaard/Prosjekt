@@ -60,7 +60,7 @@ public abstract class Database {
 	final static String COLUMN_BOLIG_BOLIG_ID = "Bolig_BoligID";
 	final static String COLUMN_UTLEIER_PERSONNUMMER = "Utleier_Bruker_Personnummer";
 	final static String COLUMN_BOLIGSØKER_PERSONNUMMER = "Boligsøker_Bruker_Personnummer";
-	final static String COLUMN_BEHANDLER_BRUKER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
+        final static String COLUMN_BEHANDLER_BRUKER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
 	final static String COLUMN_LEIEPRIS = "Leiepris_pr_måned";
 	final static String COLUMN_AVTALE_START = "Avtale_start";
 	final static String COLUMN_AVTALE_SLUTT = "Avtale_slutt";

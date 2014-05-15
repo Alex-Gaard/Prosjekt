@@ -31,7 +31,7 @@ public class Data_Kontrakter extends Database {
 		String sql = "select * from " + TABLE_LEIEKONTRAKT + " where "
 				+ COLUMN_UTLEIER_PERSONNUMMER + "= '" + personnummer + "' or "
 				+ COLUMN_BOLIGSØKER_PERSONNUMMER + " = '" + personnummer
-				+ "' or " + COLUMN_BEHANDLER_PERSONNUMMER + " = '"
+				+ "' or " + COLUMN_BEHANDLER_BRUKER_PERSONNUMMER + " = '"
 				+ personnummer + "'";
 
 		try (ResultSet rs = execQuery(sql)) {
@@ -41,7 +41,7 @@ public class Data_Kontrakter extends Database {
 			while (rs.next()) {
 				int boligID = rs.getInt(COLUMN_BOLIG_BOLIG_ID);
 				String behandlerPersonnummer = rs
-						.getString(COLUMN_BEHANDLER_PERSONNUMMER);
+						.getString(COLUMN_BEHANDLER_BRUKER_PERSONNUMMER);
 				String utleierPersonnummer = rs
 						.getString(COLUMN_UTLEIER_PERSONNUMMER);
 				String boligsøkerPersonnummer = rs
@@ -90,7 +90,7 @@ public class Data_Kontrakter extends Database {
 			while (rs.next()) {
 				int boligID = rs.getInt(COLUMN_BOLIG_BOLIG_ID);
 				String behandlerPersonnummer = rs
-						.getString(COLUMN_BEHANDLER_PERSONNUMMER);
+						.getString(COLUMN_BEHANDLER_BRUKER_PERSONNUMMER);
 				String utleierPersonnummer = rs
 						.getString(COLUMN_UTLEIER_PERSONNUMMER);
 				String boligsøkerPersonnummer = rs
@@ -213,7 +213,7 @@ public class Data_Kontrakter extends Database {
 			String sluttDato) {
 
 		String sql = "insert into " + TABLE_LEIEKONTRAKT + " ("
-				+ COLUMN_BEHANDLER_PERSONNUMMER + "," + COLUMN_BOLIG_BOLIG_ID
+				+ COLUMN_BEHANDLER_BRUKER_PERSONNUMMER + "," + COLUMN_BOLIG_BOLIG_ID
 				+ "," + COLUMN_UTLEIER_PERSONNUMMER + ","
 				+ COLUMN_BOLIGSØKER_PERSONNUMMER + "," + COLUMN_LEIEPRIS + ","
 				+ COLUMN_AVTALE_START + "," + COLUMN_AVTALE_SLUTT + ") "
@@ -336,7 +336,7 @@ public class Data_Kontrakter extends Database {
 			String søkerPersonnummer, String opprettetDato, String boligID) {
 
 		String sql = "update " + TABLE_LEIEKONTRAKT_FORESPØRSEL + " set "
-				+ COLUMN_BEHANDLER_PERSONNUMMER + " = '"
+				+ COLUMN_BEHANDLER_BRUKER_PERSONNUMMER + " = '"
 				+ behandlerPersonnummer + "'," + COLUMN_PÅTATT + " = " + 1
 				+ " where " + COLUMN_OPPRETTET_DATO + " = '" + opprettetDato
 				+ "' and " + COLUMN_BOLIGSØKER_PERSONNUMMER + " = '"
@@ -374,7 +374,7 @@ public class Data_Kontrakter extends Database {
 
 		String sql = "delete from " + TABLE_LEIEKONTRAKT_FORESPØRSEL
 				+ " where " + COLUMN_BOLIGSØKER_PERSONNUMMER + " = '"
-				+ søkerPersonnummer + "' and " + COLUMN_BEHANDLER_PERSONNUMMER
+				+ søkerPersonnummer + "' and " + COLUMN_BEHANDLER_BRUKER_PERSONNUMMER
 				+ " = '" + behandlerPersonnummer + "'" + " and "
 				+ COLUMN_BOLIG_BOLIG_ID + " = " + boligID + " and "
 				+ COLUMN_OPPRETTET_DATO + " = '" + dato + "' limit 1";
@@ -497,7 +497,7 @@ public class Data_Kontrakter extends Database {
 			if (ANDhelp > 0) {
 				sql += " AND ";
 			}
-			sql += COLUMN_BEHANDLER_PERSONNUMMER + " = " + behandlerId;
+			sql += COLUMN_BEHANDLER_BRUKER_PERSONNUMMER + " = " + behandlerId;
 		}
 		if (påtatt != 0) {
 			if (ANDhelp > 0) {
@@ -512,7 +512,7 @@ public class Data_Kontrakter extends Database {
 			while (rs.next()) {
 				LeiekontraktForespørsel lk = new LeiekontraktForespørsel(
 						rs.getString(COLUMN_BOLIGSØKER_PERSONNUMMER),
-						rs.getString(COLUMN_BEHANDLER_PERSONNUMMER),
+						rs.getString(COLUMN_BEHANDLER_BRUKER_PERSONNUMMER),
 						rs.getInt(COLUMN_BOLIG_BOLIG_ID),
 						rs.getDate(COLUMN_BOLIG_BOLIG_ID));
 				lkList.add(lk);
