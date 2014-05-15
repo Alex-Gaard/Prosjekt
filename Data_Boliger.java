@@ -22,53 +22,7 @@ import javax.imageio.ImageIO;
  * @author Arlen Syver Wasserman, s193956, IT 1 år
  * @version 1.0 13 Mai 2014
  */
-public class Data_Boliger extends Database {
-
-    //T for table, C for collum
-    //Boligsøker
-    public static final String T_BS_NAME = "Boligsøker";
-    public static final String T_BS_C_ID = "Bruker_Personnummer";
-
-    //Boligeier
-    public static final String T_BE_NAME = "Utleier";
-    public static final String T_BE_C_ID = "Bruker_Personnummer";
-    public static final String T_BE_C_FIRMA = "Firma";
-
-    //Bolig Tabell Felter
-    public static final String T_B_NAME = "Bolig";
-    public static final String T_B_C_ID = "BoligID";
-    public static final String T_B_C_EIER = "Utleier_Bruker_Personnummer";
-    public static final String T_B_C_ADRESSE = "Adresse";
-    public static final String T_B_C_POSTADRESSE = "Postnummer";
-    public static final String T_B_C_BOAREAL = "Boareal";
-    public static final String T_B_C_ANTROM = "Antall_Rom";
-    public static final String T_B_C_BYGGÅR = "Byggår";
-    public static final String T_B_C_BESKRIVELSE = "Beskrivelse";
-    public static final String T_B_C_AVERTERT = "Avertert";
-    public static final String T_B_C_PRIS = "Utleie_pris";
-    
-    //Enebolig tabell
-    public static final String T_EB_NAME = "Enebolig_og_rekkehus";
-    public static final String T_EB_C_ID = "Bolig_BoligID";
-    public static final String T_EB_C_ETASJER = "Antall_etasjer";
-    public static final String T_EB_C_KJELLER = "Kjeller";
-    public static final String T_EB_C_TAREAL = "Tomt_areal";
-   
-    //Leilighet Tabell Felter
-    public static final String T_L_NAME = "Leilighet";
-    public static final String T_L_C_ID = "Bolig_BoligID";
-    public static final String T_L_C_ETASJE = "Etasje";
-    public static final String T_L_C_HEIS = "Heis";
-    public static final String T_L_C_BALKONG = "Balkong";
-    public static final String T_L_C_GARASJE = "Garasje";
-    public static final String T_L_C_FELLESVASK = "Fellesvaskeri";
-   
-    //Bilde Tabell Felter
-    public static final String T_BILD_NAME = "Bolig_bilde";
-    public static final  String T_BILD_C_ID = "Bolig_BoligID";
-    public static final  String T_BILD_C_BILDE = "Bilde";
-    public static final  String T_BILD_C_DIGEST = "Digest";
-   
+public class Data_Boliger extends Database {   
     /**
      * Inneholder objekter hvor de igjen inneholder bilder for hvert nedlastet bilde  for hver bolig.
      * I et forsøk på å minske belastningen på databasen, blir bildene mellomlagret i programmet. Hvis bilder blir oppdatert
@@ -103,9 +57,9 @@ public class Data_Boliger extends Database {
         private void updateDigesetKeys(){
             if(lastUpdate + ImageUpdateDelay < System.currentTimeMillis()){
                 ArrayList<String> digestKeys = new ArrayList();
-                try(ResultSet rs = execQuery("SELECT " + T_BILD_C_DIGEST + " FROM " +  T_BILD_NAME + " WHERE " + T_BILD_C_ID + " = " + boligId)){
+                try(ResultSet rs = execQuery("SELECT " + COLUMN_DIGEST + " FROM " +  TABLE_BILDE + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + boligId)){
                     while(rs.next()){
-                        digestKeys.add(rs.getString(T_BILD_C_DIGEST));
+                        digestKeys.add(rs.getString(COLUMN_DIGEST));
                     }
                 }catch(SQLException e){
                     System.out.println(e);
@@ -145,9 +99,9 @@ public class Data_Boliger extends Database {
             if(list.containsKey(DataBasedigestKeys.get(index))){
                 return (Image) list.get(DataBasedigestKeys.get(index));
             }else{
-                try(ResultSet rs = execQuery("SELECT * FROM " +  T_BILD_NAME + " WHERE " + T_BILD_C_ID + " = " + boligId + " AND " + T_BILD_C_DIGEST + " = '" + DataBasedigestKeys.get(index) + "'")){
+                try(ResultSet rs = execQuery("SELECT * FROM " +  TABLE_BILDE + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + boligId + " AND " + COLUMN_DIGEST + " = '" + DataBasedigestKeys.get(index) + "'")){
                     while(rs.next()){
-                        list.put(rs.getString(T_BILD_C_DIGEST), ImageIO.read(rs.getBinaryStream(T_BILD_C_BILDE)));
+                        list.put(rs.getString(COLUMN_DIGEST), ImageIO.read(rs.getBinaryStream(COLUMN_BILDE)));
                     }
                     }catch(SQLException|IOException  e){
                         System.out.println(e);
@@ -197,7 +151,7 @@ public class Data_Boliger extends Database {
      */
     public static boolean settinnBolig(Bruker kunde, Bolig bolig, Image[] bilder) {/*Boligeier kunde*/
         try{
-            if (!execQuery("SELECT * FROM " + T_BE_NAME + " WHERE " + T_BE_C_ID + " = " + kunde.getId()).next()) {
+            if (!execQuery("SELECT * FROM " + TABLE_UTLEIER + " WHERE " + COLUMN_BRUKER_PERSONNUMMER + " = " + kunde.getId()).next()) {
                 return false;
             }
         }catch (SQLException e){
@@ -239,16 +193,16 @@ public class Data_Boliger extends Database {
         //Lag første sql setninger
         int boligId;
         boolean abort = false;
-        String sql1 = "INSERT INTO " + T_B_NAME + " (" +
-                T_B_C_EIER + ", " + 
-                T_B_C_ADRESSE + ", " + 
-                T_B_C_POSTADRESSE + ", " + 
-                T_B_C_BOAREAL + ", " + 
-                T_B_C_ANTROM + ", " + 
-                T_B_C_BYGGÅR + ", " + 
-                T_B_C_BESKRIVELSE + ", " + 
-                T_B_C_AVERTERT + ", " + 
-                T_B_C_PRIS + ")";
+        String sql1 = "INSERT INTO " + TABLE_BOLIG + " (" +
+                COLUMN_UTLEIER_PERSONNUMMER + ", " + 
+                COLUMN_ADRESSE + ", " + 
+                COLUMN_POSTNUMMER + ", " + 
+                COLUMN_BOAREAL + ", " + 
+                COLUMN_ANTALL_ROM + ", " + 
+                CLOUMN_BYGGÅR + ", " + 
+                COLUMN_BESKRIVELSE + ", " + 
+                COLUMN_AVERTERT + ", " + 
+                COLUMN_UTLEIE_PRIS + ")";
         sql1 += " VALUES ('" + kunde.getId() + "' ,'" + 
                 bolig.getAdresse() + "' ,'" + 
                 bolig.getPostadresse() + "' ,'" + 
@@ -276,11 +230,11 @@ public class Data_Boliger extends Database {
             String sql2 = "";
             if(bolig instanceof Enebolig){
                 Enebolig bolig2 = (Enebolig) bolig;
-                sql2 = "INSERT INTO " + T_EB_NAME + " (" + T_EB_C_ID + ", " + T_EB_C_ETASJER + ", " + T_EB_C_KJELLER + ", " + T_EB_C_TAREAL + ")";
+                sql2 = "INSERT INTO " + TABLE_ENEBOLIG_OG_REKKEHUS + " (" + COLUMN_BOLIG_BOLIG_ID + ", " + COLUMN_ETASJER + ", " + COLUMN_KJELLER + ", " + COLUMN_TOTAL_AREAL + ")";
                 sql2 += " VALUES (" + boligId + ", " + bolig2.getEtasjer() + ", " + bolig2.getKjeller() + ", " + bolig2.getTotalAreal() + ")";
             }else if (bolig instanceof Leilighet){
                 Leilighet bolig2 = (Leilighet) bolig;
-                sql2 = "INSERT INTO " + T_L_NAME + " (" + T_L_C_ID + ", " + T_L_C_ETASJE + ", " + T_L_C_HEIS + ", " + T_L_C_BALKONG + ", " + T_L_C_GARASJE + ", " + T_L_C_FELLESVASK + ")";
+                sql2 = "INSERT INTO " + TABLE_LEILIGHET + " (" + COLUMN_BOLIG_BOLIG_ID + ", " + COLUMN_ETASJE + ", " + COLUMN_HEIS + ", " + COLUMN_BALKONG + ", " + COLUMN_GARASJE + ", " + COLUMN_FELLESVASK + ")";
                 sql2 += " VALUES (" + boligId + ", " + bolig2.getEtasje() + ", " + bolig2.getHeis() + ", " + bolig2.getBalkong() + ", " + bolig2.getGarasje() + ", " + bolig2.getFellesvask() + ")";
             }else{
                 abort = true;
@@ -289,7 +243,7 @@ public class Data_Boliger extends Database {
             stmt.executeUpdate(sql2);
 
             //Sett inn bilde(r)
-            String sql3 = "INSERT INTO " + T_BILD_NAME + " (" + T_BILD_C_ID + ", " + T_BILD_C_BILDE + ", " + T_BILD_C_DIGEST + ") values(" + boligId + ", ?, ?)";
+            String sql3 = "INSERT INTO " + TABLE_BILDE + " (" + COLUMN_BOLIG_BOLIG_ID + ", " + COLUMN_BILDE + ", " + COLUMN_DIGEST + ") values(" + boligId + ", ?, ?)";
             for(int i=0;i<numOfFiles;i++){
                 PreparedStatement stmt2 = con.prepareStatement(sql3);
                 InputStream is = new ByteArrayInputStream(images.get(i));
@@ -332,7 +286,7 @@ public class Data_Boliger extends Database {
      */
     public static Bolig[] getBoliger(String Id, String Eier, int[] Areal, int[] Postadresse, int[] Rom, int[] Byggår, String[] Avertert, long[] Pris, String modifiers, int InUse) {
         int counter = 0;
-        String sql = "SELECT * FROM " + T_B_NAME;
+        String sql = "SELECT * FROM " + TABLE_BOLIG;
         if (Id != null || Eier != null || Areal != null || Postadresse != null || Rom != null || Byggår != null || Avertert != null || Pris != null) {
             sql += " WHERE ";
         }
@@ -340,56 +294,56 @@ public class Data_Boliger extends Database {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_ID + " = " + Id;
+            sql += COLUMN_BOLIG_BOLIG_ID + " = " + Id;
             counter++;
         }
         if (Eier != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_EIER + " = " + Eier;
+            sql += COLUMN_UTLEIER_PERSONNUMMER + " = " + Eier;
             counter++;
         }
         if (Areal != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_BOAREAL + sqlConverterRANGE(Areal);
+            sql += COLUMN_BOAREAL + sqlConverterRANGE(Areal);
             counter++;
         }
         if (Postadresse != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_POSTADRESSE + sqlConverterCONTAINS(Postadresse);
+            sql += COLUMN_POSTNUMMER + sqlConverterCONTAINS(Postadresse);
             counter++;
         }
         if (Rom != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_ANTROM + sqlConverterRANGE(Rom);
+            sql += COLUMN_ANTALL_ROM + sqlConverterRANGE(Rom);
             counter++;
         }
         if (Byggår != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_BYGGÅR + sqlConverterRANGE(Byggår);
+            sql += CLOUMN_BYGGÅR + sqlConverterRANGE(Byggår);
             counter++;
         }
         if (Avertert != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_AVERTERT + sqlConverterRANGE(Avertert);
+            sql += COLUMN_AVERTERT + sqlConverterRANGE(Avertert);
             counter++;
         }
         if (Pris != null) {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += T_B_C_PRIS + sqlConverterRANGE(Pris);
+            sql += COLUMN_UTLEIE_PRIS + sqlConverterRANGE(Pris);
             counter++;
         }
         if (modifiers != null) {
@@ -399,16 +353,16 @@ public class Data_Boliger extends Database {
         try {
             ResultSet r = execQuery(sql);
             while (r.next()) {
-                boliger.add(new Bolig(r.getInt(T_B_C_ID), 
-                                    r.getString(T_B_C_EIER), 
-                                    r.getString(T_B_C_ADRESSE), 
-                                    r.getInt(T_B_C_POSTADRESSE), 
-                                    r.getInt(T_B_C_BOAREAL), 
-                                    r.getInt(T_B_C_ANTROM), 
-                                    r.getInt(T_B_C_BYGGÅR), 
-                                    r.getString(T_B_C_BESKRIVELSE), 
-                                    r.getString(T_B_C_AVERTERT), 
-                                    r.getLong(T_B_C_PRIS)));
+                boliger.add(new Bolig(r.getInt(COLUMN_BOLIG_BOLIG_ID), 
+                                    r.getString(COLUMN_UTLEIER_PERSONNUMMER), 
+                                    r.getString(COLUMN_ADRESSE), 
+                                    r.getInt(COLUMN_POSTNUMMER), 
+                                    r.getInt(COLUMN_BOAREAL), 
+                                    r.getInt(COLUMN_ANTALL_ROM), 
+                                    r.getInt(CLOUMN_BYGGÅR), 
+                                    r.getString(COLUMN_BESKRIVELSE), 
+                                    r.getString(COLUMN_AVERTERT), 
+                                    r.getLong(COLUMN_UTLEIE_PRIS)));
             }
         } catch (SQLException e) {
             System.out.println("error: " + e);
@@ -439,50 +393,50 @@ public class Data_Boliger extends Database {
      * @return En array med Enebolig objekter
      */
     public static Enebolig[] getEneboliger(String Id, String Eier, int[] Areal, int[] Postadresse, int[] Rom, int[] Byggår, String[] Avertert, long[] Pris, int[] Etasjer, int Kjeller, int[] Total_areal, String modifiers, int InUse) {
-        String sql = "SELECT " + T_B_NAME + ".*, " + T_EB_NAME + ".* from " + T_B_NAME + ", " + T_EB_NAME + " where " + T_B_NAME + "." + T_B_C_ID + " = " + T_EB_NAME + "." + T_EB_C_ID;
+        String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_ENEBOLIG_OG_REKKEHUS + ".* from " + TABLE_BOLIG + ", " + TABLE_ENEBOLIG_OG_REKKEHUS + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_BOLIG_ID + " = " + TABLE_ENEBOLIG_OG_REKKEHUS + "." + COLUMN_BOLIG_BOLIG_ID;
         if (Id != null) {
             sql += " AND ";
-            sql += T_B_C_ID + " = " + Id;
+            sql += COLUMN_BOLIG_BOLIG_ID + " = " + Id;
         }
         if (Eier != null) {
             sql += " AND ";
-            sql += T_B_C_EIER + " = " + Eier;
+            sql += COLUMN_UTLEIER_PERSONNUMMER + " = " + Eier;
         }
         if (Areal != null) {
             sql += " AND ";
-            sql += T_B_C_BOAREAL + sqlConverterRANGE(Areal);
+            sql += COLUMN_BOAREAL + sqlConverterRANGE(Areal);
         }
         if (Postadresse != null) {
             sql += " AND ";
-            sql += T_B_C_POSTADRESSE + sqlConverterCONTAINS(Postadresse);
+            sql += COLUMN_POSTNUMMER + sqlConverterCONTAINS(Postadresse);
         }
         if (Rom != null) {
             sql += " AND ";
-            sql += T_B_C_ANTROM + sqlConverterRANGE(Rom);
+            sql += COLUMN_ANTALL_ROM + sqlConverterRANGE(Rom);
         }
         if (Byggår != null) {
             sql += " AND ";
-            sql += T_B_C_BYGGÅR + sqlConverterRANGE(Byggår);
+            sql += CLOUMN_BYGGÅR + sqlConverterRANGE(Byggår);
         }
         if (Avertert != null) {
             sql += " AND ";
-            sql += T_B_C_AVERTERT + sqlConverterRANGE(Avertert);
+            sql += COLUMN_AVERTERT + sqlConverterRANGE(Avertert);
         }
         if (Pris != null) {
             sql += " AND ";
-            sql += T_B_C_PRIS + sqlConverterRANGE(Pris);
+            sql += COLUMN_UTLEIE_PRIS + sqlConverterRANGE(Pris);
         }
         if (Etasjer != null) {
             sql += " AND ";
-            sql += T_EB_C_ETASJER + sqlConverterRANGE(Etasjer);
+            sql += COLUMN_ETASJER + sqlConverterRANGE(Etasjer);
         }
         if (Kjeller != 0) {
             sql += " AND ";
-            sql += T_EB_C_KJELLER + sqlConverterINT2BOOL(Kjeller);
+            sql += COLUMN_KJELLER + sqlConverterINT2BOOL(Kjeller);
         }
         if (Total_areal != null) {
             sql += " AND ";
-            sql += T_EB_C_TAREAL + sqlConverterRANGE(Total_areal);
+            sql += COLUMN_TOTAL_AREAL + sqlConverterRANGE(Total_areal);
         }
         if (modifiers != null) {
             sql += " " + modifiers;
@@ -491,19 +445,19 @@ public class Data_Boliger extends Database {
         try {
             ResultSet r = execQuery(sql);
             while (r.next()){
-                eneboliger.add(new Enebolig(r.getInt(T_B_C_ID),
-                                            r.getString(T_B_C_EIER),
-                                            r.getString(T_B_C_ADRESSE),
-                                            r.getInt(T_B_C_POSTADRESSE),
-                                            r.getInt(T_B_C_BOAREAL),
-                                            r.getInt(T_B_C_ANTROM),
-                                            r.getInt(T_B_C_BYGGÅR),
-                                            r.getString(T_B_C_BESKRIVELSE),
-                                            r.getString(T_B_C_AVERTERT),
-                                            r.getLong(T_B_C_PRIS),
-                                            r.getInt(T_EB_C_ETASJER),
-                                            r.getBoolean(T_EB_C_KJELLER),
-                                            r.getInt(T_EB_C_TAREAL)));
+                eneboliger.add(new Enebolig(r.getInt(COLUMN_BOLIG_BOLIG_ID),
+                                            r.getString(COLUMN_UTLEIER_PERSONNUMMER),
+                                            r.getString(COLUMN_ADRESSE),
+                                            r.getInt(COLUMN_POSTNUMMER),
+                                            r.getInt(COLUMN_BOAREAL),
+                                            r.getInt(COLUMN_ANTALL_ROM),
+                                            r.getInt(CLOUMN_BYGGÅR),
+                                            r.getString(COLUMN_BESKRIVELSE),
+                                            r.getString(COLUMN_AVERTERT),
+                                            r.getLong(COLUMN_UTLEIE_PRIS),
+                                            r.getInt(COLUMN_ETASJER),
+                                            r.getBoolean(COLUMN_KJELLER),
+                                            r.getInt(COLUMN_TOTAL_AREAL)));
             }
         } catch (SQLException e) {
             System.out.println("error: " + e);
@@ -536,58 +490,58 @@ public class Data_Boliger extends Database {
      * @return En array med Leilighet objekter
      */
     public static Leilighet[] getLeiligheter(String Id, String Eier, int[] Areal, int[] Postadresse, int[] Rom, int[] Byggår, String[] Avertert, long[] Pris, int[] Etasje, int Heis, int Balkong, int Garasje, int Fellesvask, String modifiers, int InUse) {
-        String sql = "SELECT " + T_B_NAME + ".*, " + T_L_NAME + ".* from " + T_B_NAME + ", " + T_L_NAME + " where " + T_B_NAME + "." + T_B_C_ID + " = " + T_L_NAME + "." + T_L_C_ID;
+        String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_LEILIGHET + ".* from " + TABLE_BOLIG + ", " + TABLE_LEILIGHET + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_BOLIG_ID + " = " + TABLE_LEILIGHET + "." + COLUMN_BOLIG_BOLIG_ID;
         if (Id != null) {
             sql += " AND ";
-            sql += T_B_C_ID + " = " + Id;
+            sql += COLUMN_BOLIG_BOLIG_ID + " = " + Id;
         }
         if (Eier != null) {
             sql += " AND ";
-            sql += T_B_C_EIER + " = " + Eier;
+            sql += COLUMN_UTLEIER_PERSONNUMMER + " = " + Eier;
         }
         if (Areal != null) {
             sql += " AND ";
-            sql += T_B_C_BOAREAL + sqlConverterRANGE(Areal);
+            sql += COLUMN_BOAREAL + sqlConverterRANGE(Areal);
         }
         if (Postadresse != null) {
             sql += " AND ";
-            sql += T_B_C_POSTADRESSE + sqlConverterCONTAINS(Postadresse);
+            sql += COLUMN_POSTNUMMER + sqlConverterCONTAINS(Postadresse);
         }
         if (Rom != null) {
             sql += " AND ";
-            sql += T_B_C_ANTROM + sqlConverterRANGE(Rom);
+            sql += COLUMN_ANTALL_ROM + sqlConverterRANGE(Rom);
         }
         if (Byggår != null) {
             sql += " AND ";
-            sql += T_B_C_BYGGÅR + sqlConverterRANGE(Byggår);
+            sql += CLOUMN_BYGGÅR + sqlConverterRANGE(Byggår);
         }
         if (Avertert != null) {
             sql += " AND ";
-            sql += T_B_C_AVERTERT + sqlConverterRANGE(Avertert);
+            sql += COLUMN_AVERTERT + sqlConverterRANGE(Avertert);
         }
         if (Pris != null) {
             sql += " AND ";
-            sql += T_B_C_PRIS + sqlConverterRANGE(Pris);
+            sql += COLUMN_UTLEIE_PRIS + sqlConverterRANGE(Pris);
         }
         if (Etasje != null) {
             sql += " AND ";
-            sql += T_L_C_ETASJE + sqlConverterRANGE(Etasje);
+            sql += COLUMN_ETASJE + sqlConverterRANGE(Etasje);
         }
         if (Heis != 0) {
             sql += " AND ";
-            sql += T_L_C_HEIS + sqlConverterINT2BOOL(Heis);
+            sql += COLUMN_HEIS + sqlConverterINT2BOOL(Heis);
         }
         if (Balkong != 0) {
             sql += " AND ";
-            sql += T_L_C_HEIS + sqlConverterINT2BOOL(Balkong);
+            sql += COLUMN_HEIS + sqlConverterINT2BOOL(Balkong);
         }
         if (Garasje != 0) {
             sql += " AND ";
-            sql += T_L_C_GARASJE + sqlConverterINT2BOOL(Garasje);
+            sql += COLUMN_GARASJE + sqlConverterINT2BOOL(Garasje);
         }
         if (Fellesvask != 0) {
             sql += " AND ";
-            sql += T_L_C_FELLESVASK + sqlConverterINT2BOOL(Fellesvask);
+            sql += COLUMN_FELLESVASK + sqlConverterINT2BOOL(Fellesvask);
         }
         if (modifiers != null) {
             sql += " " + modifiers;
@@ -596,21 +550,21 @@ public class Data_Boliger extends Database {
         try {
             ResultSet r = execQuery(sql);
             while (r.next()) {
-                leiligheter.add(new Leilighet(r.getInt(T_B_C_ID), 
-                        r.getString(T_B_C_EIER), 
-                        r.getString(T_B_C_ADRESSE), 
-                        r.getInt(T_B_C_POSTADRESSE), 
-                        r.getInt(T_B_C_BOAREAL), 
-                        r.getInt(T_B_C_ANTROM), 
-                        r.getInt(T_B_C_BYGGÅR), 
-                        r.getString(T_B_C_BESKRIVELSE), 
-                        r.getString(T_B_C_AVERTERT), 
-                        r.getLong(T_B_C_PRIS), 
-                        r.getInt(T_L_C_ETASJE), 
-                        r.getBoolean(T_L_C_HEIS), 
-                        r.getBoolean(T_L_C_BALKONG), 
-                        r.getBoolean(T_L_C_GARASJE), 
-                        r.getBoolean(T_L_C_FELLESVASK)));
+                leiligheter.add(new Leilighet(r.getInt(COLUMN_BOLIG_BOLIG_ID), 
+                        r.getString(COLUMN_UTLEIER_PERSONNUMMER), 
+                        r.getString(COLUMN_ADRESSE), 
+                        r.getInt(COLUMN_POSTNUMMER), 
+                        r.getInt(COLUMN_BOAREAL), 
+                        r.getInt(COLUMN_ANTALL_ROM), 
+                        r.getInt(CLOUMN_BYGGÅR), 
+                        r.getString(COLUMN_BESKRIVELSE), 
+                        r.getString(COLUMN_AVERTERT), 
+                        r.getLong(COLUMN_UTLEIE_PRIS), 
+                        r.getInt(COLUMN_ETASJE), 
+                        r.getBoolean(COLUMN_HEIS), 
+                        r.getBoolean(COLUMN_BALKONG), 
+                        r.getBoolean(COLUMN_GARASJE), 
+                        r.getBoolean(COLUMN_FELLESVASK)));
             }
         } catch (SQLException e) {
             System.out.println("error: " + e);
@@ -631,32 +585,32 @@ public class Data_Boliger extends Database {
      */
     public static boolean updateBolig(Bolig b, Image[] bilder){
         int id = b.getId();
-        String sql1 = "UPDATE " + T_B_NAME + " SET " +
-                    T_B_C_ADRESSE + " = '" + b.getAdresse() + "'" +
-                    ", " + T_B_C_BOAREAL + " = " + b.getAreal() +
-                    ", " + T_B_C_ANTROM + " = " + b.getAntRom() +
-                    ", " + T_B_C_BYGGÅR + " = " + b.getByggår() +
-                    ", " + T_B_C_BESKRIVELSE + " = '" + b.getBesk() + "'" +
-                    ", " + T_B_C_PRIS + " = " + b.getPris() + 
-                    ", " + T_B_C_POSTADRESSE + " = " + b.getPostadresse() +
-                    " WHERE "+ T_B_C_ID +" = " + id;
+        String sql1 = "UPDATE " + TABLE_BOLIG + " SET " +
+                    COLUMN_ADRESSE + " = '" + b.getAdresse() + "'" +
+                    ", " + COLUMN_BOAREAL + " = " + b.getAreal() +
+                    ", " + COLUMN_ANTALL_ROM + " = " + b.getAntRom() +
+                    ", " + CLOUMN_BYGGÅR + " = " + b.getByggår() +
+                    ", " + COLUMN_BESKRIVELSE + " = '" + b.getBesk() + "'" +
+                    ", " + COLUMN_UTLEIE_PRIS + " = " + b.getPris() + 
+                    ", " + COLUMN_POSTNUMMER + " = " + b.getPostadresse() +
+                    " WHERE "+ COLUMN_BOLIG_BOLIG_ID +" = " + id;
         String sql2 = "";
         if (b instanceof Enebolig) {
                 Enebolig eb = (Enebolig) b;
-                sql2 = "UPDATE "+ T_EB_NAME + " SET " + 
-                        T_EB_C_ETASJER + " = " + eb.getEtasjer()+ 
-                        ", " + T_EB_C_KJELLER + " = " + eb.getKjeller() + 
-                        ", " + T_EB_C_TAREAL + " = " + eb.getTotalAreal() +
-                        " WHERE "+ T_EB_C_ID +" = " + id;
+                sql2 = "UPDATE "+ TABLE_ENEBOLIG_OG_REKKEHUS + " SET " + 
+                        COLUMN_ETASJER + " = " + eb.getEtasjer()+ 
+                        ", " + COLUMN_KJELLER + " = " + eb.getKjeller() + 
+                        ", " + COLUMN_TOTAL_AREAL + " = " + eb.getTotalAreal() +
+                        " WHERE "+ COLUMN_BOLIG_BOLIG_ID +" = " + id;
             }else if (b instanceof Leilighet) {
                 Leilighet lb = (Leilighet) b;
-                sql2 = "UPDATE " + T_L_NAME + " SET " +
-                        T_L_C_ETASJE + " = " + lb.getEtasje() +
-                        ", " + T_L_C_HEIS + " = " + lb.getHeis() + 
-                        ", " + T_L_C_BALKONG + " = " + lb.getBalkong() + 
-                        ", " + T_L_C_GARASJE + " = " + lb.getGarasje() + 
-                        ", " + T_L_C_FELLESVASK + " = " + lb.getFellesvask() + 
-                        " WHERE " + T_L_C_ID + " = " + id;
+                sql2 = "UPDATE " + TABLE_LEILIGHET + " SET " +
+                        COLUMN_ETASJE + " = " + lb.getEtasje() +
+                        ", " + COLUMN_HEIS + " = " + lb.getHeis() + 
+                        ", " + COLUMN_BALKONG + " = " + lb.getBalkong() + 
+                        ", " + COLUMN_GARASJE + " = " + lb.getGarasje() + 
+                        ", " + COLUMN_FELLESVASK + " = " + lb.getFellesvask() + 
+                        " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + id;
             }
         //Generate images and digests
         int numOfFiles = bilder.length;
@@ -689,9 +643,9 @@ public class Data_Boliger extends Database {
         }
         ArrayList<String> DBdigests = new ArrayList();
         try{
-            ResultSet rs = execQuery("SELECT " + T_BILD_C_DIGEST + " FROM " + T_BILD_NAME + " WHERE " + T_BILD_C_ID + " = " + b.getId());
+            ResultSet rs = execQuery("SELECT " + COLUMN_DIGEST + " FROM " + TABLE_BILDE + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + b.getId());
             while(rs.next()){
-                DBdigests.add(rs.getString(T_BILD_C_DIGEST));
+                DBdigests.add(rs.getString(COLUMN_DIGEST));
             }
         }catch(SQLException e){
             System.out.println(e);
@@ -706,11 +660,11 @@ public class Data_Boliger extends Database {
                 if(bildeListe.containsKey(DBdigest)){
                     bildeListe.remove(DBdigest);
                 }else{
-                    stmt.executeUpdate("DELETE FROM " + T_BILD_NAME + " WHERE " + T_BILD_C_ID + " = " + b.getId() + " AND " + T_BILD_C_DIGEST + " = '" + DBdigest + "'");
+                    stmt.executeUpdate("DELETE FROM " + TABLE_BILDE + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + b.getId() + " AND " + COLUMN_DIGEST + " = '" + DBdigest + "'");
                 }
             }
             for(String digest : bildeListe.keySet()){
-                String sql = "INSERT INTO " + T_BILD_NAME + " (" + T_BILD_C_ID + ", " + T_BILD_C_BILDE + ", " + T_BILD_C_DIGEST + ") values(" + b.getId() + ", ?, '" + digest + "')";
+                String sql = "INSERT INTO " + TABLE_BILDE + " (" + COLUMN_BOLIG_BOLIG_ID + ", " + COLUMN_BILDE + ", " + COLUMN_DIGEST + ") values(" + b.getId() + ", ?, '" + digest + "')";
                 PreparedStatement pstmt = con.prepareStatement(sql);
                 InputStream is = new ByteArrayInputStream(bildeListe.get(digest));
                 pstmt.setBinaryStream(1, is, bildeListe.get(digest).length);
@@ -749,16 +703,16 @@ public class Data_Boliger extends Database {
         if((Data_Kontrakter.aktivKontraktExists(bolig.getId()+"") || Data_Kontrakter.forespørselExists(bolig.getId()))){
             return false;
         }else{
-            String sql1 = "DELETE FROM " + T_B_NAME + " WHERE " + T_B_C_ID + " = " + bolig.getId();
+            String sql1 = "DELETE FROM " + TABLE_BOLIG + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + bolig.getId();
             String sql2 = "";
             if(bolig instanceof Enebolig){
-                sql2 = "DELETE FROM " + T_EB_NAME + " WHERE " + T_EB_C_ID + " = " + bolig.getId();
+                sql2 = "DELETE FROM " + TABLE_ENEBOLIG_OG_REKKEHUS + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + bolig.getId();
             }else if(bolig instanceof Leilighet){
-                sql2 = "DELETE FROM " + T_L_NAME + " WHERE " + T_L_C_ID + " = " + bolig.getId();
+                sql2 = "DELETE FROM " + TABLE_LEILIGHET + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + bolig.getId();
             }else{
                 return false;
             }
-            String sql3 = "DELETE FROM " + T_BILD_NAME + " WHERE " + T_BILD_C_ID + " = " + bolig.getId();
+            String sql3 = "DELETE FROM " + TABLE_BILDE + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + bolig.getId();
             Connection con = getConnection();
             try{
                 con.setAutoCommit(false);

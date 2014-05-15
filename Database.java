@@ -43,6 +43,7 @@ public abstract class Database {
 	final static String TABLE_SØKERINFO = "SøkerInfo";
 	final static String TABLE_SØKERKRAV = "SøkerKrav";
 
+        static final String TABLE_BILDE = "Bolig_bilde";
 
 	// Kolonner
 	final static String COLUMN_PERSONNUMMER = "Personnummer";
@@ -59,20 +60,32 @@ public abstract class Database {
 	final static String COLUMN_BOLIG_BOLIG_ID = "Bolig_BoligID";
 	final static String COLUMN_UTLEIER_PERSONNUMMER = "Utleier_Bruker_Personnummer";
 	final static String COLUMN_BOLIGSØKER_PERSONNUMMER = "Boligsøker_Bruker_Personnummer";
-	final static String COLUMN_BEHANDLER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
+	final static String COLUMN_BEHANDLER_BRUKER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
 	final static String COLUMN_LEIEPRIS = "Leiepris_pr_måned";
 	final static String COLUMN_AVTALE_START = "Avtale_start";
 	final static String COLUMN_AVTALE_SLUTT = "Avtale_slutt";
 	
 	final static String COLUMN_OPPRETTET_DATO = "Opprettet_Dato";
-	final static String COLUMN_BEHANDLER_BRUKER_PERSONNUMMER = "Kundebehandler_Bruker_Personnummer";
 	final static String COLUMN_BOLIG_ID = "BoligID";
 	final static String COLUMN_PÅTATT = "Påtatt";
 	final static String COLUMN_AVERTERT = "Avertert";
 	final static String COLUMN_UTLEIE_PRIS = "Utleie_pris";
 
-
-
+        static final String COLUMN_BOAREAL = "Boareal";
+        static final String COLUMN_ANTALL_ROM = "Antall_Rom";
+        static final String COLUMN_BESKRIVELSE = "Beskrivelse";
+        static final String CLOUMN_BYGGÅR = "Byggår";
+        static final String COLUMN_KJELLER = "Kjeller";
+        static final String COLUMN_ETASJER = "Antall_etasjer";
+        static final String COLUMN_TOTAL_AREAL = "Tomt_areal";
+        static final String COLUMN_ETASJE = "Etasje";
+        static final String COLUMN_HEIS = "Heis";
+        static final String COLUMN_BALKONG = "Balkong";
+        static final String COLUMN_GARASJE = "Garasje";
+        static final String COLUMN_FELLESVASK = "Fellesvaskeri";
+        
+        static final  String COLUMN_DIGEST = "Digest";
+        static final  String COLUMN_BILDE = "Bilde";
 	// Vindu
 	private static Vindu_Main vindu = null;
 
