@@ -1,3 +1,7 @@
+drop database s193956;
+create database s193956;
+use s193956;
+
 -- -----------------------------------------------------
 -- Table `s193956`.`Bruker`
 -- -----------------------------------------------------
@@ -302,13 +306,13 @@ CREATE TABLE IF NOT EXISTS `s193956`.`Viste_Boliger` (
 ENGINE = InnoDB;
 
 insert into Bruker (Personnummer, Navn, Adresse, Email, Telefon, Postnummer, Opprettet) VALUES('12345678912', 'Arlen', 'Testveien 1', 'norge@norge.no', '12345678', '1234', curdate());
-insert into Kundebehandler VALUES ('12345678912');
-insert into Bruker_PassordRegister VALUES ('12345678912', password('123');
+insert into Kundebehandler (Bruker_Personnummer) VALUES ('12345678912');
+insert into Bruker_PassordRegister (Bruker_Personnummer, Passord) VALUES(12345678912, password(123));
 
 insert into Bruker (Personnummer, Navn, Adresse, Email, Telefon, Postnummer, Opprettet) VALUES('12345678923', 'Alex', 'Testveien 1', 'norge@norge.no', '12345678', '1234', curdate());
-insert into Kundebehandler VALUES ('12345678923');
-insert into Bruker_PassordRegister VALUES ('123456789123', password('123');
+insert into Kundebehandler (Bruker_Personnummer) VALUES ('12345678923');
+ insert into Bruker_PassordRegister (Bruker_Personnummer, Passord) VALUES(12345678923, password(123));
 
 insert into Bruker (Personnummer, Navn, Adresse, Email, Telefon, Postnummer, Opprettet) VALUES('12345678934', 'Petter', 'Testveien 1', 'norge@norge.no', '12345678', '1234', curdate());
-insert into Kundebehandler VALUES ('12345678934');
-insert into Bruker_PassordRegister VALUES ('123456789134', password('123');
+insert into Kundebehandler (Bruker_Personnummer) VALUES ('12345678934');
+ insert into Bruker_PassordRegister (Bruker_Personnummer, Passord) VALUES(12345678934, password(123));
