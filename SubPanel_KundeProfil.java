@@ -1044,14 +1044,3 @@ public class SubPanel_KundeProfil extends SubPanel
         repaint();
     }
 }
-
-
-/*NOTE TO SELF
-ENDRINGER I BEGGE KLASSER, FlYTTET OVER EN MASSE SQL TIL DISSE NYE:
-Data_boligsøker
-Data_Leiekontrakt_Forespørsel
-Data_Viste_Boliger
-Data_utleier
-
-I tillegg har Data_Bruker fått 3 nye metoder. 
-*/
