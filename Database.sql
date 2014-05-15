@@ -240,7 +240,7 @@ ENGINE = InnoDB;
 -- Table `s193956`.`Bolig_bilde`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `s193956`.`Bolig_bilde` (
-  `BildeID` INT NOT NULL,
+  `BildeID` INT NOT NULL AUTO_INCREMENT,
   `Bolig_BoligID` INT NOT NULL,
   `Bilde` LONGBLOB NULL,
   `Digest` VARCHAR(255) NULL,
