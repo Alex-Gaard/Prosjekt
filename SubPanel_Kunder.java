@@ -606,10 +606,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
             Telefon2.setText(søkrs.getString("Telefon") );
             søkrs.close();
             
-            ResultSet rstemp = Data_boligsøker.selectspecRSfromboligsøker(PersNr);
-            rstemp.first();
-            String boligsøker = rstemp.getString("Bruker_Personnummer");
-            leiekontraktrs= Data_Leiekontrakt_Forespørsel.selectAll(boligsøker);
+            leiekontraktrs= Data_Leiekontrakt_Forespørsel.selectAll(Personnummer2.getText());
             
             String[] leiekontraktKolonner = {"BoligID","Møtedato","Kundebehandler","Påtatt"};
             leiekontraktermodel = new DefaultTableModel(null,leiekontraktKolonner);
