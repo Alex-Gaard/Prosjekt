@@ -4,12 +4,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -114,21 +110,21 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 		String id = this.personnummerField.getText();
 		String password = String.valueOf(passord.getPassword());
 
-		if (!Data_Login.userMatchesPassword(id, password)) {
+		if (!Data_Bruker.userMatchesPassword(id, password)) {
 			passord.setText("");
 			displayMessage("Personnummeret eller passordet som ble oppgitt var feil!");
 			return false;
 		}
 
-		if (Data_Login.userExists(Data_Login.TABLE_UTLEIER, id)) {
+		if (Data_Bruker.userExists(Data_Bruker.TABLE_UTLEIER, id)) {
 			utleier = true;
 		} 
 		
-		if (Data_Login.userExists(Data_Login.TABLE_BOLIGSØKER, id)) {
+		if (Data_Bruker.userExists(Data_Bruker.TABLE_BOLIGSØKER, id)) {
 			søker = true;
 		} 
 
-		if (Data_Login.userExists(Data_Login.TABLE_BEHANDLER, id)) {
+		if (Data_Bruker.userExists(Data_Bruker.TABLE_BEHANDLER, id)) {
 			kundebehandler = true;
 		} 
 
@@ -176,15 +172,15 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 		String adresse = "";
 		String postnummer = "";
 
-		try (ResultSet rs = Data_Login.getBrukerResult(id)) {
+		try (ResultSet rs = Data_Bruker.getBrukerResult(id)) {
 
 			while (rs.next()) {
-				brukerID = rs.getString(Data_Login.COLUMN_PERSONNUMMER);
-				navn = rs.getString(Data_Login.COLUMN_NAVN);
-				tlf = rs.getString(Data_Login.COLUMN_TELEFON);
-				email = rs.getString(Data_Login.COLUMN_EMAIL);
-				adresse = rs.getString(Data_Login.COLUMN_ADRESSE);
-				postnummer = rs.getString(Data_Login.COLUMN_POSTNUMMER);
+				brukerID = rs.getString(Data_Bruker.COLUMN_PERSONNUMMER);
+				navn = rs.getString(Data_Bruker.COLUMN_NAVN);
+				tlf = rs.getString(Data_Bruker.COLUMN_TELEFON);
+				email = rs.getString(Data_Bruker.COLUMN_EMAIL);
+				adresse = rs.getString(Data_Bruker.COLUMN_ADRESSE);
+				postnummer = rs.getString(Data_Bruker.COLUMN_POSTNUMMER);
 			}
 
 		} catch (SQLException ex) {
