@@ -125,9 +125,11 @@ public class SubPanel_Boligeier extends SubPanel {
     private void resetEditPanel(Bolig bolig){
         remove(boligPanel);
             if (bolig instanceof Enebolig) {
-                add(new editEnebolig((Enebolig) bolig, callback));
+                boligPanel = new editEnebolig((Enebolig) bolig, callback);
+                add(boligPanel);
             } else if (bolig instanceof Leilighet) {
-                add(new editLeilighet((Leilighet) bolig, callback));
+                boligPanel = new editLeilighet((Leilighet) bolig, callback);
+                add(boligPanel);
             }
             revalidate();
     }//End resetEditPanel

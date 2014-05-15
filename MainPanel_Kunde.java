@@ -1,7 +1,6 @@
 package boligformidling;
-import java.awt.BorderLayout;
-import java.sql.SQLException;
 
+import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -20,34 +19,20 @@ public class MainPanel_Kunde extends MainPanel{
 		tabPane = new JTabbedPane();
 		setLayout(new BorderLayout());
 
-
-		JPanel subPanel_Boliger = new SubPanel_Boliger(this);
+		tabPane.addTab("Vis boliger", new SubPanel_Boliger(this));
 		
-		JPanel subPanel_KundeProfil = null;
-		try {
-			subPanel_KundeProfil = new SubPanel_KundeProfil(this, bruker.getId());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		tabPane.addTab("Vis boliger", subPanel_Boliger);
-		
-		tabPane.addTab("Kunde profil", subPanel_KundeProfil);
+		tabPane.addTab("Kunde profil", new SubPanel_KundeProfil(this, bruker.getId()));
 
 		if(bruker.is(Bruker.UTLEIER)){
-			 JPanel subPanel_RegistrerBoliger = new SubPanel_RegistrerBoliger(this);
-			 tabPane.addTab("Registrer boliger",subPanel_RegistrerBoliger);
+                    JPanel subPanel_RegistrerBoliger = new SubPanel_RegistrerBoliger(this);
+                    tabPane.addTab("Registrer boliger",subPanel_RegistrerBoliger);
 
-			 JPanel subPanel_Boligeier = new SubPanel_Boligeier(this);
-			 tabPane.addTab("Vis egne boliger",subPanel_Boligeier);
+                    JPanel subPanel_Boligeier = new SubPanel_Boligeier(this);
+                    tabPane.addTab("Vis egne boliger",subPanel_Boligeier);
 		}
-
-
-	    JPanel logOutPanel = new SubPanel_LogOut(bruker,this);
-
-	    add(logOutPanel,BorderLayout.NORTH);
-		add(tabPane,BorderLayout.CENTER);
+                
+                add(new SubPanel_LogOut(bruker,this),BorderLayout.NORTH);
+                add(tabPane,BorderLayout.CENTER);
 
 	}//end of constructor
 }//end of MainPanel_Kunde
