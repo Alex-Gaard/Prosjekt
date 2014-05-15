@@ -1,6 +1,9 @@
 package boligformidling;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Inneholder metoder for å hente ut og bearbeide informasjon fra databasen.
