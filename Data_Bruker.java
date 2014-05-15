@@ -14,28 +14,10 @@ import java.util.logging.Logger;
  */
 public class Data_Bruker extends Database {
 
-	// Tabeller
-	final static String TABLE_BRUKER = "Bruker";
-	final static String TABLE_SØKER = "Boligsøker";
-	final static String TABLE_UTLEIER = "Utleier";
-	final static String TABLE_PASSORD_REGISTER = "Bruker_PassordRegister";
-	final static String TABLE_BEHANDLER = "Kundebehandler";
-
-	// Kolonner
-	final static String COLUMN_PERSONNUMMER = "Personnummer";
-	final static String COLUMN_NAVN = "Navn";
-	final static String COLUMN_ADRESSE = "Adresse";
-	final static String COLUMN_EMAIL = "Email";
-	final static String COLUMN_TELEFON = "Telefon";
-	final static String COLUMN_POSTNUMMER = "Postnummer";
-	final static String COLUMN_OPPRETTET = "Opprettet";
-	final static String COLUMN_BRUKER_PERSONNUMMER = "Bruker_Personnummer";
-	final static String COLUMN_FIRMA = "Firma";
-	final static String COLUMN_PASSORD = "Passord";
-
 	/**
-	 * Setter inn en ny bruker i databasen. Hvis innsettingen var vellykket vil metoden returnere true.
-	 * Hvis en feil skulle oppstå vil metoden throwe en SQLException.
+	 * Setter inn en ny bruker i databasen. Hvis innsettingen var vellykket vil
+	 * metoden returnere true. Hvis en feil skulle oppstå vil metoden throwe en
+	 * SQLException.
 	 * 
 	 * @param personnummer
 	 *            Personnummeret til brukeren.
@@ -49,13 +31,15 @@ public class Data_Bruker extends Database {
 	 *            Telefonnummeret til brukeren.
 	 * @param postnummer
 	 *            Postnummeret til brukeren.
-	 * @throws SQLException Hvis en feil skulle oppstå under innsettingen.
+	 * @throws SQLException
+	 *             Hvis en feil skulle oppstå under innsettingen.
 	 * @return true/throw SQLException.
-	 *
+	 * 
 	 */
 	public static boolean insertBruker(String personnummer, String navn,
-			String adresse, String email, String telefon, String postnummer) throws SQLException{
-		
+			String adresse, String email, String telefon, String postnummer)
+			throws SQLException {
+
 		String sql = "insert into " + TABLE_BRUKER + "(" + COLUMN_PERSONNUMMER
 				+ "," + COLUMN_NAVN + "," + COLUMN_ADRESSE + "," + COLUMN_EMAIL
 				+ "," + COLUMN_TELEFON + "," + COLUMN_POSTNUMMER + ","
@@ -68,7 +52,7 @@ public class Data_Bruker extends Database {
 			return true;
 		} catch (SQLException ex) {
 			System.out.println("Feil i insertBruker: " + ex);
-			throw ex;	
+			throw ex;
 		}
 
 	}// End of insertBruker
@@ -108,7 +92,7 @@ public class Data_Bruker extends Database {
 	 */
 	public static boolean insertSøker(String personnummer) {
 
-		String sql = "insert into " + TABLE_SØKER + "("
+		String sql = "insert into " + TABLE_BOLIGSØKER + "("
 				+ COLUMN_BRUKER_PERSONNUMMER + ")" + " values('" + personnummer
 				+ "')";
 
@@ -159,7 +143,7 @@ public class Data_Bruker extends Database {
 	 */
 	public static boolean insertPassord(String personnummer, String passord) {
 
-		String sql = "insert into " + TABLE_PASSORD_REGISTER + "("
+		String sql = "insert into " + TABLE_BRUKER_PASSORD_REGISTER + "("
 				+ COLUMN_BRUKER_PERSONNUMMER + "," + COLUMN_PASSORD + ")"
 				+ " values('" + personnummer + "',password('" + passord + "'))";
 
@@ -172,147 +156,140 @@ public class Data_Bruker extends Database {
 		}
 
 	}// end of insertPassord
-	
-	//OBS NY Petter
-    /**
-     * 
-     * @param personnummer
-     * @param navnstring
-     * @param adressestring
-     * @param emailstring
-     * @param tlfstring
-     * 
-     * Gir klassen mulighet til å oppdatere en brukers data.
-     * 
-     * <p>Det er ikke mulig å oppdatere bare en kolonne omgangen, alt må gjøres samtidig.
-     * 
-     * @author Petter Gjerstad
-     * @version 1.00, 14 mai 2014
-     * @throws SQLException 
-     */
-    public static void updateBruker(String personnummer, String navnstring, String adressestring, String emailstring, String tlfstring) throws SQLException
-    {
-        String sql = "UPDATE " + TABLE_BRUKER + " "
-                + "SET "
-                + COLUMN_NAVN + "='" + navnstring + "', " + COLUMN_ADRESSE + "='" + adressestring
-                + "', " + COLUMN_EMAIL + "='" + emailstring + "', " + COLUMN_TELEFON + "='" + tlfstring + "' "
-                + "WHERE " + COLUMN_PERSONNUMMER + "='" + personnummer + "';";
-        execUpdate(sql);
-    }
 
-    //OBS NY Petter
-    /**
-     * Gir klassen mulighet til å slette et spesifik personnummer fra bruker;
-     * 
-     * <p>Tenkt brukt som del av slett profil
-     * @param personnummer
-     * @throws SQLException 
-     * 
-     * @author Petter Gjerstad
-     * @version 1.00, 14 mai 2014
-     */
-    public static void deleteBruker(String personnummer) throws SQLException
-    {
-        String sql = "delete from " + TABLE_BRUKER + " where " + COLUMN_PERSONNUMMER + "=" + personnummer + ";"; //todo
-        execUpdate(sql);
-    }
-    //OBS NY Petter   
-    /**
-     *
-     * @param PersNrT
-     * @param NavnT
-     * @param AdresseT
-     * @param EmailT
-     * @param TelefonT 
-     * Returnerer et resultat basert på SubPanel_Kunder sine
-     * søkeparametre.
-     * 
-     * <p>Metoden konstruerer en streng basert på søkeparametrene. Hvis parametrene er tomme(null) gjøres et generelt søk.
-     * 
-     * @return
-     * @author Petter Gjerstad
-     * @version 1.00, 14 mai 2014
-     */
-    public static ResultSet querykonstruktør(String PersNrT, String NavnT, String AdresseT, String EmailT, String TelefonT) //Konstruerer en query når man trykker søk.
-    {
+	// OBS NY Petter
+	/**
+	 * 
+	 * @param personnummer
+	 * @param navnstring
+	 * @param adressestring
+	 * @param emailstring
+	 * @param tlfstring
+	 * 
+	 *            Gir klassen mulighet til å oppdatere en brukers data.
+	 * 
+	 *            <p>
+	 *            Det er ikke mulig å oppdatere bare en kolonne omgangen, alt må
+	 *            gjøres samtidig.
+	 * 
+	 * @author Petter Gjerstad
+	 * @version 1.00, 14 mai 2014
+	 * @throws SQLException
+	 */
+	public static void updateBruker(String personnummer, String navnstring,
+			String adressestring, String emailstring, String tlfstring)
+			throws SQLException {
+		String sql = "UPDATE " + TABLE_BRUKER + " " + "SET " + COLUMN_NAVN
+				+ "='" + navnstring + "', " + COLUMN_ADRESSE + "='"
+				+ adressestring + "', " + COLUMN_EMAIL + "='" + emailstring
+				+ "', " + COLUMN_TELEFON + "='" + tlfstring + "' " + "WHERE "
+				+ COLUMN_PERSONNUMMER + "='" + personnummer + "';";
+		execUpdate(sql);
+	}
 
-        String and = "and";
-        String where = "where ";
-        Boolean blank = true;
+	// OBS NY Petter
+	/**
+	 * Gir klassen mulighet til å slette et spesifik personnummer fra bruker;
+	 * 
+	 * <p>
+	 * Tenkt brukt som del av slett profil
+	 * 
+	 * @param personnummer
+	 * @throws SQLException
+	 * 
+	 * @author Petter Gjerstad
+	 * @version 1.00, 14 mai 2014
+	 */
+	public static void deleteBruker(String personnummer) throws SQLException {
+		String sql = "delete from " + TABLE_BRUKER + " where "
+				+ COLUMN_PERSONNUMMER + "=" + personnummer + ";"; // todo
+		execUpdate(sql);
+	}
 
-        String[] felt = new String[5];
+	// OBS NY Petter
+	/**
+	 * 
+	 * @param PersNrT
+	 * @param NavnT
+	 * @param AdresseT
+	 * @param EmailT
+	 * @param TelefonT
+	 *            Returnerer et resultat basert på SubPanel_Kunder sine
+	 *            søkeparametre.
+	 * 
+	 *            <p>
+	 *            Metoden konstruerer en streng basert på søkeparametrene. Hvis
+	 *            parametrene er tomme(null) gjøres et generelt søk.
+	 * 
+	 * @return
+	 * @author Petter Gjerstad
+	 * @version 1.00, 14 mai 2014
+	 */
+	public static ResultSet querykonstruktør(String PersNrT, String NavnT,
+			String AdresseT, String EmailT, String TelefonT) // Konstruerer en
+																// query når man
+																// trykker søk.
+	{
 
-        if (!PersNrT.equals(""))
-        {
-            where += COLUMN_PERSONNUMMER + "='" + PersNrT + "'";
-            blank = false;
-        }
-        if (!NavnT.equals(""))
-        {
-            if (blank)
-            {
-                where += COLUMN_NAVN + "='" + NavnT + "'";
-                blank = false;
-            }
-            else
-            {
-                where += "AND " + COLUMN_NAVN + "='" + NavnT + "'";
-            }
-        }
-        if (!AdresseT.equals(""))
-        {
-            if (blank)
-            {
-                where += COLUMN_ADRESSE + "='" + AdresseT + "'";
-                blank = false;
-            }
-            else
-            {
-                where += "AND " + COLUMN_ADRESSE + "='" + AdresseT + "'";
-            }
-        }
-        if (!EmailT.equals(""))
-        {
-            if (blank)
-            {
-                where += COLUMN_EMAIL + "='" + EmailT + "'";
-                blank = false;
-            }
-            else
-            {
-                where += "AND " + COLUMN_EMAIL + "='" + EmailT + "'";
-            }
-        }
-        if (!TelefonT.equals(""))
-        {
-            if (blank)
-            {
-                where += COLUMN_TELEFON + "='" + TelefonT + "'";
-                blank = false;
-            }
-            else
-            {
-                where += "AND " + COLUMN_TELEFON + "='" + TelefonT + "'";
-            }
-        }
-        if (blank)
-        {
-            where = "where " + COLUMN_PERSONNUMMER + " not in(select * from " + TABLE_BEHANDLER + ")";
-        }
-        else
-        {
-            where += "AND " + COLUMN_PERSONNUMMER + " not in (select * from " + TABLE_BEHANDLER + ")";
-        }
+		String and = "and";
+		String where = "where ";
+		Boolean blank = true;
 
-        String Query = "select * from " + TABLE_BRUKER + " " + where + " order by ABS(Personnummer)" + ";";
-        try
-        {
-            return Data_Boliger.execQuery(Query);
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(SubPanel_Kunder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
+		String[] felt = new String[5];
+
+		if (!PersNrT.equals("")) {
+			where += COLUMN_PERSONNUMMER + "='" + PersNrT + "'";
+			blank = false;
+		}
+		if (!NavnT.equals("")) {
+			if (blank) {
+				where += COLUMN_NAVN + "='" + NavnT + "'";
+				blank = false;
+			} else {
+				where += "AND " + COLUMN_NAVN + "='" + NavnT + "'";
+			}
+		}
+		if (!AdresseT.equals("")) {
+			if (blank) {
+				where += COLUMN_ADRESSE + "='" + AdresseT + "'";
+				blank = false;
+			} else {
+				where += "AND " + COLUMN_ADRESSE + "='" + AdresseT + "'";
+			}
+		}
+		if (!EmailT.equals("")) {
+			if (blank) {
+				where += COLUMN_EMAIL + "='" + EmailT + "'";
+				blank = false;
+			} else {
+				where += "AND " + COLUMN_EMAIL + "='" + EmailT + "'";
+			}
+		}
+		if (!TelefonT.equals("")) {
+			if (blank) {
+				where += COLUMN_TELEFON + "='" + TelefonT + "'";
+				blank = false;
+			} else {
+				where += "AND " + COLUMN_TELEFON + "='" + TelefonT + "'";
+			}
+		}
+		if (blank) {
+			where = "where " + COLUMN_PERSONNUMMER + " not in(select * from "
+					+ TABLE_BEHANDLER + ")";
+		} else {
+			where += "AND " + COLUMN_PERSONNUMMER + " not in (select * from "
+					+ TABLE_BEHANDLER + ")";
+		}
+
+		String Query = "select * from " + TABLE_BRUKER + " " + where
+				+ " order by ABS(Personnummer)" + ";";
+		try {
+			return Data_Boliger.execQuery(Query);
+		} catch (SQLException ex) {
+			Logger.getLogger(SubPanel_Kunder.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+		return null;
+	}
 
 }// end of class Data_Bruker

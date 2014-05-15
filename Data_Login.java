@@ -12,23 +12,6 @@ import java.sql.SQLException;
  */
 public class Data_Login extends Database {
 
-	// Tabeller
-	final static String TABLE_BRUKER = "Bruker";
-	final static String TABLE_BRUKER_PASSORD_REGISTER = "Bruker_PassordRegister";
-	final static String TABLE_UTLEIER = "Utleier";
-	final static String TABLE_SØKER = "Boligsøker";
-	final static String TABLE_BEHANDLER = "Kundebehandler";
-
-	// Kolonner
-	final static String COLUMN_BRUKER_PERSONNUMMER = "Bruker_Personnummer";
-	final static String COLUMN_PASSORD = "Passord";
-	final static String COLUMN_PERSONNUMMER = "Personnummer";
-	final static String COLUMN_NAVN = "Navn";
-	final static String COLUMN_TELEFON = "Telefon";
-	final static String COLUMN_EMAIL = "Email";
-	final static String COLUMN_ADRESSE = "Adresse";
-	final static String COLUMN_POSTNUMMER = "Postnummer";
-
 	/**
 	 * Sjekker om en bruker med gitt id matcher gitt passord. Ut ifra om en
 	 * bruker ble funnet eller ikke, vil metoden returnere true/false.
