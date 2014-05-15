@@ -294,7 +294,7 @@ public class Data_Boliger extends Database {
             if (counter > 0) {
                 sql += " AND ";
             }
-            sql += COLUMN_BOLIG_BOLIG_ID + " = " + Id;
+            sql += COLUMN_BOLIG_ID + " = " + Id;
             counter++;
         }
         if (Eier != null) {
@@ -353,7 +353,7 @@ public class Data_Boliger extends Database {
         try {
             ResultSet r = execQuery(sql);
             while (r.next()) {
-                boliger.add(new Bolig(r.getInt(COLUMN_BOLIG_BOLIG_ID), 
+                boliger.add(new Bolig(r.getInt(COLUMN_BOLIG_ID), 
                                     r.getString(COLUMN_UTLEIER_PERSONNUMMER), 
                                     r.getString(COLUMN_ADRESSE), 
                                     r.getInt(COLUMN_POSTNUMMER), 
@@ -493,7 +493,7 @@ public class Data_Boliger extends Database {
         String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_LEILIGHET + ".* from " + TABLE_BOLIG + ", " + TABLE_LEILIGHET + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_BOLIG_ID + " = " + TABLE_LEILIGHET + "." + COLUMN_BOLIG_BOLIG_ID;
         if (Id != null) {
             sql += " AND ";
-            sql += COLUMN_BOLIG_BOLIG_ID + " = " + Id;
+            sql += COLUMN_BOLIG_ID + " = " + Id;
         }
         if (Eier != null) {
             sql += " AND ";
@@ -593,7 +593,7 @@ public class Data_Boliger extends Database {
                     ", " + COLUMN_BESKRIVELSE + " = '" + b.getBesk() + "'" +
                     ", " + COLUMN_UTLEIE_PRIS + " = " + b.getPris() + 
                     ", " + COLUMN_POSTNUMMER + " = " + b.getPostadresse() +
-                    " WHERE "+ COLUMN_BOLIG_BOLIG_ID +" = " + id;
+                    " WHERE "+ COLUMN_BOLIG_ID +" = " + id;
         String sql2 = "";
         if (b instanceof Enebolig) {
                 Enebolig eb = (Enebolig) b;
@@ -703,7 +703,7 @@ public class Data_Boliger extends Database {
         if((Data_Kontrakter.aktivKontraktExists(bolig.getId()+"") || Data_Kontrakter.forespørselExists(bolig.getId()))){
             return false;
         }else{
-            String sql1 = "DELETE FROM " + TABLE_BOLIG + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + bolig.getId();
+            String sql1 = "DELETE FROM " + TABLE_BOLIG + " WHERE " + COLUMN_BOLIG_ID + " = " + bolig.getId();
             String sql2 = "";
             if(bolig instanceof Enebolig){
                 sql2 = "DELETE FROM " + TABLE_ENEBOLIG_OG_REKKEHUS + " WHERE " + COLUMN_BOLIG_BOLIG_ID + " = " + bolig.getId();
