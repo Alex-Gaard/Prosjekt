@@ -298,7 +298,7 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 
 	/**
 	 * Sjekker om alle tekstfeltene i GUIen er fyllt ut med riktig informasjon.
-	 * Utifra resultatet vil metoden returnere true/false.
+	 * Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @param gruppe
 	 *            Hvilken kundegruppe(søker/utleier) kunden tilhører. Hvilke

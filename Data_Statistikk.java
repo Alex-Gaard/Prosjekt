@@ -24,7 +24,7 @@ public class Data_Statistikk extends Database {
 	final static String COLUMN_OPPRETTET = "Opprettet";
 
 	/**
-	 * Returnerer frekvens utifra SQLen som blir gitt.
+	 * Returnerer frekvens Ut ifra SQLen som blir gitt.
 	 * 
 	 * @param sql
 	 *            SQL setning.

@@ -8,14 +8,12 @@ import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -28,10 +26,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Klassen har til hensikt å representere en kundebehandlers kunde manipulerings egenskaper.
+ * <p>
+ * Kundebehandler kan i enkelte tilfeller ha behov for å kunne se over hvilke kunder bedriften har som kunder, eventuelt oppdatere disses informasjon om nødvendig.
+ * Kundebehandler har av antatte juridisk årsaker ikke lov til å utvide kontoer, dette kan kun gjøres av brukere selv.
+ * <p>Klassen har følgende metoder: byttecard, lagrow, lagre og querykonstruktør. Klassen har også en konstruktør og en actionPerformed metode, hvis man regner med dem.
+ * <p>
+ * Nærmere beskrivelse for hver metode finnes som kommentar over hver metode.
+ * Bemerk at kommentarene er skrevet med javadoc syntax.
+ */
 public class SubPanel_Kunder extends SubPanel implements ActionListener//extends SubPanel, vær obs på at SubPanel allerede utvider JPanel, så fjern den når du tilpasser til boligformidling
 {
     //Deklarasjoner
@@ -178,11 +185,33 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
     private int personnummer;
     private Data_Boliger database;
     
- 
+ /**
+  * Konstruktør. Setter opp GUIet.
+  * 
+ * <p>Klassen er delt i to grafiske(abstrakt sett også logiske deler) av et cardlayout. 
+ * 
+ * <p>Selve panelet heter cards, mens inne i cards ligger de to panelene card1 og 2. 
+ * Disse to igjen har to har hvert sitt grensesnitt.
+ * <p>Card1 er det første bildet som møter kundebehandleren. 
+ * Grensesnittets struktur kan beskrives tredelt: tre Jpanels kalt upper,center og lowerpanel satt i en borderlayout, hvor fordelingen er North,Center og South.
+ * Inne i disse igjen er selve datafeltene igjen plassert inne i forskjellige paneler med forskjellige layouts og rammer(border).
+ * <p>Upperpanel holder søkefeltene, det er her kundebehanderen kan spesifisere hvilke parametre det skal søkes på, f.eks kan man spørre etter et spesifikt personnummer
+ * Centerpanel holder resultatene av et søk i et JTable. Et klikk på en resultatrad vil sende behandleren videre til card2.
+ * lowerpanel brukes i praksis til to ting: gi behandleren muligheten å gjøre et søk, såvell som å tømme søkefeltene om så er ønskelig.
+ * 
+ * <p>card 2 er panelet du blir sendt til etter å ha trykket på et søkeresultat. Panelet har et lignende layout som card1. 
+ * Også her er grensesnittet delt mellom upper,center og lowerpanel, arrangert i et Borderlayout hvor fordelingen er North,Center og South.
+ * <p>Upperpanel holder kundens diverse data. Behandleren kan modifisere samtlige av disse, med untak av personnummeret.
+ * Som sagt, kundebehandler kan ikke endre typen konto, utvidelser må brukeren stå for.
+ * <p>Centerpanel holder informasjon om planlagte møter kunden har eller har hatt. Disse kan man trykke på manipulere om ønskelig.
+ * <p>lowerpanel holder foruten ettilbakemeldingspanel, for visning av feilmeldinge etc, også to knapper, en for å lagre endringer, og en for å returne til søkpanelet, altså card1.
+ * 
+  * @param parent 
+  */
     public SubPanel_Kunder(MainPanel parent)
     {
         super(parent);
-        //Database oppretting
+        //Database 
         database = new Data_Boliger();
         
         //card1
@@ -445,12 +474,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
                         array[2] = kundebehandler.getText();
                         if (påtatt.isSelected()) array[3] = "1"; else array[3]="0";
                         
-                        String sql = "UPDATE Leiekontrakt_forespørsel "
-                                + "SET "
-                                + "Bolig_BoligID='" + array[0] + "',Opprettet_Dato='" + array[1]+"',Kundebehandler_Bruker_Personnummer='"
-                                + array[2]+"',Påtatt='"+array[3]+ "' "
-                                + "WHERE Boligsøker_Bruker_Personnummer=" + PersNr + ";";
-                        Data_Boliger.execUpdate(sql);
+                        Data_Leiekontrakt_Forespørsel.Update(array[0],array[1],array[2],array[3],PersNr);
                         leiekontraktermodel.removeRow(rad);
                         leiekontraktermodel.addRow(array);
                     } catch (SQLException ex) {
@@ -556,15 +580,13 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
     /**
      * Bytter card i cards panelet.
      * <p> Når man har trykket på en bruker, vil denne metoden bli kalt. 
-     * Metoden har til hensikt å bytte ut søkepanelet(egentlig bytte imellom) med et resultat panel, henholdsvis kalt card1 og card2,
+     * Metoden har til hensikt å bytte ut søkepanelet med et resultat panel, henholdsvis kalt card1 og card2,
      * I tillegg til å populere disse nylig synlige feltene.
      * 
      * @param PersNr 
      */
     private void byttecard(String PersNr) //bytter til card2, samt sender med informasjonen som lå på den raden(aka personnummeret).
     {
-    	//BoxLayout box2 = new BoxLayout(card2,BoxLayout.Y_AXIS); what fuck is?
-        //card2.setLayout(box2);
         try
         {
             String test;
@@ -583,9 +605,11 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
             Email2.setText(søkrs.getString("Email") );
             Telefon2.setText(søkrs.getString("Telefon") );
             søkrs.close();
-            leiekontraktrs= Data_Boliger.execQuery("select * from Boligsøker inner join Leiekontrakt_forespørsel"
-                    + " where Boligsøker.Bruker_Personnummer=Leiekontrakt_forespørsel.Boligsøker_Bruker_Personnummer"
-                    + " and Leiekontrakt_forespørsel.Boligsøker_Bruker_Personnummer="+PersNr+";");
+            
+            ResultSet rstemp = Data_boligsøker.selectspecRSfromboligsøker(PersNr);
+            rstemp.first();
+            String boligsøker = rstemp.getString("Bruker_Personnummer");
+            leiekontraktrs= Data_Leiekontrakt_Forespørsel.selectAll(boligsøker);
             
             String[] leiekontraktKolonner = {"BoligID","Møtedato","Kundebehandler","Påtatt"};
             leiekontraktermodel = new DefaultTableModel(null,leiekontraktKolonner);
@@ -603,9 +627,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
             
             leiekontraktrs.close();
             
-            søkerinfors = Data_Boliger.execQuery("select * from Boligsøker inner join SøkerInfo"
-                    + " where Boligsøker.Bruker_Personnummer=SøkerInfo.Boligsøker_Bruker_Personnummer"
-                    + " and SøkerInfo.Boligsøker_Bruker_Personnummer="+PersNr+";");
+            søkerinfors = Data_boligsøker.selectAllboligsøkernaturaljoinsøkerinfo(PersNr);
             
             if(søkerinfors.first() == true) //dvs er boligsøker
             {
@@ -618,10 +640,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
                 
                 søkerinfors.close();
                 
-                søkerkravrs = Data_Boliger.execQuery("select Min_Areal,Max_Areal,Min_Soverom,Min_Byggår,"
-                        + "Min_Pris,Max_Pris,Peis,Parkering from Boligsøker inner join SøkerKrav"
-                    + " where Boligsøker.Bruker_Personnummer=SøkerKrav.Boligsøker_Bruker_Personnummer"
-                    + " and SøkerKrav.Boligsøker_Bruker_Personnummer="+PersNr+";");
+                søkerkravrs = Data_boligsøker.selectALlboligsøkernaturaljoinsøkerkrav(PersNr);
             
                 søkerkravrs.first();
                 minareal.setText(søkerkravrs.getString("Min_Areal"));
@@ -654,7 +673,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
                 parkering.setSelectedIndex(0);
             }
             
-            utleierrs = Data_Boliger.execQuery("select * from Utleier where Bruker_Personnummer='"+PersNr+"';");
+            utleierrs = Data_utleier.selectspecRSfromUtleier(PersNr);
             if (utleierrs.first()) 
             {
                 firma.setText(utleierrs.getString("Firma"));
@@ -673,6 +692,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
         }
         
     }
+    
     /**
      * Hjelpemetode.
      * <p>Lager en string array basert på det medsendte resultatsettets verdier.
@@ -744,9 +764,10 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
     /**
      * Lagrer samtlige felt.
      * <p>
-     * Feltene må ha representative verdier, dvs boligår må være en int, hvis ikke får du en feilmelding via showMessageDialog. 
+     * Feltene må ha representative verdier, dvs boligår må være en int, hvis ikke får du en feilmelding via et tekstarea i lowerpanel
      * Ellers kan brukeren taste inn så mye tall han og/eller hun måtte ønske.
-     * @author Petter S.W Gjerstad
+     * <p>
+     * høyere krav stilles til lagring enn i kundeprofil, her lagres ingenting hvis bare et eneste ulovlig tegn blir detektert.
      */
     private void lagre()
     {
@@ -813,7 +834,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
          
             try//brukes for å teste at brukeren virkelig er en boligsøker
             {
-                testrs = Data_Boliger.execQuery("select * from Boligsøker where Bruker_Personnummer='" + PersNr + "';");
+                testrs = Data_boligsøker.selectspecRSfromboligsøker(PersNr);
                 erboligsøker = testrs.next();
                 testrs.close();
             } catch (SQLException ex)
@@ -822,7 +843,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
             }
             try//brukes for å teste at brukeren virkelig er en utleier.
             {
-                testrs = Data_Boliger.execQuery("select * from Utleier where Bruker_Personnummer='" + PersNr + "';");
+                testrs = Data_utleier.selectspecRSfromUtleier(PersNr);
                 erutleier = testrs.next();
                 testrs.close();
             } catch (SQLException ex)
@@ -830,7 +851,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
                 Logger.getLogger(SubPanel_Kunder.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        catch (NumberFormatException e)
+        catch (NumberFormatException e) //feil detektert, returner uten å lagre noe som helst.
         {
             String error = "Feltene relatert til brukerens diverse felter er angitt med ulovlige tegn, ingenting ble lagret";
             
@@ -838,40 +859,22 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
             return;
         }
         
-        try
+        try //her begynner selve lagringsprosessen.
         {
             if (erboligsøker) //bruker er boligsøker; Da må boliginfo og boligkrav feltene lagres
             {
-                sql = "select * from SøkerInfo where Boligsøker_Bruker_Personnummer='"+PersNr+"';";
-                testrs = Data_Boliger.execQuery(sql);
+                testrs = Data_boligsøker.selectspecRSfromsøkerinfo(PersNr);
                 if(testrs.next()) //søkerinfo har allerede data om dette personnummeret
                 {
-                    sql = "UPDATE SøkerInfo "
-                    + "SET "
-                    + "Antall_personer='" + ant_persint + "', Sivilstatus='" + sivilstatusstring + "', Yrke='" + yrkestring + "'"
-                    + ",Røyker='" + røykerint + "', Husdyr='" + husdyrint + "' "
-                    + "WHERE Boligsøker_Bruker_Personnummer=" + PersNr + ";";
+                    Data_boligsøker.updatesøkerinfo(ant_persint, sivilstatusstring, yrkestring, røykerint, husdyrint, PersNr);
 
-                Data_Boliger.execUpdate(sql);
-
-                sql = "UPDATE SøkerKrav "
-                        + "SET "
-                        + "Min_Areal='" + minarealint + "',Max_Areal='" + maxarealint + "',Min_Soverom='" + antsoveromint + "',"
-                        + "Min_Byggår='" + byggårint + "',Min_Pris='" + minprisint + "',Max_Pris='" + maxprisint + "',Peis='" + peisint + "',Parkering='" + parkeringint + "' "
-                        + "WHERE Boligsøker_Bruker_Personnummer=" + PersNr + ";";
-                Data_Boliger.execUpdate(sql);
+                    Data_boligsøker.updatesøkerkrav(minarealint, maxarealint, antsoveromint, minprisint, maxprisint, peisint, parkeringint, PersNr, byggårint);
                 }
                 else //søkerinfo(og dermed også søkerkrav) har ikke allerede info om det personnummeret
                 {
-                    sql ="Insert into SøkerInfo (Boligsøker_Bruker_Personnummer,Antall_Personer,Sivilstatus,Yrke,Røyker,Husdyr) VALUES("+PersNr+","+ant_persint+",'"+sivilstatusstring+"',"
-                            +yrkestring+","+røykerint+","+husdyrint+");";
+                    Data_boligsøker.insertintosøkerinfo(PersNr, ant_persint, sivilstatusstring, yrkestring, røykerint, husdyrint);
                     
-                    Data_Boliger.execUpdate(sql);
-                    
-                    sql="insert into SøkerKrav (Boligsøker_Bruker_Personnummer,Min_Areal,Max_Areal,Min_Soverom,Min_Byggår,Min_Pris,Max_Pris,Peis,Parkering)"
-                            + "VALUES("+PersNr+","+minarealint+","+maxarealint+","+antsoveromint+","
-                            +byggårint+","+minprisint+","+maxprisint+","+peisint+","+parkeringint+");";
-                    Data_Boliger.execUpdate(sql);
+                    Data_boligsøker.insertintosøkerkrav(PersNr, minarealint, maxarealint, antsoveromint, byggårint, minprisint, maxprisint, peisint, parkeringint);
                 }
                 
             }
@@ -882,11 +885,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
         
         try //oppdaterer bruker.
         {
-            sql = "UPDATE Bruker "
-                    + "SET Navn='" + navn + "',Adresse='" + adresse + "',Email='" + email + "',Telefon='" + tlf + "' "
-                    + "WHERE Personnummer =" + PersNr + ";";
-        
-            Data_Boliger.execUpdate(sql);
+            Data_Bruker.updateBruker(PersNr, navn, adresse, email, tlf);
         }
         catch (SQLException ex)
         {
@@ -898,10 +897,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
             if (erutleier) //Hvis bruker er utleier så må utleierdata lagres. 
                 //Trenger ikke å sjekke for tilstedeværelse av om data er representert fra før i database, da firma lagres sammen med utleier
             {
-                sql = "UPDATE Utleier "
-                        + "SET Firma='"+firmastring+"' "
-                        + "Where Bruker_Personnummer="+PersNr+";";
-                Data_Boliger.execUpdate(sql);
+                Data_utleier.updateutleier(firmastring, PersNr);
             }
         }
         catch (SQLException ex)
@@ -915,7 +911,8 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
     /**
      * Hjelpemetode.
      * <p>
-     * Konstruerer en mysql tilpasset string basert på card1s søkefelt.
+     * Egentlig en todelt metode, en del her, og en i Data_Bruker med samme navn. 
+     * Sammen har de til funksjon å hente et Resultatsett basert på inntastede søkekritterier.
      * <p>
      * Stringen blir så brukt i et kall på database klassen sin execQuery. 
      * Det returnerte resultatsettet vil ikke inneholde kundebehandlere.
@@ -923,71 +920,12 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
      */
     private ResultSet querykonstruktør() //Konstruerer en query når man trykker søk.
     {
-        
         String PersNrT = Personnummer.getText();
         String NavnT = Navn.getText();
         String AdresseT = Adresse.getText();
         String EmailT = Email.getText();
         String TelefonT = Telefon.getText();
-        
-        String and = "and";
-        String where = "where ";
-        Boolean blank = true;
-        
-        String[] felt = new String[5];
-        
-        if (!PersNrT.equals(""))
-        {
-            where += "Personnummer='"+PersNrT+"'";
-            blank = false;
-        }
-        if (!NavnT.equals(""))
-        {
-            if (blank)
-            {
-                where +="Navn='"+NavnT+"'";
-                blank = false;
-            }
-            else where +="AND Navn='"+NavnT+"'";
-        }
-        if (!AdresseT.equals(""))
-        {
-            if (blank)
-            {
-                where +="Adresse='"+AdresseT+"'";
-                blank = false;
-            }
-            else where +="AND Adresse='"+AdresseT+"'";
-        }
-        if (!EmailT.equals(""))
-        {
-            if (blank)
-            {
-                where +="Email='"+EmailT+"'";
-                blank = false;
-            }
-            else where +="AND Email='"+EmailT+"'";
-        }
-        if (!TelefonT.equals(""))
-        {
-            if (blank)
-            {
-                where +="Telefon='"+TelefonT+"'";
-                blank = false;
-            }
-            else where +="AND Telefon='"+TelefonT+"'";
-        }
-        if (blank) where ="where Bruker.Personnummer not in(select * from Kundebehandler)";
-        else where +="AND Bruker.Personnummer not in (select * from Kundebehandler)";
-        
-        String Query = "select * from Bruker "+where+" order by ABS(Personnummer)"+ ";";
-        try
-        {
-            return Data_Boliger.execQuery(Query);
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(SubPanel_Kunder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        return Data_Bruker.querykonstruktør(PersNrT, NavnT, AdresseT, EmailT, TelefonT);
     }
+
 }

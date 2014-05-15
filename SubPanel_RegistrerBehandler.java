@@ -115,7 +115,7 @@ public class SubPanel_RegistrerBehandler extends SubPanel implements
 
 	/**
 	 * Sjekker om feltene er gyldige før kundebehandleren blir registrert,
-	 * utifra resultatet vil metoden returnere true/false.
+	 * Ut ifra resultatet vil metoden returnere true/false.
 	 * 
 	 * @return true/false
 	 */
@@ -190,7 +190,7 @@ public class SubPanel_RegistrerBehandler extends SubPanel implements
 	}// end of checkFields
 
 	/**
-	 * Registrerer en kundebehandler utifra informasjonen som er fyllt inn i
+	 * Registrerer en kundebehandler Ut ifra informasjonen som er fyllt inn i
 	 * feltene.
 	 */
 	private void registrerBehandler() {

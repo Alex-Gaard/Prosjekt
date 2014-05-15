@@ -157,7 +157,7 @@ public class Table {
 	}// end of setCreateTableString
 
 	/**
-	 * Setter opp alle referansene til tabellen utifra en streng som
+	 * Setter opp alle referansene til tabellen Ut ifra en streng som
 	 * representerer tabellstrukturen.
 	 * 
 	 * @param createTableString
@@ -188,7 +188,7 @@ public class Table {
 	}// end of setReferencs
 
 	/**
-	 * Setter en formatert representasjon av tabellstrukturen utifra en
+	 * Setter en formatert representasjon av tabellstrukturen Ut ifra en
 	 * tabellstruktur streng.
 	 * 
 	 * @param createShowString
@@ -233,7 +233,7 @@ public class Table {
 	}// end of addInsert
 
 	/**
-	 * Tester om tabellen er klar for å bli opprettet, utifra resultatet vil
+	 * Tester om tabellen er klar for å bli opprettet, Ut ifra resultatet vil
 	 * "true" eller "false" bli returnert.
 	 * 
 	 * @param createdTables

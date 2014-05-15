@@ -8,20 +8,21 @@ package boligformidling;
  */
 
 public class Main {
-        private static final int SplashScreenTime = 2000;
-        //VM options: -splash:src/boligformidling/splash.png
-        /**
+	private static final int SplashScreenTime = 2000;
+
+	/**
 	 * Starter opp applikasjonen.
 	 */
-        private static Vindu_Main vindu;
+	private static Vindu_Main vindu;
+
 	public static void main(String[] args) {
-                vindu = new Vindu_Main();
-                try{
-                    Thread.sleep(SplashScreenTime);
-                }catch(InterruptedException ie){
-                
-                }
-                vindu.setVisible(true);
+		vindu = new Vindu_Main();
+		try {
+			Thread.sleep(SplashScreenTime);
+		} catch (InterruptedException ie) {
+			System.out.println("feil i main: " + ie);
+		}
+		vindu.setVisible(true);
 	}// end of main
 
 }// end of class Main
