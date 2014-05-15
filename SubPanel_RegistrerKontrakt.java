@@ -205,7 +205,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 */
 	private boolean checkBoligsøkerPersonnummer(String boligsøkerPersonnummer) {
 
-		return Data_Login.userExists(Data_Login.TABLE_SØKER,
+		return Data_Login.userExists(Data_Login.TABLE_BOLIGSØKER,
 				boligsøkerPersonnummer);
 
 	}// end of checkBoligsøkerPersonnummer

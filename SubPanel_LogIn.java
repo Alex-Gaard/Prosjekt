@@ -124,7 +124,7 @@ public class SubPanel_LogIn extends SubPanel implements ActionListener {
 			utleier = true;
 		} 
 		
-		if (Data_Login.userExists(Data_Login.TABLE_SØKER, id)) {
+		if (Data_Login.userExists(Data_Login.TABLE_BOLIGSØKER, id)) {
 			søker = true;
 		} 
 

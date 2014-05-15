@@ -13,7 +13,7 @@ import java.sql.Statement;
  * @version 1.00, 12 Mai 2014
  */
 public abstract class Database {
-
+        
 	// SQL objekter
 	private static Connection connect = null;
 	private static Statement statement = null;
@@ -29,6 +29,8 @@ public abstract class Database {
 	final static String TABLE_UTLEIER = "Utleier";
 	final static String TABLE_BOLIGSØKER = "Boligsøker";
 
+        
+        
 	final static String TABLE_BRUKER_PASSORD_REGISTER = "Bruker_PassordRegister";
 	final static String TABLE_BEHANDLER = "Kundebehandler";
 	
