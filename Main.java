@@ -11,7 +11,7 @@ public class Main {
 	 * Starter opp applikasjonen.
 	 */
 	public static void main(String[] args) {
-
+                try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		new Vindu_Main();
 
 	}// end of main
