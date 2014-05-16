@@ -17,6 +17,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		vindu = new Vindu_Main();
+                //Viser splsh screen en git tid
 		try {
 			Thread.sleep(SplashScreenTime);
 		} catch (InterruptedException ie) {

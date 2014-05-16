@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -190,7 +189,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 */
 	private boolean checkUtleierPersonnummer(String utleierPersonnummer) {
 
-		return Data_Login.userExists(Data_Login.TABLE_UTLEIER,
+		return Data_Bruker.userExists(Data_Bruker.TABLE_UTLEIER,
 				utleierPersonnummer);
 
 	}// end of checkUtleierPersonnummer
@@ -205,7 +204,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 */
 	private boolean checkBoligsøkerPersonnummer(String boligsøkerPersonnummer) {
 
-		return Data_Login.userExists(Database.TABLE_BOLIGSØKER,
+		return Data_Bruker.userExists(Database.TABLE_BOLIGSØKER,
 				boligsøkerPersonnummer);
 
 	}// end of checkBoligsøkerPersonnummer
@@ -220,7 +219,7 @@ public class SubPanel_RegistrerKontrakt extends SubPanel implements
 	 */
 	private boolean checkBehandlerPersonnummer(String behandlerPersonnummer) {
 
-		return Data_Login.userExists(Data_Login.TABLE_BEHANDLER,
+		return Data_Bruker.userExists(Data_Bruker.TABLE_BEHANDLER,
 				behandlerPersonnummer);
 
 	}// end of checkBehandlerPersonnummer
