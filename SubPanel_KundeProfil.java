@@ -2,7 +2,7 @@ package boligformidling;
 
 //Petter S.W Gjerstad
 //SubPanel_KundeProfil
-//Siste versjon kl 16:08 15.05.2014
+//Siste versjon kl 11:37 16.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.Component;
