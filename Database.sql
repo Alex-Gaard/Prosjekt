@@ -2,13 +2,18 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb` ;
+
+drop database s193956;
+create database s193956;
+use s193956;
+
+CREATE SCHEMA IF NOT EXISTS `s193956` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `s193956` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Bruker`
+-- Table `s193956`.`Bruker`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Bruker` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Bruker` (
   `Personnummer` CHAR(11) NOT NULL,
   `Navn` VARCHAR(45) NULL,
   `Adresse` VARCHAR(45) NULL,
@@ -21,40 +26,40 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Utleier`
+-- Table `s193956`.`Utleier`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Utleier` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Utleier` (
   `Bruker_Personnummer` CHAR(11) NOT NULL,
   `Firma` VARCHAR(45) NULL,
   PRIMARY KEY (`Bruker_Personnummer`),
   INDEX `fk_Utleier_Bruker1_idx` (`Bruker_Personnummer` ASC),
   CONSTRAINT `fk_Utleier_Bruker1`
     FOREIGN KEY (`Bruker_Personnummer`)
-    REFERENCES `mydb`.`Bruker` (`Personnummer`)
+    REFERENCES `s193956`.`Bruker` (`Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Boligsøker`
+-- Table `s193956`.`Boligsøker`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Boligsøker` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Boligsøker` (
   `Bruker_Personnummer` CHAR(11) NOT NULL,
   PRIMARY KEY (`Bruker_Personnummer`),
   INDEX `fk_Boligsøker_Bruker1_idx` (`Bruker_Personnummer` ASC),
   CONSTRAINT `fk_Boligsøker_Bruker1`
     FOREIGN KEY (`Bruker_Personnummer`)
-    REFERENCES `mydb`.`Bruker` (`Personnummer`)
+    REFERENCES `s193956`.`Bruker` (`Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`SøkerInfo`
+-- Table `s193956`.`SøkerInfo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`SøkerInfo` (
+CREATE TABLE IF NOT EXISTS `s193956`.`SøkerInfo` (
   `Boligsøker_Bruker_Personnummer` CHAR(11) NOT NULL,
   `Antall_personer` INT NULL,
   `Sivilstatus` VARCHAR(45) NULL,
@@ -64,16 +69,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`SøkerInfo` (
   PRIMARY KEY (`Boligsøker_Bruker_Personnummer`),
   CONSTRAINT `fk_SøkerInfo_Boligsøker1`
     FOREIGN KEY (`Boligsøker_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Boligsøker` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Boligsøker` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`SøkerKrav`
+-- Table `s193956`.`SøkerKrav`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`SøkerKrav` (
+CREATE TABLE IF NOT EXISTS `s193956`.`SøkerKrav` (
   `Boligsøker_Bruker_Personnummer` CHAR(11) NOT NULL,
   `Min_Areal` INT NULL,
   `Max_Areal` INT NULL,
@@ -86,16 +91,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`SøkerKrav` (
   PRIMARY KEY (`Boligsøker_Bruker_Personnummer`),
   CONSTRAINT `fk_SøkerKrav_Boligsøker1`
     FOREIGN KEY (`Boligsøker_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Boligsøker` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Boligsøker` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Bolig`
+-- Table `s193956`.`Bolig`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Bolig` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Bolig` (
   `BoligID` INT NOT NULL AUTO_INCREMENT,
   `Utleier_Bruker_Personnummer` CHAR(11) NOT NULL,
   `Adresse` VARCHAR(45) NULL,
@@ -110,30 +115,30 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Bolig` (
   INDEX `fk_Bolig_Utleier1_idx` (`Utleier_Bruker_Personnummer` ASC),
   CONSTRAINT `fk_Bolig_Utleier1`
     FOREIGN KEY (`Utleier_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Utleier` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Utleier` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Kundebehandler`
+-- Table `s193956`.`Kundebehandler`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Kundebehandler` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Kundebehandler` (
   `Bruker_Personnummer` CHAR(11) NOT NULL,
   PRIMARY KEY (`Bruker_Personnummer`),
   CONSTRAINT `fk_Kundebehandler_Bruker1`
     FOREIGN KEY (`Bruker_Personnummer`)
-    REFERENCES `mydb`.`Bruker` (`Personnummer`)
+    REFERENCES `s193956`.`Bruker` (`Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Leiekontrakt`
+-- Table `s193956`.`Leiekontrakt`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Leiekontrakt` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Leiekontrakt` (
   `Bolig_BoligID` INT NOT NULL,
   `Utleier_Bruker_Personnummer` CHAR(11) NOT NULL,
   `Boligsøker_Bruker_Personnummer` CHAR(11) NOT NULL,
@@ -148,31 +153,31 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Leiekontrakt` (
   INDEX `fk_Leiekontrakt_Kundebehandler1_idx` (`Kundebehandler_Bruker_Personnummer` ASC),
   CONSTRAINT `fk_Leiekontrakt_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Leiekontrakt_Utleier1`
     FOREIGN KEY (`Utleier_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Utleier` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Utleier` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Leiekontrakt_Boligsøker1`
     FOREIGN KEY (`Boligsøker_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Boligsøker` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Boligsøker` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Leiekontrakt_Kundebehandler1`
     FOREIGN KEY (`Kundebehandler_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Kundebehandler` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Kundebehandler` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Enebolig_og_rekkehus`
+-- Table `s193956`.`Enebolig_og_rekkehus`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Enebolig_og_rekkehus` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Enebolig_og_rekkehus` (
   `Bolig_BoligID` INT NOT NULL,
   `Antall_etasjer` INT NULL,
   `Kjeller` TINYINT(1) NULL,
@@ -181,16 +186,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Enebolig_og_rekkehus` (
   INDEX `fk_Enebolig_og_rekkehus_Bolig1_idx` (`Bolig_BoligID` ASC),
   CONSTRAINT `fk_Enebolig_og_rekkehus_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Leilighet`
+-- Table `s193956`.`Leilighet`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Leilighet` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Leilighet` (
   `Bolig_BoligID` INT NOT NULL,
   `Etasje` INT NULL,
   `Heis` TINYINT(1) NULL,
@@ -201,48 +206,48 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Leilighet` (
   INDEX `fk_Leilighet_Bolig1_idx` (`Bolig_BoligID` ASC),
   CONSTRAINT `fk_Leilighet_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Bruker_PassordRegister`
+-- Table `s193956`.`Bruker_PassordRegister`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Bruker_PassordRegister` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Bruker_PassordRegister` (
   `Bruker_Personnummer` CHAR(11) NOT NULL,
   `Passord` VARCHAR(45) NULL,
   PRIMARY KEY (`Bruker_Personnummer`),
   INDEX `fk_Bruker_PassordRegister_Bruker1_idx` (`Bruker_Personnummer` ASC),
   CONSTRAINT `fk_Bruker_PassordRegister_Bruker1`
     FOREIGN KEY (`Bruker_Personnummer`)
-    REFERENCES `mydb`.`Bruker` (`Personnummer`)
+    REFERENCES `s193956`.`Bruker` (`Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`SendtEmail`
+-- Table `s193956`.`SendtEmail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`SendtEmail` (
+CREATE TABLE IF NOT EXISTS `s193956`.`SendtEmail` (
   `Bolig_BoligID` INT NOT NULL,
   `Bolig_Utleier_Personnummer` CHAR(11) NOT NULL,
   PRIMARY KEY (`Bolig_BoligID`, `Bolig_Utleier_Personnummer`),
   INDEX `fk_SendtEmail_Bolig1_idx` (`Bolig_BoligID` ASC, `Bolig_Utleier_Personnummer` ASC),
   CONSTRAINT `fk_SendtEmail_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Bolig_bilde`
+-- Table `s193956`.`Bolig_bilde`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Bolig_bilde` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Bolig_bilde` (
   `BildeID` INT NOT NULL AUTO_INCREMENT,
   `Bolig_BoligID` INT NOT NULL,
   `Bilde` LONGBLOB NULL,
@@ -251,16 +256,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Bolig_bilde` (
   PRIMARY KEY (`BildeID`),
   CONSTRAINT `fk_Bolig_bilde_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Leiekontrakt_forespørsel`
+-- Table `s193956`.`Leiekontrakt_forespørsel`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Leiekontrakt_forespørsel` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Leiekontrakt_forespørsel` (
   `Boligsøker_Bruker_Personnummer` CHAR(11) NOT NULL,
   `Bolig_BoligID` INT NOT NULL,
   `Opprettet_Dato` DATE NOT NULL,
@@ -270,21 +275,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Leiekontrakt_forespørsel` (
   PRIMARY KEY (`Boligsøker_Bruker_Personnummer`, `Bolig_BoligID`, `Opprettet_Dato`),
   CONSTRAINT `fk_Leiekontrakt_forespørsel_Boligsøker1`
     FOREIGN KEY (`Boligsøker_Bruker_Personnummer`)
-    REFERENCES `mydb`.`Boligsøker` (`Bruker_Personnummer`)
+    REFERENCES `s193956`.`Boligsøker` (`Bruker_Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Leiekontrakt_forespørsel_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Viste_Boliger`
+-- Table `s193956`.`Viste_Boliger`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Viste_Boliger` (
+CREATE TABLE IF NOT EXISTS `s193956`.`Viste_Boliger` (
   `Bolig_BoligID` INT NOT NULL,
   `Bruker_Personnummer` CHAR(11) NOT NULL,
   PRIMARY KEY (`Bolig_BoligID`, `Bruker_Personnummer`),
@@ -292,12 +297,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Viste_Boliger` (
   INDEX `fk_Bolig_has_Bruker_Bolig1_idx` (`Bolig_BoligID` ASC),
   CONSTRAINT `fk_Bolig_has_Bruker_Bolig1`
     FOREIGN KEY (`Bolig_BoligID`)
-    REFERENCES `mydb`.`Bolig` (`BoligID`)
+    REFERENCES `s193956`.`Bolig` (`BoligID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Bolig_has_Bruker_Bruker1`
     FOREIGN KEY (`Bruker_Personnummer`)
-    REFERENCES `mydb`.`Bruker` (`Personnummer`)
+    REFERENCES `s193956`.`Bruker` (`Personnummer`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
