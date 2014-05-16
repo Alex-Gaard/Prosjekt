@@ -436,10 +436,14 @@ public class Data_Kontrakter extends Database {
 						.isEmpty()) {
 			String sql = "INSERT INTO " + TABLE_LEIEKONTRAKT_FORESPØRSEL + " ("
 					+ COLUMN_BOLIGSØKER_PERSONNUMMER + ", "
-					+ COLUMN_BOLIG_BOLIG_ID + ", " + COLUMN_OPPRETTET_DATO
+					+ COLUMN_BOLIG_BOLIG_ID + ", "
+                                        + COLUMN_OPPRETTET_DATO + ", "
+                                        + COLUMN_PÅTATT
 					+ ") ";
-			sql += "VALUES(" + bruker.getId() + ", " + bolig.getId() + ", "
-					+ "curdate())";
+			sql += "VALUES(" + bruker.getId() + ", "
+                                        + bolig.getId() + ", "
+					+ "curdate()" + ", "
+                                        + "0" + ")";
 			try {
 				return execUpdate(sql);
 			} catch (SQLException e) {
