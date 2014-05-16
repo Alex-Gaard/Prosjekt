@@ -2,7 +2,7 @@ package boligformidling;
 
 //Petter S.W Gjerstad
 //SubPanel_KundeProfil
-//Siste versjon kl 16:20 15.05.2014
+//Siste versjon kl 16:08 15.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -533,7 +533,7 @@ public class SubPanel_KundeProfil extends SubPanel
      * Populerer grensesnittet med felter relatert til subentiteten søkerkrav.
      * <p>Metoden kalles enten som del av oppstartsprosedyren når klassen finner ut at brukeren er en boligsøker,
      * eller senere når en utleier velger å utvide sin konto.
-     * * <p>Metoden sjekker også om subentiteten til boligsøkeren(kjent som søkerkrav) tabellen faktisk har data for gjeldende bruker, og populerer feltene deretter. 
+     * <p>Metoden sjekker også om subentiteten til boligsøkeren(kjent som søkerkrav) tabellen faktisk har data for gjeldende bruker, og populerer feltene deretter. 
      */
     private void populatesøkerkravinfo()
     {
@@ -628,7 +628,6 @@ public class SubPanel_KundeProfil extends SubPanel
      * <p>Hvis ikke, må brukeren ha evnen til å bli en utleier, altså utvide sin konto.
      * Da legges likesågjerne til en ny knapp til lowerpanel som gjør brukeren istand til å utvide om ønskelig.
      * 
-     * @throws SQLException 
      */
     private void erutleier()
     {
