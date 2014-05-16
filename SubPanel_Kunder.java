@@ -2,6 +2,7 @@ package boligformidling;
 
 //Petter
 //SubPanel_Kunder
+//Siste versjon kl 11:39 16.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -432,7 +433,7 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
         card2leiekontrakter.addMouseListener(new MouseAdapter() 
         {
             @Override
-            public void mouseClicked(MouseEvent e)
+            public void mouseClicked(MouseEvent e)//
             {
                 String PersNr = Personnummer2.getText();
                 int rad = card2leiekontrakter.getSelectedRow();
@@ -452,10 +453,12 @@ public class SubPanel_Kunder extends SubPanel implements ActionListener//extends
                 JTextField dato = new JTextField(7);
                 JTextField kundebehandler = new JTextField(7);
                 JCheckBox påtatt = new JCheckBox();
+                
                 bolig_id.setText(array[0]);
                 dato.setText(array[1]);
                 kundebehandler.setText(array[2]);
-                if (array[3].equals("1"))påtatt.setSelected(true); else påtatt.setSelected(false);
+                if (array[3].equals("1")) påtatt.setSelected(true); else påtatt.setSelected(false);
+    
                 panel.add(Bolig_ID);
                 panel.add(bolig_id);
                 panel.add(Dato);
