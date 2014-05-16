@@ -293,7 +293,7 @@ public class Data_Kontrakter extends Database {
 
 			while (rs.next()) {
 				String behandlerPersonnummer = String.valueOf(rs
-						.getInt(COLUMN_BEHANDLER_BRUKER_PERSONNUMMER));
+						.getString(COLUMN_BEHANDLER_BRUKER_PERSONNUMMER));
 				String søkerPersonnummer = rs
 						.getString(COLUMN_BOLIGSØKER_PERSONNUMMER);
 				String boligID = rs.getString(COLUMN_BOLIG_BOLIG_ID);
