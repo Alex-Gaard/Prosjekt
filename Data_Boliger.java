@@ -393,7 +393,7 @@ public class Data_Boliger extends Database {
      * @return En array med Enebolig objekter
      */
     public static Enebolig[] getEneboliger(String Id, String Eier, int[] Areal, int[] Postadresse, int[] Rom, int[] Byggår, String[] Avertert, long[] Pris, int[] Etasjer, int Kjeller, int[] Total_areal, String modifiers, int InUse) {
-        String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_ENEBOLIG_OG_REKKEHUS + ".* from " + TABLE_BOLIG + ", " + TABLE_ENEBOLIG_OG_REKKEHUS + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_BOLIG_ID + " = " + TABLE_ENEBOLIG_OG_REKKEHUS + "." + COLUMN_BOLIG_BOLIG_ID;
+        String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_ENEBOLIG_OG_REKKEHUS + ".* from " + TABLE_BOLIG + ", " + TABLE_ENEBOLIG_OG_REKKEHUS + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_ID + " = " + TABLE_ENEBOLIG_OG_REKKEHUS + "." + COLUMN_BOLIG_BOLIG_ID;
         if (Id != null) {
             sql += " AND ";
             sql += COLUMN_BOLIG_BOLIG_ID + " = " + Id;
@@ -490,7 +490,7 @@ public class Data_Boliger extends Database {
      * @return En array med Leilighet objekter
      */
     public static Leilighet[] getLeiligheter(String Id, String Eier, int[] Areal, int[] Postadresse, int[] Rom, int[] Byggår, String[] Avertert, long[] Pris, int[] Etasje, int Heis, int Balkong, int Garasje, int Fellesvask, String modifiers, int InUse) {
-        String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_LEILIGHET + ".* from " + TABLE_BOLIG + ", " + TABLE_LEILIGHET + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_BOLIG_ID + " = " + TABLE_LEILIGHET + "." + COLUMN_BOLIG_BOLIG_ID;
+        String sql = "SELECT " + TABLE_BOLIG + ".*, " + TABLE_LEILIGHET + ".* from " + TABLE_BOLIG + ", " + TABLE_LEILIGHET + " where " + TABLE_BOLIG + "." + COLUMN_BOLIG_ID + " = " + TABLE_LEILIGHET + "." + COLUMN_BOLIG_BOLIG_ID;
         if (Id != null) {
             sql += " AND ";
             sql += COLUMN_BOLIG_ID + " = " + Id;
