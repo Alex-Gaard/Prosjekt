@@ -208,10 +208,10 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 			Data_Bruker.getConnection().commit();
 			displayMessage("Ny utleier ble registrert");
 			cleanFields();
-		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ex){
-			
+		} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ex) {
+
 			displayMessage("En bruker med dette personnummeret eksisterer allerede!");
-		}catch (SQLException ex) {
+		} catch (SQLException ex) {
 			displayMessage("En feil oppstod, brukeren ble ikke registrert!");
 		}
 
@@ -324,11 +324,10 @@ public class SubPanel_RegistrerKunde extends SubPanel implements ActionListener 
 			return false;
 		}
 
-                if (firmaField.getText().length() > 45) {
-                        displayMessage("Firma kan ikke være lengere enn 45 tegn");
-                        return false;
-                }
-
+		if (firmaField.getText().length() > 45) {
+			displayMessage("Firma kan ikke være lengere enn 45 tegn");
+			return false;
+		}
 
 		if (!isNum(personnummerField.getText())
 				|| personnummerField.getText().length() != 11) {

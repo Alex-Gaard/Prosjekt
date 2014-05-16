@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * Metodene er relatert til statistikk.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 15 Mai 2014
  */
 public class Data_Statistikk extends Database {
 

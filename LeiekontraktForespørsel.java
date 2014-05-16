@@ -6,7 +6,7 @@ import java.sql.Date;
  * Klassen representerer en leiekontrakt forespørsel i databasen.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 8 Mai 2014
  */
 public class LeiekontraktForespørsel {
 

@@ -16,7 +16,7 @@ import javax.swing.JPanel;
  * Klassen tegner en graf Ut ifra parameterene som blir oppgitt i konstruktøren.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 15 Mai 2014
  */
 public class GraphPanel {
 

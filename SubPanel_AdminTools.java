@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -40,7 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * gjennoppretting av en gitt database
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 15 Mai 2014
  */
 public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 
@@ -271,8 +270,6 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 					+ databasePath, databaseUserName, databasePassord);
 			statement = connect.createStatement();
 
-			displayMessage("Starter backup av database...\n");
-
 			String sql = "show tables";
 			rs = statement.executeQuery(sql);
 
@@ -324,8 +321,8 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 
 				while (rs.next()) {
 
-					String value = "insert into " + tableName + " ("
-							+ table.get(i).getColumns() + ") values\r\n";
+					String value = "INSERT IGNORE INTO " + tableName + " ("
+							+ table.get(i).getColumns() + ") VALUES\r\n";
 					value += "(";
 					for (int c = 0; c < table.get(i).getNumOfColumns(); c++) {
 
@@ -337,7 +334,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 						} else if (table.get(i).getType(c).equals("blob")) {
 							downloadImage(rs.getBinaryStream(table.get(i)
 									.getColumnName(c)), rs.getString(table.get(
-									i).getColumnName(c - 1)));
+											i).getColumnName(c - 2)));
 							value += "'Bilde'";
 						}
 
@@ -355,6 +352,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 			}// end of for
 
 			displayMessage("Backup er ferdig\n");
+			cleanBackupFields();
 		} catch (
 				com.mysql.jdbc.exceptions.jdbc4.CommunicationsException
 				| com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException ex) {
@@ -410,7 +408,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 * @param name
 	 *            Navnet til bildet.
 	 */
-	private void downloadImage(InputStream is, String name) {
+	private void downloadImage(InputStream is,String id) {
 
 		String path = backupImageField.getText();
 
@@ -423,7 +421,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 
 			BufferedInputStream bis = new BufferedInputStream(is);
 			FileOutputStream fos = new FileOutputStream(f.getAbsolutePath()
-					+ File.separator + name + ".jpg");
+					+ File.separator + id + ".jpg");
 
 			int data;
 			while ((data = bis.read()) != -1) {
@@ -473,7 +471,7 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 		}
 
 		try (BufferedReader br = new BufferedReader(new FileReader(sqlPath));) {
-
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection("jdbc:mysql://"
 					+ databasePath, databaseUserName, databasePassord);
@@ -493,14 +491,14 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 					.toString().split(";")));
 
 			ArrayList<String> createdTables = new ArrayList<String>();
-
 			ArrayList<Table> table = new ArrayList<Table>();
 
 			statement = connect.createStatement();
+			
             //Lagrer info om tabeller i Table objekter
 			for (int i = 0; i < queries.size(); i++) {
 
-				if (queries.get(i).indexOf("insert into") >= 0) {
+				if (queries.get(i).indexOf("INSERT IGNORE INTO") >= 0) {
 					String tableName = parseInsert(queries.get(i));
 					boolean exists = false;
 					int index = 0;
@@ -548,14 +546,6 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 			for (int i = 0; i < table.size(); i++) {
 				table.get(i).setReferences(table.get(i).getCreateTableString());
 			}
-
-			for (Table t : table) {
-				System.out.println(t.getTableName());
-				for (int i = 0; i < t.getInsertSize(); i++) {
-					System.out.println(t.getInsert(i));
-				}
-
-			}
             
 			//Skriver ut SQL setninger til databasen
 			while (table.size() > 0) {
@@ -579,25 +569,27 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 			// Laster opp bilder til databasen
 			File f = new File(imagePath);
 			File[] bilder = null;
+			
 			if (f.exists()) {
 				bilder = f.listFiles();
 				if (bilder == null) {
-					System.out.println("bilder[] er null");
 					displayMessage("Gjenoppreting var vellykket, men bilder ble ikke satt inn");
 					return;
 				}
 				if (bilder.length == 0) {
-					System.out.println("Fant ingen bilder");
 					displayMessage("Gjenoppreting var vellykket, men ingen bilder ble funnet");
 					return;
 				}
 
 				for (int i = 0; i < bilder.length; i++) {
-					if (!bilder[i].getName().endsWith(".jpeg")) {
+					if (!bilder[i].getName().endsWith(".jpg") || !bilder[i].getName().endsWith(".jpeg")) {
+						continue;
+					}else{
 						bilder[i] = null;
 					}
 				}
 			}
+
 
 			for (int i = 0; i < bilder.length; i++) {
 				if (bilder[i] == null) {
@@ -606,26 +598,28 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 
 				int seperator = bilder[i].getName().indexOf(".");
 				String filename = bilder[i].getName().substring(0, seperator);
-				sql = "update bolig_bilde set Bilde = ? where Bolig_BoligID = "
-						+ filename;
+					
+				sql = "update bolig_bilde set Bilde = ? where BildeID =  ?";
 				prepStatement = connect.prepareStatement(sql);
 
-				InputStream is = new FileInputStream(
-						bilder[i].getAbsolutePath());
+				InputStream is = new FileInputStream(bilder[i].getAbsolutePath());
 				prepStatement.setBinaryStream(1, is, bilder[i].length());
-
+				prepStatement.setString(2, filename);
 				prepStatement.execute();
 
 			}
 			displayMessage("Databasen er blitt gjenopprettet\n");
+			cleanRestoreFields();
 
 		} catch (
 				com.mysql.jdbc.exceptions.jdbc4.CommunicationsException
 				| com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException ex) {
+			System.out.println("feil i restore: " + ex);
 			displayMessage("En feil oppstod under koblingen til databasen,\n "
 					+ "sjekk om alle feltene er fyllt inn med riktig informasjon");
 
 		} catch (SQLException ex) {
+			System.out.println("feil i restore: " + ex);
 			displayMessage("En feil oppstod under koblingen til databasen,\n "
 					+ "sjekk om alle feltene er fyllt inn med riktig informasjon");
 
@@ -672,11 +666,37 @@ public class SubPanel_AdminTools extends SubPanel implements ActionListener {
 	 */
 	private String parseInsert(String insertString) {
 
-		String start = insertString.replace("insert into ", "");
+		String start = insertString.replace("INSERT IGNORE INTO ", "");
 		int end = start.indexOf(" (");
 		String tableName = "`" + start.substring(0, end) + "`";
 		return tableName;
 	}// end of parseInsert
+	
+	/**
+	 * Nuller ut feltene i backup området
+	 */
+	private void cleanBackupFields(){
+		backupSqlField.setText("");
+		backupImageField.setText("");
+		backupDatabaseField.setText("");
+		
+		backupUserNameField.setText("");
+		backupPasswordField.setText("");
+
+	}//end of cleanBackupFields
+	
+	/**
+	 * Nuller ut feltene i restore området
+	 */
+	private void cleanRestoreFields(){
+		restoreSqlField.setText("");
+		restoreImageField.setText("");
+		restoreDatabaseField.setText("");
+		
+		restoreUserNameField.setText("");
+		restorePasswordField.setText("");
+		
+	}//end of cleanRestoreFields
 
 	/**
 	 * Setter stien hvor SQL koden til databasen vil bli lagret.

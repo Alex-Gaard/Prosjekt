@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * vil bli fjernet/lagt til med dette rammeverket som utgangspunkt.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 14 Mai 2014
+ * @version 1.00, 15 Mai 2014
  */
 public class Vindu_Main extends JFrame{
 

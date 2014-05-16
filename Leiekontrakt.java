@@ -8,7 +8,7 @@ import java.util.Date;
  * Klassen representerer en leiekontrakt i databasen.
  * 
  * @author Alexander Gård, s198585, 1. år IT
- * @version 1.00, 12 Mai 2014
+ * @version 1.00, 7 Mai 2014
  */
 public class Leiekontrakt {
 
