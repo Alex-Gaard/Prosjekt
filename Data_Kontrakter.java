@@ -518,7 +518,7 @@ public class Data_Kontrakter extends Database {
 						rs.getString(COLUMN_BOLIGSØKER_PERSONNUMMER),
 						rs.getString(COLUMN_BEHANDLER_BRUKER_PERSONNUMMER),
 						rs.getInt(COLUMN_BOLIG_BOLIG_ID),
-						rs.getDate(COLUMN_BOLIG_BOLIG_ID));
+						rs.getDate(COLUMN_OPPRETTET_DATO));
 				lkList.add(lk);
 			}
 			return lkList;
