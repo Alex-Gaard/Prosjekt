@@ -2,7 +2,7 @@ package boligformidling;
 
 //Petter S.W Gjerstad
 //SubPanel_KundeProfil
-//Siste versjon kl 11:37 16.05.2014
+//Siste versjon kl 12:37 16.05.2014
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -238,7 +239,7 @@ public class SubPanel_KundeProfil extends SubPanel
         upperpanelsub.add(utleierpanelwrapper);
         
         centerpanelsub = new JPanel(new BorderLayout());
-        forslagsidensistL=new JLabel("Boligforslag siden siste innlogging:");
+        forslagsidensistL=new JLabel("Forslag til boliger basert på din profil:");
         centerpanel.add(forslagsidensistL,BorderLayout.NORTH);
         centerpanelsub.setBorder(BorderFactory.createBevelBorder(1));
         centerpanelsub.add(tablepanel,BorderLayout.CENTER);
@@ -339,7 +340,8 @@ public class SubPanel_KundeProfil extends SubPanel
                     }
                     if (boligsøkertest)
                     {
-                        try {
+                        try 
+                        {
                             Data_boligsøker.deletespecfromBoligsøker(personnummer);
                             Data_boligsøker.deletespecfromSøkerKrav(personnummer);
                             Data_boligsøker.deletespecfromdSøkerInfo(personnummer);
@@ -822,7 +824,7 @@ public class SubPanel_KundeProfil extends SubPanel
                     {
                         int rad = vistreff.getSelectedRow();
                         int BoligID = (int) model.getValueAt(rad, 0);
-                        tilbakemeldinger.append("[" + linjeteller++ + "] " + "Bolig med ID:" + BoligID + " Er nå merket som sett før." + "\n");
+                        tilbakemeldinger.append("[" + linjeteller++ + "] " + "Bolig med ID:" + BoligID + " er nå merket som sett før." + "\n");
                         //psudo update visteboligerTabell i db.
                         model.removeRow(rad);
                         updatevisteboliger(BoligID);
