@@ -23,7 +23,12 @@ public class GraphPanel {
 	private JPanel graphPanel;
 	private final int GRAPH_START = 4;
 	private final int GRAPH_MAGNITUDE = 5;
-
+	/*GRAPH_MAGNITUDE sammen med GRAPH_START bestemmer hvordan grafen blir skalert.
+	 *Grafen starter med 4 * 5 = 20 som høyeste verdi. Hvis en verdi i grafen overskrider dette,
+	 *vil grafen bli skalert til 20 * 5 = 100. Hvis en verdi overskrider dette igjen blir grafen skalert til
+	 * 100 * 5 = 500 osv.
+	 */
+	
 	// Lables
 	private final int LABEL_X_START = 20;
 	private final int LABEL_Y_START = 10;
