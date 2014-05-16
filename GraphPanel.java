@@ -28,7 +28,6 @@ public class GraphPanel {
 	 *vil grafen bli skalert til 20 * 5 = 100. Hvis en verdi overskrider dette igjen blir grafen skalert til
 	 * 100 * 5 = 500 osv.
 	 */
-	
 	// Lables
 	private final int LABEL_X_START = 20;
 	private final int LABEL_Y_START = 10;
